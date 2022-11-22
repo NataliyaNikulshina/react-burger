@@ -1,4 +1,4 @@
-import React from 'react';
+import AppHeader from './components/app-header/app-header.js';
 import logo from './logo.svg';
 import './App.css';
 
