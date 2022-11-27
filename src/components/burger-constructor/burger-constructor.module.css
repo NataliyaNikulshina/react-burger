@@ -4,16 +4,18 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
 }
 
 .list{
     display: flex;
     flex-direction: column; 
     padding: 0;
+    margin: 0;
     align-items: flex-end;
     list-style: none;
-    height: calc(100vh - 604px);
-   /* height: 465px; */
+   /* height: calc(100vh - 604px); */
+    height: 464px; 
     overflow-y: scroll;
 }
 
@@ -35,4 +37,20 @@
 
 .element{
     width: 536px;
+}
+
+.result{
+    display: flex;
+    list-style: none;
+    padding: 0;
+    align-items: center;
+}
+
+.icon{
+    display: flex;
+    background-size: cover;
+    width: 33px;
+    height: 33px;
+    align-items: center;
+    justify-content: center;
 }
