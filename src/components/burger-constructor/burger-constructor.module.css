@@ -1,0 +1,38 @@
+.container {
+    width: 600px;
+    height: 912px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.list{
+    display: flex;
+    flex-direction: column; 
+    padding: 0;
+    align-items: flex-end;
+    list-style: none;
+    height: calc(100vh - 604px);
+   /* height: 465px; */
+    overflow-y: scroll;
+}
+
+.list::-webkit-scrollbar {
+    background-color: #2F2F37;
+    width: 8px;
+  }
+  
+.list::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+  }
+
+.item{
+    display: flex;
+    align-items: center;
+    width: 568px;
+    justify-content: space-between;
+}
+
+.element{
+    width: 536px;
+}
