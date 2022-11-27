@@ -11,7 +11,7 @@ const ingredientType = PropTypes.shape({
 
 function BurgerFirstItem (props){
   return (
-      <div key={props.ingredient._id} className={`${burgerConstructor.element} mr-4 mb-4`}>
+      <div className={`${burgerConstructor.element} mr-4 mb-4`}>
       <ConstructorElement
         type='top'
         isLocked={true}
@@ -30,7 +30,7 @@ BurgerFirstItem.propTypes = {
 
 function BurgerMiddleItem (props){
   return (
-    <li key={props.ingredient._id} className={`${burgerConstructor.item} mr-2 mb-4 ml-4`}>
+    <li className={`${burgerConstructor.item} mr-2 mb-4 ml-4`}>
       <DragIcon type="primary"/>
       <div className={`${burgerConstructor.element}`}>
         <ConstructorElement 
@@ -51,7 +51,7 @@ BurgerMiddleItem.propTypes = {
 
 function BurgerLastItem (props){
   return (
-    <div key={props.ingredient._id} className={`${burgerConstructor.element} mr-4 mt-4`}>
+    <div className={`${burgerConstructor.element} mr-4 mt-4`}>
         <ConstructorElement
         type='bottom'
         isLocked={true}
@@ -74,15 +74,15 @@ function BurgerConstructor (props) {
       });
       return (
         <section className={`${burgerConstructor.container} mt-15`}>
-          <BurgerFirstItem ingredient={bun} key={bun.id}/>
+          <BurgerFirstItem ingredient={bun}/>
           <ul className={`${burgerConstructor.list}`}>
             {props.data.map((el) => { 
               if (el.type !== "bun") {
-                return (<BurgerMiddleItem ingredient={el} key={el.id}/>);
+                return (<BurgerMiddleItem ingredient={el} key={el._id}/>);
               } 
             })}
           </ul>
-          <BurgerLastItem ingredient={bun} key={bun.id}/>
+          <BurgerLastItem ingredient={bun}/>
           <ul className={`${burgerConstructor.result} mt-10`}>
             <p className="text text_type_digits-medium">610</p>
             <li className={`${burgerConstructor.icon} ml-2 mr-10`}>
