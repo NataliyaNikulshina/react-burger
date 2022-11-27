@@ -1,62 +1,82 @@
 import React from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructor from './burger-constructor.module.css';
-import {dataIngredients} from '../../utils/data.js';
+import PropTypes from 'prop-types';
 
-function BurgerFirstItem ({ingredient}){
+const ingredientType = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired
+});
+
+function BurgerFirstItem (props){
   return (
-      <div className={`${burgerConstructor.element} mr-4 mb-4`}>
+      <div key={props.ingredient._id} className={`${burgerConstructor.element} mr-4 mb-4`}>
       <ConstructorElement
         type='top'
         isLocked={true}
-        text={`${ingredient.name} (верх)`} 
-        price={ingredient.price}
-        thumbnail={ingredient.image}
+        text={`${props.ingredient.name} (верх)`} 
+        price={props.ingredient.price}
+        thumbnail={props.ingredient.image}
         />
        </div>
   )
 }
 
-function BurgerMiddleItem ({ingredient}){
+BurgerFirstItem.propTypes = {
+  ingredient: ingredientType.isRequired
+}; 
+
+
+function BurgerMiddleItem (props){
   return (
-    <li className={`${burgerConstructor.item} mr-2 mb-4 ml-4`}>
+    <li key={props.ingredient._id} className={`${burgerConstructor.item} mr-2 mb-4 ml-4`}>
       <DragIcon type="primary"/>
       <div className={`${burgerConstructor.element}`}>
         <ConstructorElement 
           type=''
-          text={`${ingredient.name}`} 
-          price={ingredient.price}
-          thumbnail={ingredient.image}
+          text={`${props.ingredient.name}`} 
+          price={props.ingredient.price}
+          thumbnail={props.ingredient.image}
           />
       </div>
     </li>
   )
 }
 
-function BurgerLastItem ({ingredient}){
+BurgerMiddleItem.propTypes = {
+  ingredient: ingredientType.isRequired
+}; 
+
+
+function BurgerLastItem (props){
   return (
-    <div className={`${burgerConstructor.element} mr-4 mt-4`}>
+    <div key={props.ingredient._id} className={`${burgerConstructor.element} mr-4 mt-4`}>
         <ConstructorElement
         type='bottom'
         isLocked={true}
-        text={`${ingredient.name} (низ)`} 
-        price={ingredient.price}
-        thumbnail={ingredient.image}
+        text={`${props.ingredient.name} (низ)`} 
+        price={props.ingredient.price}
+        thumbnail={props.ingredient.image}
         />
       </div>
   )
 }
 
-class BurgerConstructor extends React.Component {
-    render() {
-      const bun = dataIngredients.find(function (el) { 
+BurgerLastItem.propTypes = {
+  ingredient: ingredientType.isRequired
+}; 
+
+
+function BurgerConstructor (props) {
+      const bun = props.data.find(function (el) { 
         return el.type === "bun";
       });
       return (
         <section className={`${burgerConstructor.container} mt-15`}>
           <BurgerFirstItem ingredient={bun} key={bun.id}/>
           <ul className={`${burgerConstructor.list}`}>
-            {dataIngredients.map((el) => { 
+            {props.data.map((el) => { 
               if (el.type !== "bun") {
                 return (<BurgerMiddleItem ingredient={el} key={el.id}/>);
               } 
@@ -77,6 +97,9 @@ class BurgerConstructor extends React.Component {
         </section>   
       );
 }
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(ingredientType).isRequired
 }
 
 export default BurgerConstructor;
