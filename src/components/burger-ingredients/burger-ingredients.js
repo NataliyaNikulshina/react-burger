@@ -7,8 +7,11 @@ import {
 import burgerIngredients from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
 import { ingredientType } from "../../utils/types.js";
-import IngredientDetails from '../ingredient-details/ingredient-details'
+import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
+import withOverlay from '../modal-overlay/modal-overlay'
+
+const ModalOverlay = withOverlay(Modal)
 
 function PriceIngredient(props) {
   return (
@@ -19,48 +22,55 @@ function PriceIngredient(props) {
   );
 }
 
-function Ingredient(props) {
+const Ingredient = (props) => {
   const [count, setCount] = React.useState(0);
-  const [visibility, changeVisibility] = React.useState(false)
-  const [ingredient, setIngredient] = React.useState(null)
+  const [visibility, changeVisibility] = React.useState(false);
+  const [ingredient, setIngredient] = React.useState(null);
 
-const modalIngredientDetails = (
-    <Modal changeVisibility={changeVisibility} title={"Детали ингредиента"}>
-    <IngredientDetails ingredient={ingredient} />
-  </Modal> )
+  const modalIngredientDetails = (
+    <ModalOverlay setClose={changeVisibility} title={"Детали ингредиента"}>
+      <IngredientDetails ingredient={ingredient} />
+    </ModalOverlay>
+  );
 
   return (
-    <div className={`${burgerIngredients.item} `} onClick={() => {
-      changeVisibility(true)
-      setIngredient({...props.ingredient})
-  }}>
-      <Counter count={count} size="default" onClick={setCount} />
+    <div
+      className={`${burgerIngredients.item} `}
+      onClick={() => {
+        changeVisibility(true);
+        setIngredient({ ...props.ingredient });
+      }}
+    >
+      <Counter count={count} size="default" />
       <img src={props.ingredient.image} alt={props.ingredient.name}></img>
       <PriceIngredient price={props.ingredient.price} />
       <p className="text text_type_main-default mb-6">
         {props.ingredient.name}
-      </p>  
+      </p>
       {visibility && modalIngredientDetails}
     </div>
-    
   );
 }
 
 const BurgerIngredients = (props) => {
   console.log(props.data);
   const [current, setCurrent] = React.useState("bun");
-  const buns = props.data.filter(item => item.type === 'bun' ? item : null)
-  const sauces = props.data.filter(item => item.type === 'sauce' ? item : null)
-  const mains = props.data.filter(item => item.type === 'main' ? item : null)
+  const buns = props.data.filter((item) => (item.type === "bun" ? item : null));
+  const sauces = props.data.filter((item) =>
+    item.type === "sauce" ? item : null
+  );
+  const mains = props.data.filter((item) =>
+    item.type === "main" ? item : null
+  );
 
   const onClickTab = (tab) => {
     setCurrent(tab);
     const item = document.getElementById(tab);
     console.log(item);
     if (item) {
-      return item.scrollIntoView({ behavior: "smooth" })
+      return item.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   return (
     <section className={`${burgerIngredients.container} mr-10`}>
@@ -78,7 +88,9 @@ const BurgerIngredients = (props) => {
       </nav>
       <ul className={` ${burgerIngredients.list} mt-10`}>
         <li key={1}>
-          <h2 className="text text_type_main-medium" id="bun">Булки</h2>
+          <h2 className="text text_type_main-medium" id="bun">
+            Булки
+          </h2>
           <div
             className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
           >
@@ -90,7 +102,9 @@ const BurgerIngredients = (props) => {
           </div>
         </li>
         <li key={2}>
-          <h2 className="text text_type_main-medium" id="sauce">Соусы</h2>
+          <h2 className="text text_type_main-medium" id="sauce">
+            Соусы
+          </h2>
           <div
             className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
           >
@@ -102,7 +116,9 @@ const BurgerIngredients = (props) => {
           </div>
         </li>
         <li key={3}>
-          <h2 className="text text_type_main-medium" id="main">Начинки</h2>
+          <h2 className="text text_type_main-medium" id="main">
+            Начинки
+          </h2>
           <div
             className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
           >

@@ -6,8 +6,13 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructor from "./burger-constructor.module.css";
+import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
 import { ingredientType } from "../../utils/types.js";
+import withOverlay from '../modal-overlay/modal-overlay';
+import Modal from "../modal/modal";
+
+const ModalOverlay = withOverlay(Modal)
 
 function BurgerFirstItem(props) {
   return (
@@ -65,10 +70,20 @@ BurgerLastItem.propTypes = {
   ingredient: ingredientType.isRequired,
 };
 
-function BurgerConstructor(props) {
+const BurgerConstructor = (props) => {
   const bun = props.data.find(function (el) {
     return el.type === "bun";
   });
+
+  const [visibility, changeVisibility] = React.useState(false);
+  const modalOrderDetails = (
+    <ModalOverlay setClose={changeVisibility}>
+      <OrderDetails />
+    </ModalOverlay> 
+ 
+  );
+
+
   return (
     <section className={`${burgerConstructor.container} mt-15`}>
       <BurgerFirstItem ingredient={bun} />
@@ -86,11 +101,12 @@ function BurgerConstructor(props) {
           <CurrencyIcon type="primary" />
         </li>
         <li className="mr-4">
-          <Button htmlType="button" type="primary" size="large">
+          <Button htmlType="button" type="primary" size="large" onClick={() => {changeVisibility(true)}}>
             Оформить заказ
           </Button>
         </li>
       </ul>
+      {visibility && modalOrderDetails}
     </section>
   );
 }
