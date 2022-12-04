@@ -17,7 +17,7 @@ const modalRoot = document.getElementById("react-modals");
         <ModalOverlay onClick={() => changeVisibility(false)}>
         <div className={`${modalStyles.popup} pl-10 pr-10 pt-10 pb-15`} onClick={e => e.stopPropagation()}>
             <div className={modalStyles.header}>
-                <h2 className='text text_type_main-large mb-8'>{title}</h2>
+                <h2 className='text text_type_main-large'>{title}</h2>
                 <div className={modalStyles.closebtn}>
                 <CloseIcon type="primary" onClick={() => changeVisibility(false)}/>
                 </div>

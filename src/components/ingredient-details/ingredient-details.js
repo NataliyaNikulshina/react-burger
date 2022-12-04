@@ -15,19 +15,19 @@ const IngredientDetails = (props) => {
                     <ul className={`${ingredientDetails.list} text text_type_main-default text_color_inactive`}>
                         <li className={`${ingredientDetails.item}`}>
                             <p className={ingredientDetails.paragraph}>Калории,ккал</p>
-                            <p className={`${ingredientDetails.paragraph} text_type_digits-default`}>{ingredient.calories}</p>
+                            <p className={`${ingredientDetails.paragraph} text_type_digits-default pt-2`}>{ingredient.calories}</p>
                         </li>
                         <li className={`${ingredientDetails.item}`}>
                             <p className={ingredientDetails.paragraph}>Белки, г</p>
-                            <p className={`${ingredientDetails.paragraph} text_type_digits-default`}>{ingredient.proteins}</p>
+                            <p className={`${ingredientDetails.paragraph} text_type_digits-default pt-2`}>{ingredient.proteins}</p>
                         </li>
                         <li className={`${ingredientDetails.item}`}>
                             <p className={ingredientDetails.paragraph}>Жиры, г</p>
-                            <p className={`${ingredientDetails.paragraph} text_type_digits-default`}>{ingredient.fat}</p>
+                            <p className={`${ingredientDetails.paragraph} text_type_digits-default pt-2`}>{ingredient.fat}</p>
                         </li>
                         <li className={`${ingredientDetails.item}`}>
                             <p className={ingredientDetails.paragraph}>Углеводы, г</p>
-                            <p className={`${ingredientDetails.paragraph} text_type_digits-default`}>{ingredient.carbohydrates}</p>
+                            <p className={`${ingredientDetails.paragraph} text_type_digits-default pt-2`}>{ingredient.carbohydrates}</p>
                         </li>
                     </ul>
                 </div>
