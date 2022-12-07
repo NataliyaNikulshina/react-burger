@@ -6,12 +6,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredients from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
-import { ingredientType } from "../../utils/types.js";
+import ingredientType from "../../utils/types.js";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
-import withOverlay from '../modal-overlay/modal-overlay'
-
-const ModalOverlay = withOverlay(Modal)
 
 function PriceIngredient(props) {
   return (
@@ -25,21 +22,11 @@ function PriceIngredient(props) {
 const Ingredient = (props) => {
   const [count, setCount] = React.useState(0);
   const [visibility, changeVisibility] = React.useState(false);
-  const [ingredient, setIngredient] = React.useState(null);
-
-  const modalIngredientDetails = (
-    <ModalOverlay setClose={changeVisibility} title={"Детали ингредиента"}>
-      <IngredientDetails ingredient={ingredient} />
-    </ModalOverlay>
-  );
 
   return (
     <div
       className={`${burgerIngredients.item} `}
-      onClick={() => {
-        changeVisibility(true);
-        setIngredient({ ...props.ingredient });
-      }}
+      onClick={() => changeVisibility(true)}
     >
       <Counter count={count} size="default" />
       <img src={props.ingredient.image} alt={props.ingredient.name}></img>
@@ -47,10 +34,14 @@ const Ingredient = (props) => {
       <p className="text text_type_main-default mb-6">
         {props.ingredient.name}
       </p>
-      {visibility && modalIngredientDetails}
+      {visibility && (
+        <Modal setClose={changeVisibility} title={"Детали ингредиента"}>
+          <IngredientDetails ingredient={props.ingredient} />
+        </Modal>
+      )}
     </div>
   );
-}
+};
 
 const BurgerIngredients = (props) => {
   console.log(props.data);

@@ -8,11 +8,8 @@ import {
 import burgerConstructor from "./burger-constructor.module.css";
 import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
-import { ingredientType } from "../../utils/types.js";
-import withOverlay from '../modal-overlay/modal-overlay';
+import ingredientType from "../../utils/types.js";
 import Modal from "../modal/modal";
-
-const ModalOverlay = withOverlay(Modal)
 
 function BurgerFirstItem(props) {
   return (
@@ -77,12 +74,10 @@ const BurgerConstructor = (props) => {
 
   const [visibility, changeVisibility] = React.useState(false);
   const modalOrderDetails = (
-    <ModalOverlay setClose={changeVisibility}>
+    <Modal setClose={changeVisibility}>
       <OrderDetails />
-    </ModalOverlay> 
- 
+    </Modal>
   );
-
 
   return (
     <section className={`${burgerConstructor.container} mt-15`}>
@@ -101,7 +96,14 @@ const BurgerConstructor = (props) => {
           <CurrencyIcon type="primary" />
         </li>
         <li className="mr-4">
-          <Button htmlType="button" type="primary" size="large" onClick={() => {changeVisibility(true)}}>
+          <Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={() => {
+              changeVisibility(true);
+            }}
+          >
             Оформить заказ
           </Button>
         </li>
@@ -109,7 +111,7 @@ const BurgerConstructor = (props) => {
       {visibility && modalOrderDetails}
     </section>
   );
-}
+};
 
 BurgerConstructor.propTypes = {
   data: PropTypes.arrayOf(ingredientType).isRequired,

@@ -1,4 +1,6 @@
 import ingredientDetails from "./ingredient-details.module.css";
+import PropTypes from "prop-types";
+import ingredientType from "../../utils/types.js";
 
 const IngredientDetails = (props) => {
   const { ingredient } = props;
@@ -56,5 +58,7 @@ const IngredientDetails = (props) => {
     </div>
   );
 };
+
+IngredientDetails.propTypes = { ingredient: ingredientType.isRequired };
 
 export default IngredientDetails;
