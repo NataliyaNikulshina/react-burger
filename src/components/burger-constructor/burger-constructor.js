@@ -73,8 +73,16 @@ const BurgerConstructor = (props) => {
   });
 
   const [visibility, changeVisibility] = React.useState(false);
+
+  function toggleVisibility(e) {
+    e.stopPropagation();
+    console.log(visibility);
+    changeVisibility((prevValue) => !prevValue);
+    console.log(visibility);
+  }
+
   const modalOrderDetails = (
-    <Modal setClose={changeVisibility}>
+    <Modal setClose={toggleVisibility}>
       <OrderDetails />
     </Modal>
   );
@@ -100,9 +108,7 @@ const BurgerConstructor = (props) => {
             htmlType="button"
             type="primary"
             size="large"
-            onClick={() => {
-              changeVisibility(true);
-            }}
+            onClick={toggleVisibility}
           >
             Оформить заказ
           </Button>

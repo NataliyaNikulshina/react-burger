@@ -11,7 +11,7 @@ const Modal = ({ title, setClose, children }) => {
   React.useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") {
-        setClose(false);
+        setClose(e);
       }
     };
     window.addEventListener("keyup", handleEsc);
@@ -22,21 +22,21 @@ const Modal = ({ title, setClose, children }) => {
   }, []);
 
   return PortalReactDOM.createPortal(
-    <div className={`${modalStyles.modal} `}>
+    <>
       <div
         className={`${modalStyles.popup} pl-10 pr-10 pt-10 pb-15`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={modalStyles.header}>
           <h2 className="text text_type_main-large">{title}</h2>
-          <div className={modalStyles.closebtn} onClick={() => setClose(false)}>
+          <div className={modalStyles.closebtn} onClick={setClose}>
             <CloseIcon type="primary" />
           </div>
         </div>
         {children}
       </div>
-      <ModalOverlay onClick={() => setClose(false)} />
-    </div>,
+      <ModalOverlay onClick={setClose} />
+    </>,
     modalRoot
   );
 };

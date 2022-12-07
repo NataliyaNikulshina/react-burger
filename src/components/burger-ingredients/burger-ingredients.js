@@ -23,10 +23,17 @@ const Ingredient = (props) => {
   const [count, setCount] = React.useState(0);
   const [visibility, changeVisibility] = React.useState(false);
 
+  function toggleVisibility(e) {
+    e.stopPropagation();
+    console.log(visibility);
+    changeVisibility((prevValue) => !prevValue);
+    console.log(visibility);
+  }
+
   return (
     <div
       className={`${burgerIngredients.item} `}
-      onClick={() => changeVisibility(true)}
+      onClick={toggleVisibility}
     >
       <Counter count={count} size="default" />
       <img src={props.ingredient.image} alt={props.ingredient.name}></img>
@@ -35,7 +42,7 @@ const Ingredient = (props) => {
         {props.ingredient.name}
       </p>
       {visibility && (
-        <Modal setClose={changeVisibility} title={"Детали ингредиента"}>
+        <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
           <IngredientDetails ingredient={props.ingredient} />
         </Modal>
       )}
