@@ -10,10 +10,10 @@ import ingredientType from "../../utils/types.js";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 
-function PriceIngredient(props) {
+function PriceIngredient( {price} ) {
   return (
     <div className={`${burgerIngredients.price} mt-1 mb-1`}>
-      <p className="text text_type_digits-default mr-2">{props.price}</p>
+      <p className="text text_type_digits-default mr-2">{price}</p>
       <CurrencyIcon type="primary" />
     </div>
   );
