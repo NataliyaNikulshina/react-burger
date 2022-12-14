@@ -70,7 +70,6 @@ BurgerLastItem.propTypes = {
 
 const BurgerConstructor = () => {
   const { data } = React.useContext(IngredientsContext)
-  console.log(data.data);
 
   const bun = data.data.find(function (el) {
     return el.type === "bun";
