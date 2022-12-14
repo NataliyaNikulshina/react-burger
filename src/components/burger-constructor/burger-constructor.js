@@ -10,6 +10,7 @@ import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 import Modal from "../modal/modal";
+import { IngredientsContext } from "../../context/ingredients-context";
 
 function BurgerFirstItem(props) {
   return (
@@ -67,8 +68,11 @@ BurgerLastItem.propTypes = {
   ingredient: ingredientType.isRequired,
 };
 
-const BurgerConstructor = (props) => {
-  const bun = props.data.find(function (el) {
+const BurgerConstructor = () => {
+  const { data } = React.useContext(IngredientsContext)
+  console.log(data.data);
+
+  const bun = data.data.find(function (el) {
     return el.type === "bun";
   });
 
@@ -89,9 +93,9 @@ const BurgerConstructor = (props) => {
 
   return (
     <section className={`${burgerConstructor.container} mt-15`}>
-      <BurgerFirstItem ingredient={bun} />
+       <BurgerFirstItem ingredient={bun} />
       <ul className={`${burgerConstructor.list}`}>
-        {props.data.map((el) => {
+        {data.data.map((el) => {
           if (el.type !== "bun") {
             return <BurgerMiddleItem ingredient={el} key={el._id} />;
           }
@@ -114,13 +118,13 @@ const BurgerConstructor = (props) => {
           </Button>
         </li>
       </ul>
-      {visibility && modalOrderDetails}
+      {visibility && modalOrderDetails} 
     </section>
   );
 };
 
-BurgerConstructor.propTypes = {
+/*BurgerConstructor.propTypes = {
   data: PropTypes.arrayOf(ingredientType).isRequired,
-};
+};*/
 
 export default BurgerConstructor;
