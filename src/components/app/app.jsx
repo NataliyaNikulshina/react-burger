@@ -3,7 +3,7 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients.js";
 import BurgerConstructor from "../burger-constructor/burger-constructor.js";
 import app from "./app.module.css";
 import { useEffect, useState } from "react";
-import { IngredientsContext } from "../../context/ingredients-context.js";
+import { IngredientsContext } from "../../context/app-context.js";
 
 export function App() {
   const [data, setData] = useState(null);

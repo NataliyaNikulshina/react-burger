@@ -4,7 +4,7 @@ import burgerIngredients from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 import Ingredient from "../ingredient/ingredient";
-import { IngredientsContext } from "../../context/ingredients-context";
+import { IngredientsContext } from "../../context/app-context";
 
 
 

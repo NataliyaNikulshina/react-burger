@@ -1,7 +1,6 @@
 import React from "react";
 import {
   ConstructorElement,
-  CurrencyIcon,
   DragIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -10,7 +9,11 @@ import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 import Modal from "../modal/modal";
-import { IngredientsContext } from "../../context/ingredients-context";
+import {
+  IngredientsContext,
+  TotalPriceContext,
+} from "../../context/app-context";
+import { TotalPrice } from "../total-price/total-price";
 
 function BurgerFirstItem(props) {
   return (
@@ -69,7 +72,8 @@ BurgerLastItem.propTypes = {
 };
 
 const BurgerConstructor = () => {
-  const { data } = React.useContext(IngredientsContext)
+  const { data } = React.useContext(IngredientsContext);
+  const [totalPrice, setTotalPrice] = React.useState(0);
 
   const bun = data.data.find(function (el) {
     return el.type === "bun";
@@ -90,9 +94,21 @@ const BurgerConstructor = () => {
     </Modal>
   );
 
+  const calculateTotalPrice = () => {
+    let total = bun.price * 2;
+   // console.log(total);
+    {data.data.map((el) => {
+      if (el.type !== "bun") {
+        total += el.price;
+    //    console.log(total);
+      }
+    })}
+    return total;
+  };
+
   return (
     <section className={`${burgerConstructor.container} mt-15`}>
-       <BurgerFirstItem ingredient={bun} />
+      <BurgerFirstItem ingredient={bun} />
       <ul className={`${burgerConstructor.list}`}>
         {data.data.map((el) => {
           if (el.type !== "bun") {
@@ -102,10 +118,9 @@ const BurgerConstructor = () => {
       </ul>
       <BurgerLastItem ingredient={bun} />
       <ul className={`${burgerConstructor.result} mt-10`}>
-        <p className="text text_type_digits-medium">610</p>
-        <li className={`${burgerConstructor.icon} ml-2 mr-10`}>
-          <CurrencyIcon type="primary" />
-        </li>
+        <TotalPriceContext.Provider value={{ totalPrice, setTotalPrice }}>
+          <TotalPrice>{calculateTotalPrice()}</TotalPrice>
+        </TotalPriceContext.Provider>
         <li className="mr-4">
           <Button
             htmlType="button"
@@ -117,7 +132,8 @@ const BurgerConstructor = () => {
           </Button>
         </li>
       </ul>
-      {visibility && modalOrderDetails} 
+
+      {visibility && modalOrderDetails}
     </section>
   );
 };
