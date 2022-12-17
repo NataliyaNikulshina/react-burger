@@ -1,0 +1,65 @@
+.header {
+  max-width: 1920px;
+  margin: 40px auto 40px;
+  display: flex;
+  flex-direction: row;
+  background: #1c1c21;
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.container {
+  display: flex;
+  margin: auto;
+  width: 1280px;
+  height: 56px;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.icon {
+  align-items: center;
+}
+
+.nav {
+  width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+}
+
+.item {
+  composes: link;
+  align-items: center;
+}
+
+.logo {
+  width: 289.15px;
+  height: 40px;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.text {
+  color: #8585ad;
+}
