@@ -14,6 +14,7 @@ import {
   TotalPriceContext,
 } from "../../context/app-context";
 import { TotalPrice } from "../total-price/total-price";
+import { postOrderDetails } from "../../utils/api.js";
 
 function BurgerFirstItem(props) {
   return (
@@ -74,6 +75,7 @@ BurgerLastItem.propTypes = {
 const BurgerConstructor = () => {
   const { data } = React.useContext(IngredientsContext);
   const [totalPrice, setTotalPrice] = React.useState(0);
+  const [orderNumber, setOrderNumber] = React.useState(0);
 
   const bun = data.data.find(function (el) {
     return el.type === "bun";
@@ -84,26 +86,36 @@ const BurgerConstructor = () => {
   function toggleVisibility(e) {
     e.stopPropagation();
     console.log(visibility);
+    postOrder();
     changeVisibility((prevValue) => !prevValue);
     console.log(visibility);
   }
 
   const modalOrderDetails = (
     <Modal setClose={toggleVisibility}>
-      <OrderDetails />
+      <OrderDetails orderNumber={orderNumber}/>
     </Modal>
   );
 
   const calculateTotalPrice = () => {
     let total = bun.price * 2;
-   // console.log(total);
-    {data.data.map((el) => {
-      if (el.type !== "bun") {
-        total += el.price;
-    //    console.log(total);
-      }
-    })}
+    // console.log(total);
+    {
+      data.data.map((el) => {
+        if (el.type !== "bun") {
+          total += el.price;
+          //    console.log(total);
+        }
+      });
+    }
     return total;
+  };
+
+  const postOrder = () => {
+    const dataId = data.data.map((item) => item._id);
+    postOrderDetails(dataId)
+      .then((dataOrd) => setOrderNumber(dataOrd.order.number))
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -122,14 +134,14 @@ const BurgerConstructor = () => {
           <TotalPrice>{calculateTotalPrice()}</TotalPrice>
         </TotalPriceContext.Provider>
         <li className="mr-4">
-          <Button
-            htmlType="button"
-            type="primary"
-            size="large"
-            onClick={toggleVisibility}
-          >
-            Оформить заказ
-          </Button>
+            <Button
+              htmlType="button"
+              type="primary"
+              size="large"
+              onClick={toggleVisibility}
+            >
+              Оформить заказ
+            </Button>
         </li>
       </ul>
 
@@ -138,8 +150,6 @@ const BurgerConstructor = () => {
   );
 };
 
-/*BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientType).isRequired,
-};*/
+
 
 export default BurgerConstructor;

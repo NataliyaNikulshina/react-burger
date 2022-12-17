@@ -5,7 +5,7 @@ import {
     CurrencyIcon,
     Counter
   } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 import burgerIngredient from "./ingredient.module.css";
 
@@ -17,6 +17,7 @@ function PriceIngredient( {price} ) {
       </div>
     );
   }
+  PriceIngredient.propTypes = {price: propTypes.number.isRequired}
   
   const Ingredient = (props) => {
     const [count, setCount] = React.useState(0);

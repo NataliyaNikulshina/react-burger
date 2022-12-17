@@ -6,10 +6,8 @@ import ingredientType from "../../utils/types.js";
 import Ingredient from "../ingredient/ingredient";
 import { IngredientsContext } from "../../context/app-context";
 
-
-
 const BurgerIngredients = () => {
-  const { data } = React.useContext(IngredientsContext)
+  const { data } = React.useContext(IngredientsContext);
   console.log(data.data);
   const [current, setCurrent] = React.useState("bun");
   const buns = data.data.filter((item) => (item.type === "bun" ? item : null));
@@ -23,7 +21,6 @@ const BurgerIngredients = () => {
   const onClickTab = (tab) => {
     setCurrent(tab);
     const item = document.getElementById(tab);
-    console.log(item);
     if (item) {
       return item.scrollIntoView({ behavior: "smooth" });
     }
@@ -90,10 +87,5 @@ const BurgerIngredients = () => {
     </section>
   );
 };
-
-/*BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientType).isRequired,
-};*/
-
 
 export default BurgerIngredients;
