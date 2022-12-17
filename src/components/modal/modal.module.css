@@ -1,0 +1,30 @@
+.modal {  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-color: #1c1c21;
+  border-radius: 40px;
+  width: 720px;
+  min-height: 538px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.header {
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closebtn {
+  cursor: pointer;
+}

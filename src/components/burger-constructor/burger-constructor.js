@@ -6,8 +6,10 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructor from "./burger-constructor.module.css";
+import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
-import { ingredientType } from "../../utils/types.js";
+import ingredientType from "../../utils/types.js";
+import Modal from "../modal/modal";
 
 function BurgerFirstItem(props) {
   return (
@@ -65,10 +67,26 @@ BurgerLastItem.propTypes = {
   ingredient: ingredientType.isRequired,
 };
 
-function BurgerConstructor(props) {
+const BurgerConstructor = (props) => {
   const bun = props.data.find(function (el) {
     return el.type === "bun";
   });
+
+  const [visibility, changeVisibility] = React.useState(false);
+
+  function toggleVisibility(e) {
+    e.stopPropagation();
+    console.log(visibility);
+    changeVisibility((prevValue) => !prevValue);
+    console.log(visibility);
+  }
+
+  const modalOrderDetails = (
+    <Modal setClose={toggleVisibility}>
+      <OrderDetails />
+    </Modal>
+  );
+
   return (
     <section className={`${burgerConstructor.container} mt-15`}>
       <BurgerFirstItem ingredient={bun} />
@@ -86,14 +104,20 @@ function BurgerConstructor(props) {
           <CurrencyIcon type="primary" />
         </li>
         <li className="mr-4">
-          <Button htmlType="button" type="primary" size="large">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={toggleVisibility}
+          >
             Оформить заказ
           </Button>
         </li>
       </ul>
+      {visibility && modalOrderDetails}
     </section>
   );
-}
+};
 
 BurgerConstructor.propTypes = {
   data: PropTypes.arrayOf(ingredientType).isRequired,

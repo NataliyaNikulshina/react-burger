@@ -6,57 +6,93 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredients from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
-import { ingredientType } from "../../utils/types.js";
+import ingredientType from "../../utils/types.js";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
 
-function PriceIngredient(props) {
+function PriceIngredient( {price} ) {
   return (
     <div className={`${burgerIngredients.price} mt-1 mb-1`}>
-      <p className="text text_type_digits-default mr-2">{props.price}</p>
+      <p className="text text_type_digits-default mr-2">{price}</p>
       <CurrencyIcon type="primary" />
     </div>
   );
 }
 
-function Ingredient(props) {
+const Ingredient = (props) => {
+  const [count, setCount] = React.useState(0);
+  const [visibility, changeVisibility] = React.useState(false);
+
+  function toggleVisibility(e) {
+    e.stopPropagation();
+    console.log(visibility);
+    changeVisibility((prevValue) => !prevValue);
+    console.log(visibility);
+  }
+
   return (
-    <div className={`${burgerIngredients.item} `}>
-      <Counter count={1} size="default" />
+    <div
+      className={`${burgerIngredients.item} `}
+      onClick={toggleVisibility}
+    >
+      <Counter count={count} size="default" />
       <img src={props.ingredient.image} alt={props.ingredient.name}></img>
       <PriceIngredient price={props.ingredient.price} />
       <p className="text text_type_main-default mb-6">
         {props.ingredient.name}
       </p>
+      {visibility && (
+        <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
+          <IngredientDetails ingredient={props.ingredient} />
+        </Modal>
+      )}
     </div>
   );
-}
-
-Ingredient.propTypes = {
-  ingredient: ingredientType.isRequired,
 };
 
-function BurgerIngredients(props) {
+const BurgerIngredients = (props) => {
+  console.log(props.data);
   const [current, setCurrent] = React.useState("bun");
+  const buns = props.data.filter((item) => (item.type === "bun" ? item : null));
+  const sauces = props.data.filter((item) =>
+    item.type === "sauce" ? item : null
+  );
+  const mains = props.data.filter((item) =>
+    item.type === "main" ? item : null
+  );
+
+  const onClickTab = (tab) => {
+    setCurrent(tab);
+    const item = document.getElementById(tab);
+    console.log(item);
+    if (item) {
+      return item.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className={`${burgerIngredients.container} mr-10`}>
       <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
       <nav className={`${burgerIngredients.nav}`}>
-        <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
+        <Tab value="bun" active={current === "bun"} onClick={onClickTab}>
           Булки
         </Tab>
-        <Tab value="sauce" active={current === "sauce"} onClick={setCurrent}>
+        <Tab value="sauce" active={current === "sauce"} onClick={onClickTab}>
           Соусы
         </Tab>
-        <Tab value="main" active={current === "main"} onClick={setCurrent}>
+        <Tab value="main" active={current === "main"} onClick={onClickTab}>
           Начинки
         </Tab>
       </nav>
       <ul className={` ${burgerIngredients.list} mt-10`}>
         <li key={1}>
-          <h2 className="text text_type_main-medium">Булки</h2>
+          <h2 className="text text_type_main-medium" id="bun">
+            Булки
+          </h2>
           <div
             className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
           >
-            {props.data.map((el) => {
+            {buns.map((el) => {
               if (el.type === "bun") {
                 return <Ingredient ingredient={el} key={el._id} />;
               }
@@ -64,11 +100,13 @@ function BurgerIngredients(props) {
           </div>
         </li>
         <li key={2}>
-          <h2 className="text text_type_main-medium">Соусы</h2>
+          <h2 className="text text_type_main-medium" id="sauce">
+            Соусы
+          </h2>
           <div
             className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
           >
-            {props.data.map((el) => {
+            {sauces.map((el) => {
               if (el.type === "sauce") {
                 return <Ingredient ingredient={el} key={el._id} />;
               }
@@ -76,11 +114,13 @@ function BurgerIngredients(props) {
           </div>
         </li>
         <li key={3}>
-          <h2 className="text text_type_main-medium">Начинки</h2>
+          <h2 className="text text_type_main-medium" id="main">
+            Начинки
+          </h2>
           <div
             className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
           >
-            {props.data.map((el) => {
+            {mains.map((el) => {
               if (el.type === "main") {
                 return <Ingredient ingredient={el} key={el._id} />;
               }
@@ -90,10 +130,14 @@ function BurgerIngredients(props) {
       </ul>
     </section>
   );
-}
+};
 
 BurgerIngredients.propTypes = {
   data: PropTypes.arrayOf(ingredientType).isRequired,
+};
+
+Ingredient.propTypes = {
+  ingredient: ingredientType.isRequired,
 };
 
 export default BurgerIngredients;
