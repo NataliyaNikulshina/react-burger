@@ -1,6 +1,5 @@
 const api = {
-  urlIng: "https://norma.nomoreparties.space/api/ingredients",
-  urlBurger: "https://norma.nomoreparties.space/api/orders",
+  url: "https://norma.nomoreparties.space/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -14,14 +13,14 @@ function checkJson(res) {
 }
 
 export const getProductData = () => {
-  return fetch(api.urlIng, {
+  return fetch((`${api.url}/ingredients`), {
     method: "GET",
     headers: api.headers,
-  }).then((res) => checkJson(res));
+  }).then(checkJson);
 };
 
 export const postOrderDetails = (data) => {
-  return fetch(api.urlBurger, {
+  return fetch((`${api.url}/orders`), {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -29,5 +28,5 @@ export const postOrderDetails = (data) => {
     body: JSON.stringify({
       ingredients: data,
     }),
-  }).then((res) => checkJson(res));
+  }).then(checkJson);
 };

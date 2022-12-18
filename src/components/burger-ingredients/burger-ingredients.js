@@ -8,7 +8,6 @@ import { IngredientsContext } from "../../context/app-context";
 
 const BurgerIngredients = () => {
   const { data } = React.useContext(IngredientsContext);
-  console.log(data.data);
   const [current, setCurrent] = React.useState("bun");
   const buns = data.data.filter((item) => (item.type === "bun" ? item : null));
   const sauces = data.data.filter((item) =>

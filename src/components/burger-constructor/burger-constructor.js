@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  CurrencyIcon,
   ConstructorElement,
   DragIcon,
   Button,
@@ -9,11 +10,7 @@ import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 import Modal from "../modal/modal";
-import {
-  IngredientsContext,
-  TotalPriceContext,
-} from "../../context/app-context";
-import { TotalPrice } from "../total-price/total-price";
+import { IngredientsContext } from "../../context/app-context";
 import { postOrderDetails } from "../../utils/api.js";
 
 function BurgerFirstItem(props) {
@@ -74,45 +71,50 @@ BurgerLastItem.propTypes = {
 
 const BurgerConstructor = () => {
   const { data } = React.useContext(IngredientsContext);
-  const [totalPrice, setTotalPrice] = React.useState(0);
   const [orderNumber, setOrderNumber] = React.useState(0);
 
   const bun = data.data.find(function (el) {
     return el.type === "bun";
   });
 
+  const ingredientsArray = React.useMemo(
+    () =>
+      data.data.filter((el) => {
+        return el.type !== "bun";
+      }),
+    [data.data]
+  );
+
+  const calculationPrice = React.useMemo(() => {
+    const sum = ingredientsArray.reduce((prev, el) => prev + el.price, 0);
+    const total = sum + bun.price * 2;
+    return total;
+  }, [data.data]);
+
   const [visibility, changeVisibility] = React.useState(false);
 
-  function toggleVisibility(e) {
+  function openModal(e) {
     e.stopPropagation();
-    console.log(visibility);
     postOrder();
     changeVisibility((prevValue) => !prevValue);
-    console.log(visibility);
+  }
+
+  function closeModal(e) {
+    e.stopPropagation();
+    changeVisibility((prevValue) => !prevValue);
   }
 
   const modalOrderDetails = (
-    <Modal setClose={toggleVisibility}>
-      <OrderDetails orderNumber={orderNumber}/>
+    <Modal setClose={closeModal}>
+      <OrderDetails orderNumber={orderNumber} />
     </Modal>
   );
 
-  const calculateTotalPrice = () => {
-    let total = bun.price * 2;
-    // console.log(total);
-    {
-      data.data.map((el) => {
-        if (el.type !== "bun") {
-          total += el.price;
-          //    console.log(total);
-        }
-      });
-    }
-    return total;
-  };
-
   const postOrder = () => {
-    const dataId = data.data.map((item) => item._id);
+    const arrOrder = ingredientsArray;
+    arrOrder.push(bun);
+    arrOrder.unshift(bun);
+    const dataId = arrOrder.map((item) => item._id);
     postOrderDetails(dataId)
       .then((dataOrd) => setOrderNumber(dataOrd.order.number))
       .catch((error) => console.error(error));
@@ -130,18 +132,19 @@ const BurgerConstructor = () => {
       </ul>
       <BurgerLastItem ingredient={bun} />
       <ul className={`${burgerConstructor.result} mt-10`}>
-        <TotalPriceContext.Provider value={{ totalPrice, setTotalPrice }}>
-          <TotalPrice>{calculateTotalPrice()}</TotalPrice>
-        </TotalPriceContext.Provider>
+        <p className="text text_type_digits-medium">{calculationPrice}</p>
+        <li className={`${burgerConstructor.icon} ml-2 mr-10`}>
+          <CurrencyIcon type="primary" />
+        </li>
         <li className="mr-4">
-            <Button
-              htmlType="button"
-              type="primary"
-              size="large"
-              onClick={toggleVisibility}
-            >
-              Оформить заказ
-            </Button>
+          <Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={openModal}
+          >
+            Оформить заказ
+          </Button>
         </li>
       </ul>
 
@@ -149,7 +152,5 @@ const BurgerConstructor = () => {
     </section>
   );
 };
-
-
 
 export default BurgerConstructor;
