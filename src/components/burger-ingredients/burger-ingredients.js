@@ -1,70 +1,25 @@
 import React from "react";
-import {
-  CurrencyIcon,
-  Counter,
-  Tab,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredients from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
+import Ingredient from "../ingredient/ingredient";
+import { IngredientsContext } from "../../context/app-context";
 
-function PriceIngredient( {price} ) {
-  return (
-    <div className={`${burgerIngredients.price} mt-1 mb-1`}>
-      <p className="text text_type_digits-default mr-2">{price}</p>
-      <CurrencyIcon type="primary" />
-    </div>
-  );
-}
-
-const Ingredient = (props) => {
-  const [count, setCount] = React.useState(0);
-  const [visibility, changeVisibility] = React.useState(false);
-
-  function toggleVisibility(e) {
-    e.stopPropagation();
-    console.log(visibility);
-    changeVisibility((prevValue) => !prevValue);
-    console.log(visibility);
-  }
-
-  return (
-    <div
-      className={`${burgerIngredients.item} `}
-      onClick={toggleVisibility}
-    >
-      <Counter count={count} size="default" />
-      <img src={props.ingredient.image} alt={props.ingredient.name}></img>
-      <PriceIngredient price={props.ingredient.price} />
-      <p className="text text_type_main-default mb-6">
-        {props.ingredient.name}
-      </p>
-      {visibility && (
-        <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
-          <IngredientDetails ingredient={props.ingredient} />
-        </Modal>
-      )}
-    </div>
-  );
-};
-
-const BurgerIngredients = (props) => {
-  console.log(props.data);
+const BurgerIngredients = () => {
+  const { data } = React.useContext(IngredientsContext);
   const [current, setCurrent] = React.useState("bun");
-  const buns = props.data.filter((item) => (item.type === "bun" ? item : null));
-  const sauces = props.data.filter((item) =>
+  const buns = data.data.filter((item) => (item.type === "bun" ? item : null));
+  const sauces = data.data.filter((item) =>
     item.type === "sauce" ? item : null
   );
-  const mains = props.data.filter((item) =>
+  const mains = data.data.filter((item) =>
     item.type === "main" ? item : null
   );
 
   const onClickTab = (tab) => {
     setCurrent(tab);
     const item = document.getElementById(tab);
-    console.log(item);
     if (item) {
       return item.scrollIntoView({ behavior: "smooth" });
     }
@@ -130,14 +85,6 @@ const BurgerIngredients = (props) => {
       </ul>
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientType).isRequired,
-};
-
-Ingredient.propTypes = {
-  ingredient: ingredientType.isRequired,
 };
 
 export default BurgerIngredients;

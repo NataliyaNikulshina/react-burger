@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  ConstructorElement,
   CurrencyIcon,
+  ConstructorElement,
   DragIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -10,6 +10,8 @@ import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 import Modal from "../modal/modal";
+import { IngredientsContext } from "../../context/app-context";
+import { postOrderDetails } from "../../utils/api.js";
 
 function BurgerFirstItem(props) {
   return (
@@ -67,31 +69,62 @@ BurgerLastItem.propTypes = {
   ingredient: ingredientType.isRequired,
 };
 
-const BurgerConstructor = (props) => {
-  const bun = props.data.find(function (el) {
+const BurgerConstructor = () => {
+  const { data } = React.useContext(IngredientsContext);
+  const [orderNumber, setOrderNumber] = React.useState(0);
+
+  const bun = data.data.find(function (el) {
     return el.type === "bun";
   });
 
+  const ingredientsArray = React.useMemo(
+    () =>
+      data.data.filter((el) => {
+        return el.type !== "bun";
+      }),
+    [data.data]
+  );
+
+  const calculationPrice = React.useMemo(() => {
+    const sum = ingredientsArray.reduce((prev, el) => prev + el.price, 0);
+    const total = sum + bun.price * 2;
+    return total;
+  }, [data.data]);
+
   const [visibility, changeVisibility] = React.useState(false);
 
-  function toggleVisibility(e) {
+  function openModal(e) {
     e.stopPropagation();
-    console.log(visibility);
+    postOrder();
     changeVisibility((prevValue) => !prevValue);
-    console.log(visibility);
+  }
+
+  function closeModal(e) {
+    e.stopPropagation();
+    changeVisibility((prevValue) => !prevValue);
   }
 
   const modalOrderDetails = (
-    <Modal setClose={toggleVisibility}>
-      <OrderDetails />
+    <Modal setClose={closeModal}>
+      <OrderDetails orderNumber={orderNumber} />
     </Modal>
   );
+
+  const postOrder = () => {
+    const arrOrder = ingredientsArray;
+    arrOrder.push(bun);
+    arrOrder.unshift(bun);
+    const dataId = arrOrder.map((item) => item._id);
+    postOrderDetails(dataId)
+      .then((dataOrd) => setOrderNumber(dataOrd.order.number))
+      .catch((error) => console.error(error));
+  };
 
   return (
     <section className={`${burgerConstructor.container} mt-15`}>
       <BurgerFirstItem ingredient={bun} />
       <ul className={`${burgerConstructor.list}`}>
-        {props.data.map((el) => {
+        {data.data.map((el) => {
           if (el.type !== "bun") {
             return <BurgerMiddleItem ingredient={el} key={el._id} />;
           }
@@ -99,7 +132,7 @@ const BurgerConstructor = (props) => {
       </ul>
       <BurgerLastItem ingredient={bun} />
       <ul className={`${burgerConstructor.result} mt-10`}>
-        <p className="text text_type_digits-medium">610</p>
+        <p className="text text_type_digits-medium">{calculationPrice}</p>
         <li className={`${burgerConstructor.icon} ml-2 mr-10`}>
           <CurrencyIcon type="primary" />
         </li>
@@ -108,19 +141,16 @@ const BurgerConstructor = (props) => {
             htmlType="button"
             type="primary"
             size="large"
-            onClick={toggleVisibility}
+            onClick={openModal}
           >
             Оформить заказ
           </Button>
         </li>
       </ul>
+
       {visibility && modalOrderDetails}
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientType).isRequired,
 };
 
 export default BurgerConstructor;
