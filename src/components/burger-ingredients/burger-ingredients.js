@@ -1,21 +1,41 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredients from "./burger-ingredients.module.css";
-import PropTypes from "prop-types";
-import ingredientType from "../../utils/types.js";
 import Ingredient from "../ingredient/ingredient";
-import { IngredientsContext } from "../../context/app-context";
+import { useSelector, useDispatch } from 'react-redux';
+import { useInView } from 'react-intersection-observer';
 
 const BurgerIngredients = () => {
-  const { data } = React.useContext(IngredientsContext);
-  const [current, setCurrent] = React.useState("bun");
-  const buns = data.data.filter((item) => (item.type === "bun" ? item : null));
-  const sauces = data.data.filter((item) =>
+ const ingredients = useSelector(state => state.ingredients);
+
+  const [current, setCurrent] = useState("bun");
+  const buns = ingredients.items.filter((item) => (item.type === "bun" ? item : null));
+  const sauces = ingredients.items.filter((item) =>
     item.type === "sauce" ? item : null
   );
-  const mains = data.data.filter((item) =>
+  const mains = ingredients.items.filter((item) =>
     item.type === "main" ? item : null
   );
+
+  const [bunRef, inViewBun] = useInView({
+    threshold: 0,
+});
+const [sauseRef, inViewSause] = useInView({
+    threshold: 0,
+});
+const [mainRef, inViewMain] = useInView({
+    threshold: 0,
+});
+
+useEffect(() => {
+    if (inViewBun) {
+        setCurrent('bun');
+    } else if (inViewSause) {
+        setCurrent('sauce');
+    } else if (inViewMain) {
+        setCurrent('main');
+    }
+}, [inViewBun, inViewMain, inViewSause]);
 
   const onClickTab = (tab) => {
     setCurrent(tab);
@@ -40,7 +60,7 @@ const BurgerIngredients = () => {
         </Tab>
       </nav>
       <ul className={` ${burgerIngredients.list} mt-10`}>
-        <li key={1}>
+        <li key={1} ref={bunRef}>
           <h2 className="text text_type_main-medium" id="bun">
             Булки
           </h2>
@@ -54,7 +74,7 @@ const BurgerIngredients = () => {
             })}
           </div>
         </li>
-        <li key={2}>
+        <li key={2} ref={sauseRef}>
           <h2 className="text text_type_main-medium" id="sauce">
             Соусы
           </h2>
@@ -68,7 +88,7 @@ const BurgerIngredients = () => {
             })}
           </div>
         </li>
-        <li key={3}>
+        <li key={3} ref={mainRef}>
           <h2 className="text text_type_main-medium" id="main">
             Начинки
           </h2>

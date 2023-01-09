@@ -11,7 +11,8 @@ import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 import Modal from "../modal/modal";
 import { IngredientsContext } from "../../context/app-context";
-import { postOrderDetails } from "../../utils/api.js";
+import { useSelector, useDispatch } from "react-redux";
+import { postOrder } from '../../services/actions/order';
 
 function BurgerFirstItem(props) {
   return (
@@ -70,32 +71,29 @@ BurgerLastItem.propTypes = {
 };
 
 const BurgerConstructor = () => {
-  const { data } = React.useContext(IngredientsContext);
-  const [orderNumber, setOrderNumber] = React.useState(0);
+  const ingredients = useSelector((state) => state.ingredients);
+  //console.log(ingredients);
+  const dispatch = useDispatch();
+  const orderNumber = useSelector((state) => state.order);
+  //console.log(orderNumber);
 
-  const bun = data.data.find(function (el) {
+  const bun = ingredients.items.find(function (el) {
     return el.type === "bun";
   });
 
-  const ingredientsArray = React.useMemo(
-    () =>
-      data.data.filter((el) => {
-        return el.type !== "bun";
-      }),
-    [data.data]
-  );
+  const ingredientsArray = React.useMemo(() => ingredients.items.filter((el) => el.type !== "bun"), [ingredients.items]);
 
   const calculationPrice = React.useMemo(() => {
     const sum = ingredientsArray.reduce((prev, el) => prev + el.price, 0);
     const total = sum + bun.price * 2;
     return total;
-  }, [data.data]);
+  }, [ingredients.items]);
 
   const [visibility, changeVisibility] = React.useState(false);
 
   function openModal(e) {
     e.stopPropagation();
-    postOrder();
+    postOrderNumer();
     changeVisibility((prevValue) => !prevValue);
   }
 
@@ -104,27 +102,29 @@ const BurgerConstructor = () => {
     changeVisibility((prevValue) => !prevValue);
   }
 
-  const modalOrderDetails = (
-    <Modal setClose={closeModal}>
-      <OrderDetails orderNumber={orderNumber} />
-    </Modal>
-  );
-
-  const postOrder = () => {
+  const postOrderNumer = () => {
     const arrOrder = ingredientsArray;
     arrOrder.push(bun);
     arrOrder.unshift(bun);
     const dataId = arrOrder.map((item) => item._id);
-    postOrderDetails(dataId)
+    console.log("дата айди " + dataId);
+    dispatch(postOrder(dataId));
+    /*postOrderDetails(dataId)
       .then((dataOrd) => setOrderNumber(dataOrd.order.number))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error));*/
   };
+
+   /*const modalOrderDetails = (
+    <Modal setClose={closeModal}>
+      <OrderDetails orderNumber={orderNumber.orderNum.order.number} />
+    </Modal>
+  );*/
 
   return (
     <section className={`${burgerConstructor.container} mt-15`}>
       <BurgerFirstItem ingredient={bun} />
       <ul className={`${burgerConstructor.list}`}>
-        {data.data.map((el) => {
+        {ingredients.items.map((el) => {
           if (el.type !== "bun") {
             return <BurgerMiddleItem ingredient={el} key={el._id} />;
           }
@@ -148,7 +148,10 @@ const BurgerConstructor = () => {
         </li>
       </ul>
 
-      {visibility && modalOrderDetails}
+      {visibility && !(orderNumber.orderNum === '') && 
+        <Modal setClose={closeModal}>
+          <OrderDetails orderNumber={orderNumber.orderNum.order.number} />
+        </Modal>}
     </section>
   );
 };
