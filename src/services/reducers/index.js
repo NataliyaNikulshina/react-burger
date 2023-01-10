@@ -7,6 +7,6 @@ import { combineReducers } from 'redux';
 export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
     order: orderReducer,
-  //  details: ingredientDetailsReducer,
+    details: ingredientDetailsReducer,
     constructor : constructorReduser
   });

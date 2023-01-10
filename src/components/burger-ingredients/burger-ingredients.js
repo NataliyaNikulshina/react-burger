@@ -60,7 +60,7 @@ useEffect(() => {
         </Tab>
       </nav>
       <ul className={` ${burgerIngredients.list} mt-10`}>
-        <li key={1} ref={bunRef}>
+        <li title='Булки' key={1} ref={bunRef}>
           <h2 className="text text_type_main-medium" id="bun">
             Булки
           </h2>
@@ -74,7 +74,7 @@ useEffect(() => {
             })}
           </div>
         </li>
-        <li key={2} ref={sauseRef}>
+        <li title='Соусы' key={2} ref={sauseRef}>
           <h2 className="text text_type_main-medium" id="sauce">
             Соусы
           </h2>
@@ -88,7 +88,7 @@ useEffect(() => {
             })}
           </div>
         </li>
-        <li key={3} ref={mainRef}>
+        <li title='Начинки' key={3} ref={mainRef}>
           <h2 className="text text_type_main-medium" id="main">
             Начинки
           </h2>

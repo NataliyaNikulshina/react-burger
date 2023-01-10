@@ -1,5 +1,5 @@
 import React from "react";
-import IngredientDetails from "../ingredient-details/ingredient-details";
+import IngredientDetailsFunc from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import {
   CurrencyIcon,
@@ -8,13 +8,17 @@ import {
 import propTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 import burgerIngredient from "./ingredient.module.css";
+import { useSelector, useDispatch } from 'react-redux';
+import { addIngredientDetails } from '../../services/actions/ingredient-details';
 
 const Ingredient = ({ingredient}) => {
   const [count, setCount] = React.useState(0);
   const [visibility, changeVisibility] = React.useState(false);
+  const dispatch = useDispatch();
 
   function toggleVisibility(e) {
     e.stopPropagation();
+    dispatch(addIngredientDetails(ingredient));
     changeVisibility((prevValue) => !prevValue);
   }
 
@@ -31,9 +35,9 @@ const Ingredient = ({ingredient}) => {
       <p className="text text_type_main-default mb-6">
         {ingredient.name}
       </p>
-      {visibility && (
+      {visibility &&  (
         <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
-          <IngredientDetails ingredient={ingredient} />
+          <IngredientDetailsFunc />
         </Modal>
       )}
     </div>

@@ -12,7 +12,7 @@ import ingredientType from "../../utils/types.js";
 import Modal from "../modal/modal";
 import { IngredientsContext } from "../../context/app-context";
 import { useSelector, useDispatch } from "react-redux";
-import { postOrder } from '../../services/actions/order';
+import { postOrder } from "../../services/actions/order";
 
 function BurgerFirstItem(props) {
   return (
@@ -81,7 +81,10 @@ const BurgerConstructor = () => {
     return el.type === "bun";
   });
 
-  const ingredientsArray = React.useMemo(() => ingredients.items.filter((el) => el.type !== "bun"), [ingredients.items]);
+  const ingredientsArray = React.useMemo(
+    () => ingredients.items.filter((el) => el.type !== "bun"),
+    [ingredients.items]
+  );
 
   const calculationPrice = React.useMemo(() => {
     const sum = ingredientsArray.reduce((prev, el) => prev + el.price, 0);
@@ -107,14 +110,10 @@ const BurgerConstructor = () => {
     arrOrder.push(bun);
     arrOrder.unshift(bun);
     const dataId = arrOrder.map((item) => item._id);
-    console.log("дата айди " + dataId);
     dispatch(postOrder(dataId));
-    /*postOrderDetails(dataId)
-      .then((dataOrd) => setOrderNumber(dataOrd.order.number))
-      .catch((error) => console.error(error));*/
   };
 
-   /*const modalOrderDetails = (
+  /*const modalOrderDetails = (
     <Modal setClose={closeModal}>
       <OrderDetails orderNumber={orderNumber.orderNum.order.number} />
     </Modal>
@@ -148,10 +147,11 @@ const BurgerConstructor = () => {
         </li>
       </ul>
 
-      {visibility && !(orderNumber.orderNum === '') && 
+      {visibility && !(orderNumber.orderNum === "") && (
         <Modal setClose={closeModal}>
           <OrderDetails orderNumber={orderNumber.orderNum.order.number} />
-        </Modal>}
+        </Modal>
+      )}
     </section>
   );
 };

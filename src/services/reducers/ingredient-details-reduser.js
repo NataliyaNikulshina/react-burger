@@ -4,7 +4,7 @@ import {
 } from '../actions/ingredient-details';
 
 export const initialState = {
-    ingredientDetails: null
+    ingredientDetails: ''
 }
 
 
