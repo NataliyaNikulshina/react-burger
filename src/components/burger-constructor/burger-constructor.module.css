@@ -28,13 +28,6 @@
   background-color: #8585ad;
 }
 
-.item {
-  display: flex;
-  align-items: center;
-  width: 568px;
-  justify-content: space-between;
-}
-
 .element {
   width: 536px;
 }
@@ -53,4 +46,8 @@
   height: 33px;
   align-items: center;
   justify-content: center;
+}
+
+.onHover {
+  box-shadow: inset 0px -2px 0px #3C39EC;
 }

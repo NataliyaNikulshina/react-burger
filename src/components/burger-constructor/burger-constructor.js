@@ -1,96 +1,41 @@
 import React from "react";
 import {
   CurrencyIcon,
-  ConstructorElement,
-  DragIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructor from "./burger-constructor.module.css";
 import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
-import ingredientType from "../../utils/types.js";
 import Modal from "../modal/modal";
-import { IngredientsContext } from "../../context/app-context";
 import { useSelector, useDispatch } from "react-redux";
 import { postOrder } from "../../services/actions/order";
+import { useDrop } from 'react-dnd';
+import {setIngConstructor, addIngConstructor, deleteIngConstructor, setBunConstructor} from "../../services/actions/constructor";
+import { BurgerFirstItem, BurgerMiddleItem, BurgerLastItem } from "../burger-item/burger-item";
 
-function BurgerFirstItem(props) {
-  return (
-    <div className={`${burgerConstructor.element} mr-4 mb-4`}>
-      <ConstructorElement
-        type="top"
-        isLocked={true}
-        text={`${props.ingredient.name} (верх)`}
-        price={props.ingredient.price}
-        thumbnail={props.ingredient.image}
-      />
-    </div>
-  );
-}
-
-BurgerFirstItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-};
-
-function BurgerMiddleItem(props) {
-  return (
-    <li className={`${burgerConstructor.item} mr-2 mb-4 ml-4`}>
-      <DragIcon type="primary" />
-      <div className={`${burgerConstructor.element}`}>
-        <ConstructorElement
-          type=""
-          text={`${props.ingredient.name}`}
-          price={props.ingredient.price}
-          thumbnail={props.ingredient.image}
-        />
-      </div>
-    </li>
-  );
-}
-
-BurgerMiddleItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-};
-
-function BurgerLastItem(props) {
-  return (
-    <div className={`${burgerConstructor.element} mr-4 mt-4`}>
-      <ConstructorElement
-        type="bottom"
-        isLocked={true}
-        text={`${props.ingredient.name} (низ)`}
-        price={props.ingredient.price}
-        thumbnail={props.ingredient.image}
-      />
-    </div>
-  );
-}
-
-BurgerLastItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-};
 
 const BurgerConstructor = () => {
-  const ingredients = useSelector((state) => state.ingredients);
-  //console.log(ingredients);
+  const { bun, ingredients } = useSelector((state) => state.constructor);
+  console.log(ingredients);
   const dispatch = useDispatch();
   const orderNumber = useSelector((state) => state.order);
   //console.log(orderNumber);
 
-  const bun = ingredients.items.find(function (el) {
+ /* const bun = ingredients.items.find(function (el) {
     return el.type === "bun";
-  });
+  });*/
 
-  const ingredientsArray = React.useMemo(
+/*  const ingredientsArray = React.useMemo(
     () => ingredients.items.filter((el) => el.type !== "bun"),
     [ingredients.items]
-  );
+  );*/
 
   const calculationPrice = React.useMemo(() => {
-    const sum = ingredientsArray.reduce((prev, el) => prev + el.price, 0);
-    const total = sum + bun.price * 2;
-    return total;
-  }, [ingredients.items]);
+    if (bun && ingredients) {
+      const sum = bun.price * 2; 
+      const total = sum + ingredients.reduce((prev, el) => prev + el.price, 0);
+      return total;
+  } else return '0'}, [ingredients, bun]);
 
   const [visibility, changeVisibility] = React.useState(false);
 
@@ -106,12 +51,31 @@ const BurgerConstructor = () => {
   }
 
   const postOrderNumer = () => {
-    const arrOrder = ingredientsArray;
-    arrOrder.push(bun);
-    arrOrder.unshift(bun);
-    const dataId = arrOrder.map((item) => item._id);
-    dispatch(postOrder(dataId));
+    if (bun && ingredients) {
+      const arrOrder = ingredients;
+      arrOrder.push(bun);
+      arrOrder.unshift(bun);
+      const dataId = arrOrder.map((item) => item._id);
+      dispatch(postOrder(dataId));}
   };
+
+  const [, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(itemId) {
+      onDropHandler(itemId);
+    },
+});
+
+const onDropHandler = (ingredient) => {
+  if (ingredient.type === "bun") {
+      dispatch(setBunConstructor(ingredient))
+  }
+  else {
+      dispatch(addIngConstructor(ingredient));
+      //console.log(ingredient)
+  }
+}
+
 
   /*const modalOrderDetails = (
     <Modal setClose={closeModal}>
@@ -120,16 +84,23 @@ const BurgerConstructor = () => {
   );*/
 
   return (
-    <section className={`${burgerConstructor.container} mt-15`}>
-      <BurgerFirstItem ingredient={bun} />
+    <section className={`${burgerConstructor.container} mt-15`} ref={dropTarget}>
+      <div className={`${burgerConstructor.element} mr-4 mb-4`}>
+      { bun ? 
+        (<BurgerFirstItem ingredient={bun} /> ) :  <p className='text text_type_main-medium'>Перетащи сюда булку</p> }
+      </div>
       <ul className={`${burgerConstructor.list}`}>
-        {ingredients.items.map((el) => {
-          if (el.type !== "bun") {
+        {bun && (ingredients ? ingredients.map((el) => {
             return <BurgerMiddleItem ingredient={el} key={el._id} />;
-          }
-        })}
+        }) : <>
+        <p className='text text_type_main-medium' style={{ width: '500px' }}>А теперь перетащи сюда </p>
+        <p className='text text_type_main-medium' style={{ width: '500px' }}>начинку и соусы </p>
+        </>)}
       </ul>
-      <BurgerLastItem ingredient={bun} />
+      <div className={`${burgerConstructor.element} mr-4 mb-4`}>
+      { bun && ( <BurgerLastItem ingredient={bun} /> )}
+      </div>
+      
       <ul className={`${burgerConstructor.result} mt-10`}>
         <p className="text text_type_digits-medium">{calculationPrice}</p>
         <li className={`${burgerConstructor.icon} ml-2 mr-10`}>
@@ -145,13 +116,13 @@ const BurgerConstructor = () => {
             Оформить заказ
           </Button>
         </li>
-      </ul>
+      </ul> 
 
       {visibility && !(orderNumber.orderNum === "") && (
         <Modal setClose={closeModal}>
           <OrderDetails orderNumber={orderNumber.orderNum.order.number} />
         </Modal>
-      )}
+      )} 
     </section>
   );
 };

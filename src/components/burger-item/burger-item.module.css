@@ -1,0 +1,10 @@
+.item {
+    display: flex;
+    align-items: center;
+    width: 568px;
+    justify-content: space-between;
+  }
+  
+  .element {
+    width: 536px;
+  }

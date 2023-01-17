@@ -32,10 +32,10 @@ useEffect(() => {
     <div className="App">
       <AppHeader />
         <main className={app.main}>
-          {/* <DndProvider backend={HTML5Backend} > */}
+           <DndProvider backend={HTML5Backend} > 
            {ingredients.items.length && <BurgerIngredients /> }
            {ingredients.items.length && <BurgerConstructor /> } 
-          {/* </DndProvider> */}
+           </DndProvider> 
         </main>
     </div>
   );
