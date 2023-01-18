@@ -10,13 +10,13 @@ import Modal from "../modal/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { postOrder } from "../../services/actions/order";
 import { useDrop } from 'react-dnd';
-import {setIngConstructor, addIngConstructor, deleteIngConstructor, setBunConstructor} from "../../services/actions/constructor";
+import {setIngConstructor, addIngConstructor, setBunConstructor} from "../../services/actions/constructor";
 import { BurgerFirstItem, BurgerMiddleItem, BurgerLastItem } from "../burger-item/burger-item";
 
 
 const BurgerConstructor = () => {
   const { bun, ingredients } = useSelector((state) => state.constructor);
-  console.log(ingredients);
+ // console.log(ingredients);
   const dispatch = useDispatch();
   const orderNumber = useSelector((state) => state.order);
   //console.log(orderNumber);
@@ -90,8 +90,8 @@ const onDropHandler = (ingredient) => {
         (<BurgerFirstItem ingredient={bun} /> ) :  <p className='text text_type_main-medium'>Перетащи сюда булку</p> }
       </div>
       <ul className={`${burgerConstructor.list}`}>
-        {bun && (ingredients ? ingredients.map((el) => {
-            return <BurgerMiddleItem ingredient={el} key={el._id} />;
+        {(bun || ingredients)  && (ingredients ? ingredients.map((el) => {
+            return <BurgerMiddleItem ingredient={el} key={el._idInBasket} />;
         }) : <>
         <p className='text text_type_main-medium' style={{ width: '500px' }}>А теперь перетащи сюда </p>
         <p className='text text_type_main-medium' style={{ width: '500px' }}>начинку и соусы </p>

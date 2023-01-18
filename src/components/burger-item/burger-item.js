@@ -5,6 +5,10 @@ import {
   DragIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientType from "../../utils/types.js";
+import { useSelector, useDispatch } from "react-redux";
+import { postOrder } from "../../services/actions/order";
+import { useDrop } from 'react-dnd';
+import {setIngConstructor, addIngConstructor, deleteIngConstructor, setBunConstructor} from "../../services/actions/constructor";
 
 export const BurgerFirstItem = ({ingredient}) => { 
     return (
@@ -23,6 +27,8 @@ export const BurgerFirstItem = ({ingredient}) => {
   };
   
   export const BurgerMiddleItem = ({ingredient}) => {
+    const dispatch = useDispatch();
+    
     return (
       <li className={`${burgerItem.item} mr-2 mb-4 ml-4`}>
         <DragIcon type="primary" />
@@ -32,6 +38,9 @@ export const BurgerFirstItem = ({ingredient}) => {
             text={`${ingredient.name}`}
             price={ingredient.price}
             thumbnail={ingredient.image}
+            handleClose={() =>
+              dispatch(deleteIngConstructor(ingredient._idInBasket))
+            }
           />
         </div>
       </li>

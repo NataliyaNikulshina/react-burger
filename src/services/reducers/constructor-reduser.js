@@ -18,14 +18,14 @@ export const constructorReduser = (state = initialState, action) => {
             return {...state, ingredients: action.payload}
         case ADD_ING_CONSTRUCTOR:
             if (!state.ingredients){
-                return {...state, ingredients: [{...action.payload, _id:Date.now().toString()}]}
+                return {...state, ingredients: [{...action.payload, _idInBasket:Date.now().toString()}]}
             } else {
-                return {...state, ingredients: [...state.ingredients, {...action.payload, _id:Date.now().toString()}]}
+                return {...state, ingredients: [...state.ingredients, {...action.payload,  _idInBasket:Date.now().toString()}]}
             }
         case SET_BIN_CONSTRUCTOR: 
             return {...state, bun: action.payload}
         case DELETE_ING_CONSTRUCTOR: 
-            return {...state, ingredients: state.ingredients.filter(ingredient => ingredient._id !== action.payload)}
+            return {...state, ingredients: state.ingredients.filter(ingredient => ingredient._idInBasket !== action.payload)}
         case RESET_ING_CONSTRUCTOR: {
             return initialState;
         }

@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredients from "./burger-ingredients.module.css";
 import Ingredient from "../ingredient/ingredient";
-import { useSelector, useDispatch } from 'react-redux';
-import { useInView } from 'react-intersection-observer';
+import { useSelector, useDispatch } from "react-redux";
+import { useInView } from "react-intersection-observer";
 
 const BurgerIngredients = () => {
- const ingredients = useSelector(state => state.ingredients);
-
+  const ingredients = useSelector((state) => state.ingredients);
+  const ingINBasket = useSelector((state) => state.constructor);
   const [current, setCurrent] = useState("bun");
-  const buns = ingredients.items.filter((item) => (item.type === "bun" ? item : null));
+  const buns = ingredients.items.filter((item) =>
+    item.type === "bun" ? item : null
+  );
   const sauces = ingredients.items.filter((item) =>
     item.type === "sauce" ? item : null
   );
@@ -19,23 +21,23 @@ const BurgerIngredients = () => {
 
   const [bunRef, inViewBun] = useInView({
     threshold: 0,
-});
-const [sauseRef, inViewSause] = useInView({
+  });
+  const [sauseRef, inViewSause] = useInView({
     threshold: 0,
-});
-const [mainRef, inViewMain] = useInView({
+  });
+  const [mainRef, inViewMain] = useInView({
     threshold: 0,
-});
+  });
 
-useEffect(() => {
+  useEffect(() => {
     if (inViewBun) {
-        setCurrent('bun');
+      setCurrent("bun");
     } else if (inViewSause) {
-        setCurrent('sauce');
+      setCurrent("sauce");
     } else if (inViewMain) {
-        setCurrent('main');
+      setCurrent("main");
     }
-}, [inViewBun, inViewMain, inViewSause]);
+  }, [inViewBun, inViewMain, inViewSause]);
 
   const onClickTab = (tab) => {
     setCurrent(tab);
@@ -44,6 +46,28 @@ useEffect(() => {
       return item.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const ingCount = useMemo(() => {
+    let counter ={};
+     ingINBasket.ingredients && ( ingINBasket.ingredients.forEach(element => {
+     if (!counter[element._id]) counter[element._id] = 0;
+     counter[element._id] ++;
+     }))
+  /* if (ingINBasket.ingredients) {ingINBasket.ingredients.forEach(element => {
+      if (!counter[element._id]) counter[element._id] = 0;
+      counter[element._id]++;
+      console.log('zdf')
+      return counter;
+  });   }*/
+  console.log(counter)
+  return counter;
+  }, [ingINBasket.ingredients]);
+
+  const ingCountBun = useMemo(() => {
+    let counterBun = {};
+    if (ingINBasket.bun) counterBun[ingINBasket.bun._id] = 2;
+    return counterBun;
+  }, [ingINBasket.bun]);
 
   return (
     <section className={`${burgerIngredients.container} mr-10`}>
@@ -60,7 +84,7 @@ useEffect(() => {
         </Tab>
       </nav>
       <ul className={` ${burgerIngredients.list} mt-10`}>
-        <li title='Булки' key={1} ref={bunRef}>
+        <li title="Булки" key={1} ref={bunRef}>
           <h2 className="text text_type_main-medium" id="bun">
             Булки
           </h2>
@@ -69,12 +93,18 @@ useEffect(() => {
           >
             {buns.map((el) => {
               if (el.type === "bun") {
-                return <Ingredient ingredient={el} key={el._id} />;
+                return (
+                  <Ingredient
+                    count={ingCountBun[el._id]}
+                    ingredient={el}
+                    key={el._id}
+                  />
+                );
               }
             })}
           </div>
         </li>
-        <li title='Соусы' key={2} ref={sauseRef}>
+        <li title="Соусы" key={2} ref={sauseRef}>
           <h2 className="text text_type_main-medium" id="sauce">
             Соусы
           </h2>
@@ -83,12 +113,12 @@ useEffect(() => {
           >
             {sauces.map((el) => {
               if (el.type === "sauce") {
-                return <Ingredient ingredient={el} key={el._id} />;
+                return <Ingredient count={ingCount[el._id]} ingredient={el} key={el._id} />;
               }
             })}
           </div>
         </li>
-        <li title='Начинки' key={3} ref={mainRef}>
+        <li title="Начинки" key={3} ref={mainRef}>
           <h2 className="text text_type_main-medium" id="main">
             Начинки
           </h2>
@@ -97,7 +127,7 @@ useEffect(() => {
           >
             {mains.map((el) => {
               if (el.type === "main") {
-                return <Ingredient ingredient={el} key={el._id} />;
+                return <Ingredient count={ingCount[el._id]} ingredient={el} key={el._id} />;
               }
             })}
           </div>
