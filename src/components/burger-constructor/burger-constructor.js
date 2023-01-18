@@ -10,7 +10,7 @@ import Modal from "../modal/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { postOrder } from "../../services/actions/order";
 import { useDrop } from 'react-dnd';
-import {setIngConstructor, addIngConstructor, setBunConstructor} from "../../services/actions/constructor";
+import { addIngConstructor, setBunConstructor} from "../../services/actions/constructor";
 import { BurgerFirstItem, BurgerMiddleItem, BurgerLastItem } from "../burger-item/burger-item";
 
 
@@ -50,13 +50,15 @@ const BurgerConstructor = () => {
     changeVisibility((prevValue) => !prevValue);
   }
 
+  function dataPostId() {
+        const arrOrder =  [bun, ...ingredients.map(item => item), bun].map(ing => ing._id) ;
+        //console.log(arrOrder);
+        return arrOrder;
+}
+
   const postOrderNumer = () => {
     if (bun && ingredients) {
-      const arrOrder = ingredients;
-      arrOrder.push(bun);
-      arrOrder.unshift(bun);
-      const dataId = arrOrder.map((item) => item._id);
-      dispatch(postOrder(dataId));}
+      dispatch(postOrder(dataPostId()));}
   };
 
   const [, dropTarget] = useDrop({
@@ -90,8 +92,8 @@ const onDropHandler = (ingredient) => {
         (<BurgerFirstItem ingredient={bun} /> ) :  <p className='text text_type_main-medium'>Перетащи сюда булку</p> }
       </div>
       <ul className={`${burgerConstructor.list}`}>
-        {(bun || ingredients)  && (ingredients ? ingredients.map((el) => {
-            return <BurgerMiddleItem ingredient={el} key={el._idInBasket} />;
+        {(bun || ingredients)  && (ingredients ? ingredients.map((el, index) => {
+            return <BurgerMiddleItem ingredient={el} key={el._idInBasket} index={index}/>;
         }) : <>
         <p className='text text_type_main-medium' style={{ width: '500px' }}>А теперь перетащи сюда </p>
         <p className='text text_type_main-medium' style={{ width: '500px' }}>начинку и соусы </p>

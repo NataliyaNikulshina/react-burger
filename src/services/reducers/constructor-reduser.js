@@ -1,9 +1,8 @@
 import {
     ADD_ING_CONSTRUCTOR, 
-    SET_ING_CONSTRUCTOR,
+    SORT_ING_CONSTRUCTOR,
     DELETE_ING_CONSTRUCTOR,
     SET_BIN_CONSTRUCTOR,
-    RESET_ING_CONSTRUCTOR
     
 } from "../actions/constructor";
 
@@ -14,8 +13,6 @@ export const initialState = {
 
 export const constructorReduser = (state = initialState, action) => {
     switch (action.type) {
-        case SET_ING_CONSTRUCTOR:
-            return {...state, ingredients: action.payload}
         case ADD_ING_CONSTRUCTOR:
             if (!state.ingredients){
                 return {...state, ingredients: [{...action.payload, _idInBasket:Date.now().toString()}]}
@@ -26,9 +23,13 @@ export const constructorReduser = (state = initialState, action) => {
             return {...state, bun: action.payload}
         case DELETE_ING_CONSTRUCTOR: 
             return {...state, ingredients: state.ingredients.filter(ingredient => ingredient._idInBasket !== action.payload)}
-        case RESET_ING_CONSTRUCTOR: {
-            return initialState;
-        }
+        case SORT_ING_CONSTRUCTOR:
+            const ingredients = [...state.ingredients];
+            ingredients.splice(action.payload.to, 0, ingredients.splice(action.payload.from, 1)[0]);
+            return {
+                ...state,
+                ingredients,
+            }
         default: {
             return state;
         }

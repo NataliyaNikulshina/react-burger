@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredients from "./burger-ingredients.module.css";
 import Ingredient from "../ingredient/ingredient";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";
 
 const BurgerIngredients = () => {
@@ -48,19 +48,13 @@ const BurgerIngredients = () => {
   };
 
   const ingCount = useMemo(() => {
-    let counter ={};
-     ingINBasket.ingredients && ( ingINBasket.ingredients.forEach(element => {
-     if (!counter[element._id]) counter[element._id] = 0;
-     counter[element._id] ++;
-     }))
-  /* if (ingINBasket.ingredients) {ingINBasket.ingredients.forEach(element => {
-      if (!counter[element._id]) counter[element._id] = 0;
-      counter[element._id]++;
-      console.log('zdf')
-      return counter;
-  });   }*/
-  console.log(counter)
-  return counter;
+    let counter = {};
+    ingINBasket.ingredients &&
+      ingINBasket.ingredients.forEach((element) => {
+        if (!counter[element._id]) counter[element._id] = 0;
+        counter[element._id]++;
+      });
+    return counter;
   }, [ingINBasket.ingredients]);
 
   const ingCountBun = useMemo(() => {
@@ -113,7 +107,13 @@ const BurgerIngredients = () => {
           >
             {sauces.map((el) => {
               if (el.type === "sauce") {
-                return <Ingredient count={ingCount[el._id]} ingredient={el} key={el._id} />;
+                return (
+                  <Ingredient
+                    count={ingCount[el._id]}
+                    ingredient={el}
+                    key={el._id}
+                  />
+                );
               }
             })}
           </div>
@@ -127,7 +127,13 @@ const BurgerIngredients = () => {
           >
             {mains.map((el) => {
               if (el.type === "main") {
-                return <Ingredient count={ingCount[el._id]} ingredient={el} key={el._id} />;
+                return (
+                  <Ingredient
+                    count={ingCount[el._id]}
+                    ingredient={el}
+                    key={el._id}
+                  />
+                );
               }
             })}
           </div>
