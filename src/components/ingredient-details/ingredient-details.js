@@ -1,11 +1,10 @@
 import ingredientDetails from "./ingredient-details.module.css";
 import ingredientType from "../../utils/types.js";
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 
 const IngredientDetailsFunc = () => {
- // const { ingredient } = props;
- const ingredient = useSelector(state => state.details.ingredientDetails);
-
+  // const { ingredient } = props;
+  const ingredient = useSelector((state) => state.details.ingredientDetails);
 
   return (
     <div className={ingredientDetails.container}>
@@ -60,6 +59,5 @@ const IngredientDetailsFunc = () => {
     </div>
   );
 };
-
 
 export default IngredientDetailsFunc;
