@@ -2,13 +2,19 @@ import { useState, useEffect, useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredients from "./burger-ingredients.module.css";
 import Ingredient from "../ingredient/ingredient";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useInView } from "react-intersection-observer";
+import IngredientDetailsFunc from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
+import { addIngredientDetails } from "../../services/actions/ingredient-details";
 
 const BurgerIngredients = () => {
   const ingredients = useSelector((state) => state.ingredients);
   const ingINBasket = useSelector((state) => state.constructor);
   const [current, setCurrent] = useState("bun");
+  const [visibility, changeVisibility] = useState(false);
+  const dispatch = useDispatch();
+
   const buns = ingredients.items.filter((item) =>
     item.type === "bun" ? item : null
   );
@@ -63,83 +69,100 @@ const BurgerIngredients = () => {
     return counterBun;
   }, [ingINBasket.bun]);
 
+  const toggleVisibility = (e) => {
+    //e.stopPropagation();
+    dispatch(addIngredientDetails(e));
+    changeVisibility((prevValue) => !prevValue);
+  };
+
   return (
-    <section className={`${burgerIngredients.container} mr-10`}>
-      <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
-      <nav className={`${burgerIngredients.nav}`}>
-        <Tab value="bun" active={current === "bun"} onClick={onClickTab}>
-          Булки
-        </Tab>
-        <Tab value="sauce" active={current === "sauce"} onClick={onClickTab}>
-          Соусы
-        </Tab>
-        <Tab value="main" active={current === "main"} onClick={onClickTab}>
-          Начинки
-        </Tab>
-      </nav>
-      <ul className={` ${burgerIngredients.list} mt-10`}>
-        <li title="Булки" key={1} ref={bunRef}>
-          <h2 className="text text_type_main-medium" id="bun">
+    <>
+      <section className={`${burgerIngredients.container} mr-10`}>
+        <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
+        <nav className={`${burgerIngredients.nav}`}>
+          <Tab value="bun" active={current === "bun"} onClick={onClickTab}>
             Булки
-          </h2>
-          <div
-            className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
-          >
-            {buns.map((el) => {
-              if (el.type === "bun") {
-                return (
-                  <Ingredient
-                    count={ingCountBun[el._id]}
-                    ingredient={el}
-                    key={el._id}
-                  />
-                );
-              }
-            })}
-          </div>
-        </li>
-        <li title="Соусы" key={2} ref={sauseRef}>
-          <h2 className="text text_type_main-medium" id="sauce">
+          </Tab>
+          <Tab value="sauce" active={current === "sauce"} onClick={onClickTab}>
             Соусы
-          </h2>
-          <div
-            className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
-          >
-            {sauces.map((el) => {
-              if (el.type === "sauce") {
-                return (
-                  <Ingredient
-                    count={ingCount[el._id]}
-                    ingredient={el}
-                    key={el._id}
-                  />
-                );
-              }
-            })}
-          </div>
-        </li>
-        <li title="Начинки" key={3} ref={mainRef}>
-          <h2 className="text text_type_main-medium" id="main">
+          </Tab>
+          <Tab value="main" active={current === "main"} onClick={onClickTab}>
             Начинки
-          </h2>
-          <div
-            className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
-          >
-            {mains.map((el) => {
-              if (el.type === "main") {
-                return (
-                  <Ingredient
-                    count={ingCount[el._id]}
-                    ingredient={el}
-                    key={el._id}
-                  />
-                );
-              }
-            })}
-          </div>
-        </li>
-      </ul>
-    </section>
+          </Tab>
+        </nav>
+        <ul className={` ${burgerIngredients.list} mt-10`}>
+          <li title="Булки" key={1} ref={bunRef}>
+            <h2 className="text text_type_main-medium" id="bun">
+              Булки
+            </h2>
+            <div
+              className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
+            >
+              {buns.map((el) => {
+                if (el.type === "bun") {
+                  return (
+                    <Ingredient
+                      count={ingCountBun[el._id]}
+                      ingredient={el}
+                      key={el._id}
+                      onClick={toggleVisibility}
+                    />
+                  );
+                }
+              })}
+            </div>
+          </li>
+          <li title="Соусы" key={2} ref={sauseRef}>
+            <h2 className="text text_type_main-medium" id="sauce">
+              Соусы
+            </h2>
+            <div
+              className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
+            >
+              {sauces.map((el) => {
+                if (el.type === "sauce") {
+                  return (
+                    <Ingredient
+                      count={ingCount[el._id]}
+                      ingredient={el}
+                      key={el._id}
+                      onClick={toggleVisibility}
+                    />
+                  );
+                }
+              })}
+            </div>
+          </li>
+          <li title="Начинки" key={3} ref={mainRef}>
+            <h2 className="text text_type_main-medium" id="main">
+              Начинки
+            </h2>
+            <div
+              className={`${burgerIngredients.ingredient_list} mb-10 mt-6 ml-4`}
+            >
+              {mains.map((el) => {
+                if (el.type === "main") {
+                  return (
+                    <Ingredient
+                      count={ingCount[el._id]}
+                      ingredient={el}
+                      key={el._id}
+                      onClick={toggleVisibility}
+                    />
+                  );
+                }
+              })}
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      {visibility && (
+        <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
+          <IngredientDetailsFunc />
+        </Modal>
+      )}
+    </>
   );
 };
 
