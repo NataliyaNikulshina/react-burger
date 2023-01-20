@@ -22,6 +22,7 @@ export function App() {
     .finally(() => setLoading(false));
 }, [])*/
 const ingredients = useSelector(state => state.ingredients);
+const isLoading = ingredients.itemsRequest;
 const dispatch = useDispatch();
 useEffect(() => {
  dispatch(getItems())
@@ -31,12 +32,14 @@ useEffect(() => {
   return (
     <div className="App">
       <AppHeader />
+      {isLoading && <div className={app.loader} id="loader"></div>}
+      {!isLoading &&
         <main className={app.main}>
            <DndProvider backend={HTML5Backend} > 
            {ingredients.items.length && <BurgerIngredients /> }
            {ingredients.items.length && <BurgerConstructor /> } 
            </DndProvider> 
-        </main>
+        </main> }
     </div>
   );
 }

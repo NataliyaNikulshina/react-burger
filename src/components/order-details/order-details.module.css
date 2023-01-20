@@ -8,3 +8,9 @@
     height: 120px;
     width: 120px;
   }
+
+  .selector {
+    composes: loader from "../app/app.module.css";
+    width: 30px;
+    height: 30px;
+} 

@@ -10,7 +10,7 @@ import Modal from "../modal/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { postOrder } from "../../services/actions/order";
 import { useDrop } from 'react-dnd';
-import { addIngConstructor, setBunConstructor} from "../../services/actions/constructor";
+import { addIngConstructor, setBunConstructor, resetIngConstructor} from "../../services/actions/constructor";
 import { BurgerFirstItem, BurgerMiddleItem, BurgerLastItem } from "../burger-item/burger-item";
 
 
@@ -21,14 +21,6 @@ const BurgerConstructor = () => {
   const orderNumber = useSelector((state) => state.order);
   //console.log(orderNumber);
 
- /* const bun = ingredients.items.find(function (el) {
-    return el.type === "bun";
-  });*/
-
-/*  const ingredientsArray = React.useMemo(
-    () => ingredients.items.filter((el) => el.type !== "bun"),
-    [ingredients.items]
-  );*/
 
   const calculationPrice = React.useMemo(() => {
     if (bun && ingredients) {
@@ -58,7 +50,8 @@ const BurgerConstructor = () => {
 
   const postOrderNumer = () => {
     if (bun && ingredients) {
-      dispatch(postOrder(dataPostId()));}
+      dispatch(postOrder(dataPostId()));
+      dispatch(resetIngConstructor());}
   };
 
   const [, dropTarget] = useDrop({
@@ -122,7 +115,7 @@ const onDropHandler = (ingredient) => {
 
       {visibility && !(orderNumber.orderNum === "") && (
         <Modal setClose={closeModal}>
-          <OrderDetails orderNumber={orderNumber.orderNum.order.number} />
+          <OrderDetails orderNumber={orderNumber.orderNum.order.number} isLoading={orderNumber.orderNum.order.orderRequest} />
         </Modal>
       )} 
     </section>
