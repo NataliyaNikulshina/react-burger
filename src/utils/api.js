@@ -12,15 +12,19 @@ function checkJson(res) {
   return Promise.reject(`Ошибка ${res.status}`);
 }
 
+function request(url, options) {
+  return fetch(url, options).then(checkJson) 
+}
+
 export const getProductData = () => {
-  return fetch((`${api.url}/ingredients`), {
+  return request((`${api.url}/ingredients`), {
     method: "GET",
     headers: api.headers,
-  }).then(checkJson);
+  });
 };
 
 export const postOrderDetails = (data) => {
-  return fetch((`${api.url}/orders`), {
+  return request((`${api.url}/orders`), {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -28,5 +32,5 @@ export const postOrderDetails = (data) => {
     body: JSON.stringify({
       ingredients: data,
     }),
-  }).then(checkJson);
+  });
 };

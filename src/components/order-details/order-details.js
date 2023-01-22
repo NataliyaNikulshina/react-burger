@@ -2,10 +2,11 @@ import orderDetails from "./order-details.module.css";
 import orderDetailsImage from "../../images/done.png";
 import propTypes from "prop-types";
 
-const OrderDetails = ({ orderNumber }) => {
+const OrderDetails = ({ orderNumber, isLoading }) => {
   return (
     <div className={orderDetails.container}>
-      <p className="text text_type_digits-large mt-4 mb-8">{orderNumber}</p>
+      {isLoading && <div className={orderDetails.selector} id="loader"></div>}
+      {!isLoading && <p className="text text_type_digits-large mt-4 mb-8">{orderNumber}</p>}
       <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
       <img
         className={`${orderDetails.image}`}
