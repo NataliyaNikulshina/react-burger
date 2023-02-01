@@ -1,47 +1,20 @@
-import AppHeader from "../app-header/app-header.js";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients.js";
-import BurgerConstructor from "../burger-constructor/burger-constructor.js";
-import app from "./app.module.css";
-import { useEffect, useState } from "react";
-import { IngredientsContext } from "../../context/app-context.js";
-import { getProductData } from '../../utils/api.js';
-import { useSelector, useDispatch } from 'react-redux';
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { getItems } from '../../services/actions/ingredients';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from '../../pages/home';
+import NotFound404 from '../../pages/not-found';
+import LoginPage from '../../pages/login';
+import RegisterPage from '../../pages/register';
 
-export function App() {
-  //const [data, setData] = useState(null);
- // const [loading, setLoading] = useState(true);
-
+export default function App() {
  
-/*  useEffect(() => {
-    getProductData()
-    .then(setData)
-    .catch(error => console.error(error))
-    .finally(() => setLoading(false));
-}, [])*/
-const ingredients = useSelector(state => state.ingredients);
-const isLoading = ingredients.itemsRequest;
-const dispatch = useDispatch();
-useEffect(() => {
- dispatch(getItems())
-}, [])
-
-
   return (
-    <div className="App">
-      <AppHeader />
-      {isLoading && <div className={app.loader} id="loader"></div>}
-      {!isLoading &&
-        <main className={app.main}>
-           <DndProvider backend={HTML5Backend} > 
-           {ingredients.items.length && <BurgerIngredients /> }
-           {ingredients.items.length && <BurgerConstructor /> } 
-           </DndProvider> 
-        </main> }
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} /> 
+        <Route path="/register" element={<RegisterPage />} />
+      {/*  <Route path="/list/:country/:personId" element={<PersonPage />} />*/}
+        <Route path="*" element={<NotFound404 />}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;
