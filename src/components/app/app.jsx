@@ -3,6 +3,10 @@ import HomePage from '../../pages/home';
 import NotFound404 from '../../pages/not-found';
 import LoginPage from '../../pages/login';
 import RegisterPage from '../../pages/register';
+import ForgotPasswordPage from '../../pages/forgot-password';
+import ResetPasswordPage from '../../pages/reset-password';
+import ProfilePage from '../../pages/profile';
+
 
 export default function App() {
  
@@ -12,7 +16,9 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} /> 
         <Route path="/register" element={<RegisterPage />} />
-      {/*  <Route path="/list/:country/:personId" element={<PersonPage />} />*/}
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<NotFound404 />}/>
       </Routes>
     </BrowserRouter>

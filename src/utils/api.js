@@ -34,3 +34,46 @@ export const postOrderDetails = (data) => {
     }),
   });
 };
+
+export const postEmailForReset = (email) => {
+  return request((`${api.url}/password-reset`), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      email
+    }),
+  });
+};
+
+export const postNewPassword = (password, token) => {
+  return request((`${api.url}/password-reset/reset`), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      password, token
+    }),
+  });
+};
+
+export const postNewUser = (email, password, name) => {
+  return request((`${api.url}/auth/register`), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      email, password, name
+    }),
+  });
+};
+
+export const getUserInfo = () => {
+  return request((`${api.url}/auth/user`), {
+    method: "GET",
+    headers: api.headers,
+  });
+};
