@@ -6,6 +6,7 @@ import RegisterPage from '../../pages/register';
 import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
+import IngredientDetailsPage from '../../pages/ingredients-id';
 
 
 export default function App() {
@@ -19,6 +20,8 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/orders" element={<ProfilePage />} />
+        <Route path= "/ingredients/:id" element={<IngredientDetailsPage />} /> 
         <Route path="*" element={<NotFound404 />}/>
       </Routes>
     </BrowserRouter>

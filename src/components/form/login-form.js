@@ -1,44 +1,61 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   EmailInput,
   Button,
-  PasswordInput
+  PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-
+import { useSelector, useDispatch } from "react-redux";
 import stylesLoginForm from "./form.module.css";
+import { loginUserThunk } from "../../services/actions/user";
 
 const LoginForm = () => {
-  const [valueEmail, setValueEmail] = React.useState("");
-  const onChangeEmail = (e) => {
-    setValueEmail(e.target.value);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loginData = useSelector((store) => store.user.userData);
+  const [valuesLogin, setValuesLogin] = React.useState({
+    email: "",
+    password: "",
+  });
+
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    setValuesLogin((prevValues) => {
+      return { ...prevValues, [name]: value };
+    });
   };
-  const [valuePass, setValuePass] = React.useState("");
-  const onChangePassword = (e) => {
-    setValuePass(e.target.value);
-  };
+  console.log(loginData);
+  console.log(valuesLogin);
+
+  const loginSubmit = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(loginUserThunk(valuesLogin, () => navigate("/")));
+    },
+    [loginData, dispatch, valuesLogin]
+  );
 
   return (
-    <form className={`${stylesLoginForm.container}`}>
+    <form className={`${stylesLoginForm.container}`} onSubmit={loginSubmit}>
       <h1 className={`${stylesLoginForm.text} text text_type_main-medium`}>
         Вход
       </h1>
       <EmailInput
-        onChange={onChangeEmail}
-        value={valueEmail}
+        onChange={onChange}
+        value={valuesLogin.email}
         name={"email"}
         placeholder="E-mail"
         isIcon={false}
         extraClass="mt-6 mb-6"
       />
       <PasswordInput
-        onChange={onChangePassword}
-        value={valuePass}
-        name={'password'}
+        onChange={onChange}
+        value={valuesLogin.password}
+        name={"password"}
         extraClass="mb-6"
       />
       <Button
-        htmlType="button"
+        htmlType="submit"
         type="primary"
         size="large"
         extraClass={"mb-20"}
@@ -52,7 +69,10 @@ const LoginForm = () => {
         >
           Вы - новый пользователь?
         </p>
-        <Link to={"/register"} className={`${stylesLoginForm.link} text text_type_main-default`}>
+        <Link
+          to={"/register"}
+          className={`${stylesLoginForm.link} text text_type_main-default`}
+        >
           Зарегистрироваться
         </Link>
       </div>

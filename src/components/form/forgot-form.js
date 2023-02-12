@@ -4,12 +4,13 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { postEmailForReset } from "../../utils/api";
+import { forgotPassThunk } from "../../services/actions/user";
 import stylesForm from "./form.module.css";
 
 const ForgotPasswordForm = () => {
   const [valueEmail, setValueEmail] = React.useState("");
-  const navigation = useNavigate()
+  const navigate = useNavigate()
+
   const onChangeEmail = (e) => {
     setValueEmail(e.target.value);
   };
@@ -17,9 +18,9 @@ const ForgotPasswordForm = () => {
   const onSubmitEmail = (e) => {
         e.preventDefault();
         if (valueEmail) {
-          postEmailForReset(valueEmail)
-          .then(() => navigation("/reset-password", {state: { from: "forgot-password" }}))
+          forgotPassThunk(valueEmail, () => navigate("/reset-password"))
       }
+      console.log(valueEmail)
     };
 
   return (
@@ -36,12 +37,11 @@ const ForgotPasswordForm = () => {
         extraClass="mt-6 mb-6"
       />
       <Button
-        disabled={valueEmail.email === "" ? true : false}
+        disabled={valueEmail === "" ? true : false}
         htmlType="submit"
         type="primary"
         size="large"
         extraClass={"mb-20"}
-       // onClick={onSubmitEmail}
       >
         Восстановить
       </Button>

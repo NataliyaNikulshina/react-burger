@@ -49,7 +49,10 @@
 
 .item {
   composes: link;
+  text-decoration: none;
   align-items: center;
+  color: #8585ad;
+  cursor: pointer;
 }
 
 .logo {

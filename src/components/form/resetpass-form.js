@@ -9,7 +9,7 @@ import { postNewPassword } from "../../utils/api";
 import stylesForm from "./form.module.css";
 
 const ResetPasswordForm = () => {
-  const navigation = useNavigate()
+  const navigate = useNavigate()
   const [valuePass, setValuePass] = React.useState("");
   const onChangePassword = (e) => {
     setValuePass(e.target.value);
@@ -23,7 +23,7 @@ const ResetPasswordForm = () => {
     e.preventDefault();
     if (valuePass && valueNumber) {
       postNewPassword(valuePass, valueNumber)
-      .then(() => navigation("/"))
+      .then(() => navigate("/"))
   }
 };
 
