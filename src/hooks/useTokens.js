@@ -1,14 +1,14 @@
 
     //сохранение токинов
-    export const setToken = (token) => localStorage.setItem("token", token);
+    export const setToken = (accessToken) => localStorage.setItem("accessToken", accessToken);
     //получение токинов
-    export const getToken = () => localStorage.getItem("token");
+    export const getToken = () => localStorage.getItem("accessToken");
     //очистка токина
-    export const resetToken = () => localStorage.setItem("token", null);
+    export const resetToken = () => localStorage.setItem("accessToken", null);
 
     //сохранение токина
-    export const setRefreshToken = (acessToken) => localStorage.setItem("acessToken", acessToken);
+    export const setRefreshToken = (refreshToken) => localStorage.setItem("refreshToken", refreshToken);
     //получение токина
-    export const getRefreshToken = () => localStorage.getItem("acessToken");
+    export const getRefreshToken = () => localStorage.getItem("refreshToken");
     //очистка токина
-    export const resetRefreshToken = () => localStorage.setItem("acessToken", null);
+    export const resetRefreshToken = () => localStorage.setItem("refreshToken", null);

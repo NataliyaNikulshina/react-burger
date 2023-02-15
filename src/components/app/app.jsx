@@ -1,3 +1,5 @@
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from '../../pages/home';
 import NotFound404 from '../../pages/not-found';
@@ -7,9 +9,15 @@ import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
 import IngredientDetailsPage from '../../pages/ingredients-id';
-
+import { checkUser, loginUserThunk, logoutThunk } from "../../services/actions/user";
 
 export default function App() {
+  const dispatch = useDispatch();
+  
+
+   React.useEffect(() => {
+    dispatch(checkUser());
+   }, []);
  
   return (
     <BrowserRouter>

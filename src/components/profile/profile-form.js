@@ -4,47 +4,68 @@ import {
   EmailInput,
   PasswordInput,
   Input,
-  Button
+  Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { postEmailForReset } from "../../utils/api";
+import { updateUserData, checkUser } from "../../services/actions/user";
+import { getRefreshToken, getToken } from "../../hooks/useTokens";
 import stylesForm from "./profile-form.module.css";
-import {useSelector, useDispatch} from "react-redux";
-import {
-  logoutThunk
-} from "../../services/actions/user";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutThunk } from "../../services/actions/user";
 
 const ProfileForm = () => {
-  const user = useSelector(store => store.user.data);
-//  reduserUser = {name: user.name, email: user.email, isAuth: !!user.email};
+  //  reduserUser = {name: user.name, email: user.email, isAuth: !!user.email};
+  const [isEdit, setEdit] = React.useState(false);
   const dispatch = useDispatch();
-    let [values, setValues] = React.useState({
-      email: "",
-      password: "",
-      name: "",
+  const navigate = useNavigate();
+  const token = getRefreshToken();
+
+  const user = useSelector((state) => state.user.userData);
+
+  const [values, setValues] = React.useState({
+    email: `${user ? user.email : ""}`,
+    password: "",
+    name: `${user ? user.name : ""}`,
+  });
+  
+  function onReset() {
+    setValues({ name: user.name, email: user.email });
+  }
+
+  React.useEffect(() => {
+    if ((user.email !== values.email) && (user.name !== values.name)) {
+      setEdit(true);
+      console.log(isEdit)
+    //  console.log(values)
+    //  console.log(user)
+    }
+  }, [values, user]);
+
+  //console.log(user);
+  //    let [values, setValues] = React.useState({
+  //      email: "",
+  //      password: "",
+  //      name: "",
+  //    });
+
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    setValues((prevValues) => {
+      return { ...prevValues, [name]: value };
     });
+  };
 
-    const onChange = (event) => {
-      const { name, value } = event.target;
-      setValues((prevValues) => {
-        return { ...prevValues, [name]: value };
-      });
-    };
-  
-  
-  const navigation = useNavigate()
-
-  const registerSubmit = React.useCallback(
+  const updateSubmit = React.useCallback(
     (e) => {
-        e.preventDefault();
-        if (user) return;
-        //dispatch(registerUser(values));
-       // user.replace({ pathname: '/login' });
-        navigation('/login');
-    }, [dispatch, user, values]);
+      e.preventDefault();
+      dispatch(updateUserData(values,() => navigate('/login'), token));
+      console.log(values)
+    },
+    [dispatch, user, values]
+  );
 
   return (
-    <form className={`${stylesForm.container}`} onSubmit={registerSubmit}>
-       <Input
+    <form className={`${stylesForm.container}`} onSubmit={updateSubmit}>
+      <Input
         value={values.name}
         onChange={onChange}
         placeholder={"Имя"}
@@ -63,14 +84,18 @@ const ProfileForm = () => {
       />
       <PasswordInput
         onChange={onChange}
-        value={values.password}
-        name={'password'}
+        value={values.password === 'underfined' ? '*****': values.password}
+        name={"password"}
         placeholder="Пароль"
         extraClass="mb-6"
         icon="EditIcon"
       />
-      <Button htmlType={"submit"}>Подтвердить</Button>
-      <Button htmlType={"reset"}>Сбросить</Button>
+      { isEdit && (
+        <>
+          <Button extraClass="mr-2" htmlType={"submit"}>Подтвердить</Button>
+          <Button htmlType="button" onClick={onReset}>Отмена</Button>
+        </>
+      )}
     </form>
   );
 };

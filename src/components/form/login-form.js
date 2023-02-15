@@ -24,8 +24,8 @@ const LoginForm = () => {
       return { ...prevValues, [name]: value };
     });
   };
-  console.log(loginData);
-  console.log(valuesLogin);
+ // console.log(loginData);
+ // console.log(valuesLogin);
 
   const loginSubmit = React.useCallback(
     (e) => {

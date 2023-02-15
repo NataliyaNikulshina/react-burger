@@ -5,11 +5,13 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { postNewPassword } from "../../utils/api";
+import { resetPassThunk } from "../../services/actions/user";
 import stylesForm from "./form.module.css";
+import { useDispatch } from "react-redux";
 
 const ResetPasswordForm = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [valuePass, setValuePass] = React.useState("");
   const onChangePassword = (e) => {
     setValuePass(e.target.value);
@@ -22,9 +24,8 @@ const ResetPasswordForm = () => {
   const onSubmitNewPassword = (e) => {
     e.preventDefault();
     if (valuePass && valueNumber) {
-      postNewPassword(valuePass, valueNumber)
-      .then(() => navigate("/"))
-  }
+      dispatch(resetPassThunk(valuePass, valueNumber, () => navigate("/")));
+    };
 };
 
   return (

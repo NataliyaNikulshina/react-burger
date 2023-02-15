@@ -6,21 +6,19 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { forgotPassThunk } from "../../services/actions/user";
 import stylesForm from "./form.module.css";
+import { useDispatch } from "react-redux";
 
 const ForgotPasswordForm = () => {
   const [valueEmail, setValueEmail] = React.useState("");
   const navigate = useNavigate()
-
+  const dispatch = useDispatch();
   const onChangeEmail = (e) => {
     setValueEmail(e.target.value);
   };
 
   const onSubmitEmail = (e) => {
         e.preventDefault();
-        if (valueEmail) {
-          forgotPassThunk(valueEmail, () => navigate("/reset-password"))
-      }
-      console.log(valueEmail)
+        dispatch(forgotPassThunk(valueEmail, () => navigate("/reset-password")));
     };
 
   return (

@@ -3,6 +3,11 @@ import {
   postRegister,
   logoutUser,
   postEmailForReset,
+  postNewPassword,
+  getUserInfo,
+  updateUserInfo,
+  updateAccessToken,
+  updaterefreshToken
 } from "../../utils/api";
 import {
   setToken,
@@ -14,7 +19,7 @@ import {
 } from "../../hooks/useTokens";
 
 export const LOGOUT_USER = "LOGOUT_USER";
-export const LOGOUT_USER_ERROR = "LOGOUT_USER_ERROR";
+//export const USER_IS_AUTH = "USER_IS_AUTH";
 
 export const REGISTER_USER_REQUEST = "REGISTER_USER_REQUEST";
 export const REGISTER_USER_SUCCESS = "REGISTER_USER_SUCCESS";
@@ -39,6 +44,10 @@ export const RESET_PASSWORD_ERROR = "RESET_PASSWORD_ERROR";
 export const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
 export const UPDATE_USER_ERROR = "UPDATE_USER_ERROR";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+
+export const CHECK_USER_REQUEST = "CHECK_USER_REQUEST";
+export const CHECK_USER_SUCCESS = "CHECK_USER_SUCCESS";
+export const CHECK_USER_ERROR = "CHECK_USER_ERROR";
 
 export function loginUserThunk(dataLogin, callback) {
   return function (dispatch) {
@@ -97,9 +106,6 @@ export function logoutThunk(refreshToken, callback) {
         callback();
       })
       .catch((err) => {
-        dispatch({
-          type: LOGOUT_USER_ERROR,
-        });
         alert("Ошибка выхода из личного кабинета");
       });
   };
@@ -113,9 +119,10 @@ export function forgotPassThunk(email, callback) {
     postEmailForReset(email)
       .then((res) => {
         getRefreshToken(res.refreshToken);
+        console.log(res);
         dispatch({
           type: FORGOT_PASSWORD_SUCCESS,
-          payload: res.message,
+          payload: res.user,
         });
         callback();
       })
@@ -127,22 +134,111 @@ export function forgotPassThunk(email, callback) {
   };
 }
 
+export function resetPassThunk(password, code, callback) {
+  return function (dispatch) {
+    dispatch({
+      type: RESET_PASSWORD_REQUEST,
+    });
+    postNewPassword(password, code)
+      .then((res) => {
+        console.log(res);
+        dispatch({
+          type: RESET_PASSWORD_SUCCESS,
+          payload: res.user,
+        });
+        callback();
+      })
+      .catch((err) => {
+        dispatch({
+          type: RESET_PASSWORD_ERROR,
+        });
+      });
+  };
+}
+
 export const updateToken = (refreshToken) => {
   return function (dispatch) {
     dispatch({
       type: REFRESH_TOKEN_REQUEST,
     });
-    updateToken(refreshToken)
+    console.log(refreshToken);
+    updateAccessToken(refreshToken)
       .then((res) => {
+        console.log('обнова токена')
+        console.log(res)
+        setRefreshToken(res.refreshToken);
+        setToken(res.accessToken);
         dispatch({
           type: REFRESH_TOKEN_SUCCESS,
-          payload: res.user,
+          payload: res,
         });
       })
       .catch((err) => {
+        console.log('обнова токена не вышла')
         dispatch({
           type: REFRESH_TOKEN_ERROR,
         });
       });
   };
 };
+
+export const updateUserData = (data, refreshToken, callback) => {
+  return function (dispatch) {
+    dispatch({
+      type: UPDATE_USER_REQUEST,
+    });
+    updateUserInfo(data, refreshToken)
+      .then((res) => {
+        dispatch({
+          type: UPDATE_USER_SUCCESS,
+          payload: res.user,
+        });
+        callback();
+      })
+      .catch((err) => {
+        if (err.message === "jwt expired" || err.message === "jwt malformed") {
+          //console.log('я тут')
+          dispatch(updateAccessToken(getRefreshToken(refreshToken)))
+          .then(() => {
+            updateUserInfo(data, refreshToken)
+              .then((res) => {
+                dispatch({
+                  type: UPDATE_USER_SUCCESS,
+                  payload: res.user,
+                });
+                callback();
+              })
+              .catch((err) => {
+                dispatch({
+                  type: UPDATE_USER_ERROR,
+                });
+              });
+          });
+        }
+      });
+  };
+};
+
+export function checkUser() {
+  return (dispatch) => {
+    dispatch({
+      type: CHECK_USER_REQUEST,
+    });
+   return getUserInfo(getToken())
+      .then((res) => {
+        console.log(res)
+        dispatch({ type: CHECK_USER_SUCCESS, payload: res.user })
+        console.log('получение информации')
+        console.log(res)
+      })
+      .catch((err) => {
+        dispatch({
+          type: CHECK_USER_REQUEST,
+        });
+        console.log("не сработало checkUser in action", err)
+        if (err.message === "jwt expired" || err.message === "jwt malformed") {
+          dispatch(updateToken(getRefreshToken()))
+        }
+      })
+  }
+}

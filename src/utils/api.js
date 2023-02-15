@@ -5,22 +5,30 @@ const api = {
   },
 };
 
-function checkJson(res) {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка ${res.status}`);
-}
+const checkJson = (res) => res.json().then(data => res.ok ? data : Promise.reject(data))
 
 function request(url, method, data = null, token = null) {
   const options = {
     method: method,
     headers: api.headers,
   }
-  if (data) options.body = JSON.stringify(data)
-  if (token) options.headers.authorization = token
+  if (data) options.body = JSON.stringify(data);
+  if (token) options.headers = {...options.headers, 'Authorization': token};
+  console.log(options, fetch);
   return fetch(url, options).then(checkJson) 
 }
+
+export const updaterefreshToken = () => {
+  return request(`${api.url}/auth/token`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+          token: localStorage.getItem("refreshToken"),
+      }),
+  })
+};
 
 export const getProductData = () => {
   return request((`${api.url}/ingredients`), "GET");
@@ -34,8 +42,8 @@ export const postEmailForReset = (email) => {
   return request((`${api.url}/password-reset`), "POST", {email})
 };
 
-export const postNewPassword = (password, token) => {
-  return request((`${api.url}/password-reset/reset`), "POST", {password, token})
+export const postNewPassword = (password, code) => {
+  return request((`${api.url}/password-reset/reset`), "POST", {password, token: code})
 };
 
 export const postRegister = ({email, password, name}) => {
@@ -43,7 +51,11 @@ export const postRegister = ({email, password, name}) => {
 };
 
 export const getUserInfo = (token) => {
-  return request((`${api.url}/auth/user`), "GET", null, token)
+  return request(`${api.url}/auth/user`, "GET", null, token)
+};
+
+export const updateUserInfo = (data, token) => {
+  return request((`${api.url}/auth/user`), "PATCH", data, token)
 };
 
 export const loginUser = ({email, password}) => {
@@ -54,6 +66,6 @@ export const logoutUser = (refreshToken) => {
   return request((`${api.url}/auth/logout`), "POST", {token: refreshToken})
 };
 
-export const updateToken = (refreshToken) => {
+export const updateAccessToken = (refreshToken) => {
   return request((`${api.url}/auth/token`), "POST", {token: refreshToken})
 };

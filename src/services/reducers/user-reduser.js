@@ -18,6 +18,9 @@ import {
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_ERROR,
+  CHECK_USER_REQUEST,
+  CHECK_USER_SUCCESS,
+  CHECK_USER_ERROR,
 } from "../actions/user";
 
 const initialState = {
@@ -26,16 +29,22 @@ const initialState = {
   isAuth: undefined,
 
   registerUserRequest: false,
-  registerUserError: null,
+  registerUserError: false,
 
   loginUserRequest: false,
-  loginUserError: null,
+  loginUserError: false,
 
   forgotPasswordRequest: false,
   forgotPasswordError: false,
 
+  resetPasswordRequest: false,
+  reserPasswordError: false,
+
   refreshTokenRequest: false,
   refreshTokenError: false,
+
+  checkUserRequest: false,
+  checkUserError: false,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -78,14 +87,15 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         userData: action.payload,
         loginUserRequest: false,
-        loginUserERROR: false,
+        loginUserError: false,
+        isAuth: true,
       };
     }
     case LOGIN_USER_ERROR: {
       return {
         ...state,
         loginUserRequest: false,
-        loginUserERROR: true,
+        loginUserError: true,
       };
     }
 
@@ -95,7 +105,6 @@ export const userReducer = (state = initialState, action) => {
         forgotPasswordRequest: true,
       };
     }
-
     case FORGOT_PASSWORD_SUCCESS: {
       return {
         ...state,
@@ -134,8 +143,85 @@ export const userReducer = (state = initialState, action) => {
       };
     }
 
-    case LOGOUT_USER:
-      return initialState;
+    case RESET_PASSWORD_REQUEST: {
+      return {
+        ...state,
+        resetUserRequest: true,
+      };
+    }
+
+    case RESET_PASSWORD_SUCCESS: {
+      return {
+        ...state,
+        userData: action.payload,
+        resetUserRequest: false,
+        resetUserERROR: false,
+      };
+    }
+    case RESET_PASSWORD_ERROR: {
+      return {
+        ...state,
+        resetUserRequest: false,
+        resetUserERROR: true,
+      };
+    }
+
+    case UPDATE_USER_REQUEST: {
+      return {
+        ...state,
+        updateDataRequest: true,
+      };
+    }
+    case UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        updateDataRequest: false,
+        updateDataError: false,
+        userData: {
+          ...state.data,
+        },
+      };
+    }
+    case UPDATE_USER_ERROR: {
+      return {
+        ...state,
+        updateDataRequest: false,
+        updateDataError: true,
+      };
+    }
+
+    case CHECK_USER_REQUEST: {
+      return {
+        ...state,
+        checkUserRequest: true,
+        checkUserError: false,
+      };
+    }
+    case CHECK_USER_SUCCESS: {
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          email: action.payload.email,
+          name: action.payload.name,
+        },
+        isAuth: true,
+      };
+    }
+    case CHECK_USER_ERROR: {
+      return {
+        ...state,
+        checkUserRequest: false,
+        checkUserError: true,
+      };
+    }
+
+    case LOGOUT_USER: {
+      return {
+        ...state,
+        isAuth: false,
+      };
+    }
 
     default:
       return state;

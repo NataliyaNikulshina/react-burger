@@ -11,7 +11,7 @@ const NavProfile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const refreshToken = getRefreshToken();
-    console.log(refreshToken);
+   // console.log(refreshToken);
 
     const onLogout = (e) => {
       e.preventDefault();
