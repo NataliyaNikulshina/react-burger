@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructor from "./burger-constructor.module.css";
 import OrderDetails from "../order-details/order-details";
-import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import Modal from "../modal/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { postOrder } from "../../services/actions/order";
@@ -27,6 +27,9 @@ const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const orderNumber = useSelector((state) => state.order);
   //console.log(orderNumber);
+  const { isAuth } = useSelector((store) => ({
+    isAuth: store.user.isAuth
+  }));
 
   const calculationPrice = React.useMemo(() => {
     if (bun && ingredients) {
@@ -43,6 +46,17 @@ const BurgerConstructor = () => {
     postOrderNumer();
     changeVisibility((prevValue) => !prevValue);
   }
+
+  const navigate = useNavigate()
+
+    const handleOrderModal = (e) => {
+        if (isAuth) {
+            openModal(e)
+        }
+        else {
+            navigate('/login')
+        }
+    }
 
   function closeModal(e) {
     e.stopPropagation();
@@ -135,7 +149,7 @@ const BurgerConstructor = () => {
             htmlType="button"
             type="primary"
             size="large"
-            onClick={openModal}
+            onClick={handleOrderModal}
           >
             Оформить заказ
           </Button>

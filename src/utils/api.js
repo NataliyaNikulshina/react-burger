@@ -14,21 +14,9 @@ function request(url, method, data = null, token = null) {
   }
   if (data) options.body = JSON.stringify(data);
   if (token) options.headers = {...options.headers, 'Authorization': token};
-  console.log(options, fetch);
+ // console.log(options, fetch);
   return fetch(url, options).then(checkJson) 
 }
-
-export const updaterefreshToken = () => {
-  return request(`${api.url}/auth/token`, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify({
-          token: localStorage.getItem("refreshToken"),
-      }),
-  })
-};
 
 export const getProductData = () => {
   return request((`${api.url}/ingredients`), "GET");
@@ -54,8 +42,8 @@ export const getUserInfo = (token) => {
   return request(`${api.url}/auth/user`, "GET", null, token)
 };
 
-export const updateUserInfo = (data, token) => {
-  return request((`${api.url}/auth/user`), "PATCH", data, token)
+export const updateUserInfo = (upData, token) => {
+  return request(`${api.url}/auth/user`, "PATCH", upData, token)
 };
 
 export const loginUser = ({email, password}) => {

@@ -26,7 +26,7 @@ import {
 const initialState = {
   userData: null,
 
-  isAuth: undefined,
+  isAuth: false,
 
   registerUserRequest: false,
   registerUserError: false,
@@ -79,6 +79,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loginUserRequest: true,
+        loginUserError: false,
       };
     }
 
@@ -103,6 +104,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         forgotPasswordRequest: true,
+        forgotPasswordError: false,
       };
     }
     case FORGOT_PASSWORD_SUCCESS: {
@@ -125,6 +127,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         refreshTokenRequest: true,
+        refreshTokenError: false,
       };
     }
     case REFRESH_TOKEN_SUCCESS: {
@@ -147,6 +150,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         resetUserRequest: true,
+        resetUserError: false,
       };
     }
 
@@ -155,14 +159,14 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         userData: action.payload,
         resetUserRequest: false,
-        resetUserERROR: false,
+        resetUserError: false,
       };
     }
     case RESET_PASSWORD_ERROR: {
       return {
         ...state,
         resetUserRequest: false,
-        resetUserERROR: true,
+        resetUserError: true,
       };
     }
 
@@ -170,6 +174,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         updateDataRequest: true,
+        updateDataError: false,
       };
     }
     case UPDATE_USER_SUCCESS: {
@@ -178,7 +183,9 @@ export const userReducer = (state = initialState, action) => {
         updateDataRequest: false,
         updateDataError: false,
         userData: {
-          ...state.data,
+          ...state.userData,
+          email: action.payload.email,
+          name: action.payload.name,
         },
       };
     }

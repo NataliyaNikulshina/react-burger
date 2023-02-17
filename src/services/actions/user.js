@@ -182,22 +182,22 @@ export const updateToken = (refreshToken) => {
   };
 };
 
-export const updateUserData = (data, refreshToken, callback) => {
+export const updateUserData = (data, refreshToken) => {
   return function (dispatch) {
     dispatch({
       type: UPDATE_USER_REQUEST,
     });
     updateUserInfo(data, refreshToken)
       .then((res) => {
+        console.log(res)
         dispatch({
           type: UPDATE_USER_SUCCESS,
           payload: res.user,
         });
-        callback();
       })
       .catch((err) => {
         if (err.message === "jwt expired" || err.message === "jwt malformed") {
-          //console.log('я тут')
+          console.log('я тут')
           dispatch(updateAccessToken(getRefreshToken(refreshToken)))
           .then(() => {
             updateUserInfo(data, refreshToken)
@@ -206,7 +206,7 @@ export const updateUserData = (data, refreshToken, callback) => {
                   type: UPDATE_USER_SUCCESS,
                   payload: res.user,
                 });
-                callback();
+          
               })
               .catch((err) => {
                 dispatch({
@@ -233,11 +233,27 @@ export function checkUser() {
       })
       .catch((err) => {
         dispatch({
-          type: CHECK_USER_REQUEST,
+          type: CHECK_USER_ERROR,
         });
-        console.log("не сработало checkUser in action", err)
+        console.log("надо обновить RefreshToken", err)
         if (err.message === "jwt expired" || err.message === "jwt malformed") {
           dispatch(updateToken(getRefreshToken()))
+          .then(() => {
+            getUserInfo(getToken())
+              .then((res) => {
+                dispatch({
+                  type: CHECK_USER_SUCCESS,
+                  payload: res.user,
+                });
+          
+              })
+              .catch((err) => {
+                dispatch({
+                  type: CHECK_USER_ERROR,
+                });
+                console.log("не сработало checkUser in action", err)
+              });
+          });
         }
       })
   }
