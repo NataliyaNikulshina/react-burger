@@ -93,7 +93,7 @@ const ProfileForm = () => {
       />
       { isEditValue && (
         <>
-          <Button extraClass="mr-2" type="primary" htmlType={"submit"}>Подтвердить</Button>
+          <Button extraClass="mr-2" type="primary" htmlType={"submit"}>Сохранить</Button>
           <Button type="secondary" htmlType={"button"} onClick={onReset}>Отмена</Button>
         </>
       )}
