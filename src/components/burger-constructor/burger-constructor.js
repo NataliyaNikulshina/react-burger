@@ -20,6 +20,7 @@ import {
   BurgerMiddleItem,
   BurgerLastItem,
 } from "../burger-item/burger-item";
+import {POST_ORDER_DETAILS_RESET} from '../../services/actions/order';
 
 const BurgerConstructor = () => {
   const { bun, ingredients } = useSelector((state) => state.constructor);
@@ -28,7 +29,7 @@ const BurgerConstructor = () => {
   const orderNumber = useSelector((state) => state.order);
   //console.log(orderNumber);
   const { isAuth } = useSelector((store) => ({
-    isAuth: store.user.isAuth
+    isAuth: store.user.isAuth,
   }));
 
   const calculationPrice = React.useMemo(() => {
@@ -41,27 +42,32 @@ const BurgerConstructor = () => {
 
   const [visibility, changeVisibility] = React.useState(false);
 
-  function openModal(e) {
-    e.stopPropagation();
-    postOrderNumer();
-    changeVisibility((prevValue) => !prevValue);
-  }
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-    const handleOrderModal = (e) => {
-        if (isAuth) {
-            openModal(e)
-        }
-        else {
-            navigate('/login')
-        }
+  const postOrderNumer = () => {
+    if (bun && ingredients) {
+      dispatch(postOrder(dataPostId()));
     }
+    else { alert("выберете ингредиенты");}
+  };
+
+  const handleOrderModal = (e) => {
+    console.log("нажали на нопку");
+    if (!isAuth) {
+      navigate("/login");
+    } else {
+      postOrderNumer();
+      changeVisibility(true);
+    }
+    console.log(visibility)
+    console.log(orderNumber)
+  };
 
   function closeModal(e) {
     e.stopPropagation();
     dispatch(resetIngConstructor());
-    changeVisibility((prevValue) => !prevValue);
+    dispatch({type: POST_ORDER_DETAILS_RESET});
+    changeVisibility(false);
   }
 
   function dataPostId() {
@@ -71,12 +77,6 @@ const BurgerConstructor = () => {
     //console.log(arrOrder);
     return arrOrder;
   }
-
-  const postOrderNumer = () => {
-    if (bun && ingredients) {
-      dispatch(postOrder(dataPostId()));
-    }
-  };
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",

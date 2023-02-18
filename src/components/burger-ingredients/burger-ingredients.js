@@ -12,7 +12,7 @@ const BurgerIngredients = () => {
   const ingredients = useSelector((state) => state.ingredients);
   const ingINBasket = useSelector((state) => state.constructor);
   const [current, setCurrent] = useState("bun");
-  const [visibility, changeVisibility] = useState(false);
+ // const [visibility, changeVisibility] = useState(false);
   const dispatch = useDispatch();
 
   const buns = ingredients.items.filter((item) =>
@@ -69,11 +69,11 @@ const BurgerIngredients = () => {
     return counterBun;
   }, [ingINBasket.bun]);
 
-  const toggleVisibility = (e) => {
-    //e.stopPropagation();
-    dispatch(addIngredientDetails(e));
-    changeVisibility((prevValue) => !prevValue);
-  };
+  // const toggleVisibility = (e) => {
+  //   //e.stopPropagation();
+  //   dispatch(addIngredientDetails(e));
+  //   changeVisibility((prevValue) => !prevValue);
+  // };
 
   return (
     <>
@@ -105,7 +105,7 @@ const BurgerIngredients = () => {
                       count={ingCountBun[el._id]}
                       ingredient={el}
                       key={el._id}
-                      onClick={toggleVisibility}
+                     // onClick={toggleVisibility}
                     />
                   );
                 }
@@ -126,7 +126,7 @@ const BurgerIngredients = () => {
                       count={ingCount[el._id]}
                       ingredient={el}
                       key={el._id}
-                      onClick={toggleVisibility}
+                     // onClick={toggleVisibility}
                     />
                   );
                 }
@@ -147,7 +147,7 @@ const BurgerIngredients = () => {
                       count={ingCount[el._id]}
                       ingredient={el}
                       key={el._id}
-                      onClick={toggleVisibility}
+                     // onClick={toggleVisibility}
                     />
                   );
                 }
@@ -157,11 +157,11 @@ const BurgerIngredients = () => {
         </ul>
       </section>
 
-      {visibility && (
+      {/* {visibility && (
         <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
           <IngredientDetailsFunc />
         </Modal>
-      )}
+      )} */}
     </>
   );
 };
