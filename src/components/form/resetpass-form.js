@@ -8,14 +8,13 @@ import {
 import { resetPassThunk } from "../../services/actions/user";
 import stylesForm from "./form.module.css";
 import { useDispatch } from "react-redux";
+import { useForm } from "../../hooks/useForm";
 
 const ResetPasswordForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [valuePass, setValuePass] = React.useState("");
-  const onChangePassword = (e) => {
-    setValuePass(e.target.value);
-  };
+  
+  const {values, handleChange} = useForm({ password: '' })
   const [valueNumber, setValueNumber] = React.useState("");
   const onChangeNumber = (e) => {
     setValueNumber(e.target.value);
@@ -23,8 +22,8 @@ const ResetPasswordForm = () => {
   
   const onSubmitNewPassword = (e) => {
     e.preventDefault();
-    if (valuePass && valueNumber) {
-      dispatch(resetPassThunk(valuePass, valueNumber, () => navigate("/")));
+    if (values.password && valueNumber) {
+      dispatch(resetPassThunk(values.password, valueNumber, () => navigate("/")));
     };
 };
 
@@ -34,8 +33,8 @@ const ResetPasswordForm = () => {
         Восстановление пароля
       </h1>
       <PasswordInput
-        onChange={onChangePassword}
-        value={valuePass}
+        onChange={handleChange}
+        value={values}
         name={"password"}
         placeholder={"Введите новый пароль"}
         extraClass="mt-6 mb-6"

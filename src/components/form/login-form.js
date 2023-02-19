@@ -8,31 +8,23 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import stylesLoginForm from "./form.module.css";
 import { loginUserThunk } from "../../services/actions/user";
+import { useForm } from "../../hooks/useForm";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loginData = useSelector((store) => store.user.userData);
-  const [valuesLogin, setValuesLogin] = React.useState({
+  const { values, handleChange, setValues } = useForm({
     email: "",
     password: "",
   });
 
-  const onChange = (event) => {
-    const { name, value } = event.target;
-    setValuesLogin((prevValues) => {
-      return { ...prevValues, [name]: value };
-    });
-  };
- // console.log(loginData);
- // console.log(valuesLogin);
-
   const loginSubmit = React.useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(loginUserThunk(valuesLogin, () => navigate("/")));
+      dispatch(loginUserThunk(values, () => navigate("/")));
     },
-    [loginData, dispatch, valuesLogin]
+    [loginData, dispatch, values]
   );
 
   return (
@@ -41,16 +33,16 @@ const LoginForm = () => {
         Вход
       </h1>
       <EmailInput
-        onChange={onChange}
-        value={valuesLogin.email}
+        onChange={handleChange}
+        value={values.email}
         name={"email"}
         placeholder="E-mail"
         isIcon={false}
         extraClass="mt-6 mb-6"
       />
       <PasswordInput
-        onChange={onChange}
-        value={valuesLogin.password}
+        onChange={handleChange}
+        value={values.password}
         name={"password"}
         extraClass="mb-6"
       />
@@ -59,7 +51,6 @@ const LoginForm = () => {
         type="primary"
         size="large"
         extraClass={"mb-20"}
-        // onClick={}
       >
         Войти
       </Button>

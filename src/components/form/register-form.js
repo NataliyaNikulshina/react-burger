@@ -11,23 +11,17 @@ import stylesForm from "./form.module.css";
 import {
   registerUserThunk
 } from "../../services/actions/user";
+import { useForm } from "../../hooks/useForm";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(store => store.user.userData);
-  let [values, setValues] = React.useState({
+  const { values, handleChange, setValues } = useForm({
     email: "",
     password: "",
     name: "",
   });
-
-  const onChange = (event) => {
-    const { name, value } = event.target;
-    setValues((prevValues) => {
-      return { ...prevValues, [name]: value };
-    });
-  };
 
   const registerSubmit = React.useCallback(
     (e) => {
@@ -43,13 +37,13 @@ const RegisterForm = () => {
       </h1>
       <Input
         value={values.name}
-        onChange={onChange}
+        onChange={handleChange}
         placeholder={"Name"}
         name={"name"}
         extraClass="mt-6 mb-6"
       />
       <EmailInput
-        onChange={onChange}
+        onChange={handleChange}
         value={values.email}
         name={"email"}
         placeholder="E-mail"
@@ -57,7 +51,7 @@ const RegisterForm = () => {
         extraClass="mb-6"
       />
       <PasswordInput
-        onChange={onChange}
+        onChange={handleChange}
         value={values.password}
         name={'password'}
         extraClass="mb-6"

@@ -7,19 +7,17 @@ import {
 import { forgotPassThunk } from "../../services/actions/user";
 import stylesForm from "./form.module.css";
 import { useDispatch } from "react-redux";
+import { useForm } from "../../hooks/useForm";
 
 const ForgotPasswordForm = () => {
-  const [valueEmail, setValueEmail] = React.useState("");
-  const navigate = useNavigate()
+  const { values, handleChange } = useForm({ email: "" });
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const onChangeEmail = (e) => {
-    setValueEmail(e.target.value);
-  };
 
   const onSubmitEmail = (e) => {
-        e.preventDefault();
-        dispatch(forgotPassThunk(valueEmail, () => navigate("/reset-password")));
-    };
+    e.preventDefault();
+    dispatch(forgotPassThunk(values.email, () => navigate("/reset-password")));
+  };
 
   return (
     <form className={`${stylesForm.container}`} onSubmit={onSubmitEmail}>
@@ -27,15 +25,15 @@ const ForgotPasswordForm = () => {
         Восстановление пароля
       </h1>
       <EmailInput
-        onChange={onChangeEmail}
-        value={valueEmail}
+        onChange={handleChange}
+        value={values}
         name={"email"}
         placeholder="Укажите e-mail"
         isIcon={false}
         extraClass="mt-6 mb-6"
       />
       <Button
-        disabled={valueEmail === "" ? true : false}
+        disabled={values.email === "" ? true : false}
         htmlType="submit"
         type="primary"
         size="large"
