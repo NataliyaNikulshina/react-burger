@@ -8,10 +8,7 @@ import RegisterForm from '../components/form/register-form';
 const RegisterPage = () => {
 
   return (
-    <>
-    <AppHeader />
     <RegisterForm />
-    </>
   );
 }
 

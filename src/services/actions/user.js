@@ -49,7 +49,7 @@ export const CHECK_USER_REQUEST = "CHECK_USER_REQUEST";
 export const CHECK_USER_SUCCESS = "CHECK_USER_SUCCESS";
 export const CHECK_USER_ERROR = "CHECK_USER_ERROR";
 
-export function loginUserThunk(dataLogin, callback) {
+export function loginUserThunk(dataLogin) {
   return function (dispatch) {
     dispatch({
       type: LOGIN_USER_REQUEST,
@@ -62,7 +62,7 @@ export function loginUserThunk(dataLogin, callback) {
           type: LOGIN_USER_SUCCESS,
           payload: res.user,
         });
-        callback();
+        
       })
       .catch((err) => {
         dispatch({
@@ -198,7 +198,8 @@ export const updateUserData = (data, refreshToken) => {
       .catch((err) => {
         if (err.message === "jwt expired" || err.message === "jwt malformed") {
           console.log('я тут')
-          dispatch(updateAccessToken(getRefreshToken(refreshToken)))
+          const tok = getRefreshToken(refreshToken);
+          dispatch(updateAccessToken(tok))
           .then(() => {
             updateUserInfo(data, refreshToken)
               .then((res) => {
@@ -206,7 +207,6 @@ export const updateUserData = (data, refreshToken) => {
                   type: UPDATE_USER_SUCCESS,
                   payload: res.user,
                 });
-          
               })
               .catch((err) => {
                 dispatch({
@@ -226,10 +226,10 @@ export function checkUser() {
     });
    return getUserInfo(getToken())
       .then((res) => {
-        console.log(res)
+        //console.log(res)
         dispatch({ type: CHECK_USER_SUCCESS, payload: res.user })
-        console.log('получение информации')
-        console.log(res)
+       // console.log('получение информации')
+       // console.log(res)
       })
       .catch((err) => {
         dispatch({

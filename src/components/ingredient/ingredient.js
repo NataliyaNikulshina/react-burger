@@ -19,7 +19,7 @@ const Ingredient = ({ ingredient, count }) => {
       className={`${burgerIngredient.item} `}
       ref={dragRef}
     >
-      <Link to={`/ingredients/${ingredient._id}`} replace={true} state={{ingredient: ingredient, from: "/", modalState: true}} className={`text_color_primary ${burgerIngredient.link}`}>
+      <Link to={`/ingredients/${ingredient._id}`} replace={true} state={{ingredient: ingredient, from: "/", background: true}} className={`text_color_primary ${burgerIngredient.link}`}>
       {count > 0 && <Counter count={count} size="default" />}
       <img src={ingredient.image} alt={ingredient.name}></img>
       <div className={`${burgerIngredient.price} mt-1 mb-1`}>

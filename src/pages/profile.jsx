@@ -8,8 +8,6 @@ const ProfilePage = () => {
   const location = useLocation();
 
   return (
-    <>
-      <AppHeader />
       <div className={`${styleProfile.container} mt-20`}>
         <NavProfile />
         {location.pathname === "/profile" ? (
@@ -20,7 +18,6 @@ const ProfilePage = () => {
           </p>
         )}
       </div>
-    </>
   );
 };
 

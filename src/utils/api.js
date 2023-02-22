@@ -7,6 +7,15 @@ const api = {
 
 const checkJson = (res) => res.json().then(data => res.ok ? data : Promise.reject(data))
 
+// создаем функцию проверки на `success`
+const checkSuccess = (res) => {
+  if (res && res.success) {
+    return res;
+  }
+  // не забываем выкидывать ошибку, чтобы она попала в `catch`
+  return Promise.reject(`Ответ не success: ${res}`);
+};
+
 function request(url, method, data = null, token = null) {
   const options = {
     method: method,
@@ -15,7 +24,7 @@ function request(url, method, data = null, token = null) {
   if (data) options.body = JSON.stringify(data);
   if (token) options.headers = {...options.headers, 'Authorization': token};
  // console.log(options, fetch);
-  return fetch(url, options).then(checkJson) 
+  return fetch(url, options).then(checkJson).then(checkSuccess) 
 }
 
 export const getProductData = () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import HomePage from '../../pages/home';
 import NotFound404 from '../../pages/not-found';
 import LoginPage from '../../pages/login';
@@ -11,33 +11,59 @@ import ProfilePage from '../../pages/profile';
 import IngredientDetailsPage from '../../pages/ingredients-id';
 import { checkUser } from "../../services/actions/user";
 import ProtectedRouteElement from '../protected-route/protected-route';
+import AppHeader from "../app-header/app-header";
+import { getItems } from "../../services/actions/ingredients";
+import { useNavigate, useLocation } from "react-router-dom";
+import Modal from "../modal/modal";
+import { useEffect, useState } from "react";
+import IngredientDetailsFunc from '../ingredient-details/ingredient-details';
+import { addIngredientDetails } from '../../services/actions/ingredient-details';
+import Loader from "../loader/loader";
 
 export default function App() {
+  const isLoading = useSelector((state) => state.ingredients.itemsRequest);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const background = location.state && location.state?.background;
+  const navigate = useNavigate();
 
-  const { isAuth } = useSelector((store) => ({
-    isAuth: store.user.isAuth
-  }));
-  console.log(isAuth)
-
-   React.useEffect(() => {
+  useEffect(() => {
+    dispatch(getItems());
     dispatch(checkUser());
-   }, []);
+  }, []);
 
+  const [visibility, changeVisibility] = useState(false);
+
+  const onClose = () => {
+    changeVisibility(false);
+    navigate('/');
+  };
  
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<ProtectedRouteElement isAuth={!isAuth}><LoginPage/></ProtectedRouteElement>} /> 
-        <Route path="/register" element={<ProtectedRouteElement isAuth={!isAuth}><RegisterPage/></ProtectedRouteElement>} />
-        <Route path="/forgot-password" element={<ProtectedRouteElement isAuth={!isAuth}><ForgotPasswordPage/></ProtectedRouteElement>} />
-        <Route path="/reset-password" element={<ProtectedRouteElement isAuth={!isAuth}><ResetPasswordPage/></ProtectedRouteElement>} />
-        <Route path="/profile" element={<ProtectedRouteElement isAuth={isAuth}><ProfilePage/></ProtectedRouteElement>} />
-        <Route path="/profile/orders" element={<ProtectedRouteElement isAuth={isAuth}><ProfilePage/></ProtectedRouteElement>} />
-        <Route path= "/ingredients/:id" element={<IngredientDetailsPage />} /> 
-        <Route path="*" element={<NotFound404 />}/>
-      </Routes>
-    </BrowserRouter>
+  useEffect(() => {
+      if (location.state?.ingredient) {
+        dispatch(addIngredientDetails(location.state.ingredient));
+        changeVisibility(true)
+      }
+    }, [location.state])
+
+  return ( 
+    isLoading ? 
+      <Loader />
+    : 
+      <>
+        <AppHeader />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<ProtectedRouteElement needAuth={false}><LoginPage/></ProtectedRouteElement>} /> 
+          <Route path="/register" element={<ProtectedRouteElement needAuth={false}><RegisterPage/></ProtectedRouteElement>} />
+          <Route path="/forgot-password" element={<ProtectedRouteElement needAuth={false}><ForgotPasswordPage/></ProtectedRouteElement>} />
+          <Route path="/reset-password" element={<ProtectedRouteElement needAuth={false}><ResetPasswordPage/></ProtectedRouteElement>} />
+          <Route path="/profile" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
+          <Route path="/profile/orders" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
+          <Route path= "/ingredients/:id" element={<IngredientDetailsPage />} /> 
+          <Route path="*" element={<NotFound404 />}/>
+        </Routes>
+        {background && <Modal onClose={onClose} title={'Детали ингредиента'}><IngredientDetailsFunc /></Modal>}            
+      </>
   );
 }

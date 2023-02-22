@@ -52,15 +52,15 @@ const BurgerConstructor = () => {
   };
 
   const handleOrderModal = (e) => {
-    console.log("нажали на нопку");
+  //  console.log("нажали на нопку");
     if (!isAuth) {
       navigate("/login");
     } else {
       postOrderNumer();
       changeVisibility(true);
     }
-    console.log(visibility)
-    console.log(orderNumber)
+   // console.log(visibility)
+   // console.log(orderNumber)
   };
 
   function closeModal(e) {
@@ -157,7 +157,7 @@ const BurgerConstructor = () => {
       </ul>
 
       {visibility && !(orderNumber.orderNum === "") && (
-        <Modal setClose={closeModal}>
+        <Modal onClose={closeModal}>
           <OrderDetails
             orderNumber={orderNumber.orderNum.order.number}
             isLoading={orderNumber.orderNum.order.orderRequest}

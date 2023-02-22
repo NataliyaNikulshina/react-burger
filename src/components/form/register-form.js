@@ -17,7 +17,7 @@ const RegisterForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(store => store.user.userData);
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange } = useForm({
     email: "",
     password: "",
     name: "",
@@ -27,7 +27,8 @@ const RegisterForm = () => {
     (e) => {
         e.preventDefault();
         if (user) return;
-        dispatch(registerUserThunk(values, () => navigate("/login")));
+        dispatch(registerUserThunk(values));
+        navigate(-1);
     }, [dispatch, user, values]);
 
   return (

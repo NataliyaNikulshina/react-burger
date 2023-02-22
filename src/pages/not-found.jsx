@@ -5,7 +5,6 @@ import AppHeader from "../components/app-header/app-header";
 const NotFound404 = () => {
   return (
     <div className={styles.background}>
-      <AppHeader />
       <div className={styles.container}>
         <h1 className={`${styles.text} text text_type_main-large`}>Упс!</h1>
         <h1 className={`${styles.text} text text_type_digits-large`}>404</h1>

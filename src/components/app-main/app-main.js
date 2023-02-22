@@ -5,11 +5,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import styleMain from "./app-main.module.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getItems } from "../../services/actions/ingredients";
 import Modal from "../modal/modal";
 import IngredientDetailsFunc from '../ingredient-details/ingredient-details';
 import { addIngredientDetails } from '../../services/actions/ingredient-details';
 import { useNavigate, useLocation} from "react-router-dom";
+import Loader from "../loader/loader.js";
 
 const AppMain = () => {
   const ingredients = useSelector((state) => state.ingredients);
@@ -17,33 +17,30 @@ const AppMain = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(getItems());
-  }, []);
-  const [visibility, changeVisibility] = useState(false);
-  const toggleVisibility = (e) => {
-    e.stopPropagation();
-   // dispatch(addIngredientDetails(e));
-    changeVisibility((prevValue) => !prevValue);
-    navigate('/');
-  };
+  // const [visibility, changeVisibility] = useState(false);
+  // const toggleVisibility = (e) => {
+  //   e.stopPropagation();
+  //  // dispatch(addIngredientDetails(e));
+  //   changeVisibility((prevValue) => !prevValue);
+  //   navigate('/');
+  // };
 
-  const ingredientDetails = useSelector((state) => state.details.ingredientDetails);
+  // const ingredientDetails = useSelector((state) => state.details.ingredientDetails);
 
-   useEffect(() => {
-     // e.stopPropagation();
-      if (location.state?.ingredient) {
-        dispatch(addIngredientDetails(location.state.ingredient));
-      //dispatch({type: SET_INGREDIENT, payload: location.state.ingredient})
-       changeVisibility(true)
-      }
-    }, [location.state])
+  //  useEffect(() => {
+  //    // e.stopPropagation();
+  //     if (location.state?.ingredient) {
+  //       dispatch(addIngredientDetails(location.state.ingredient));
+  //     //dispatch({type: SET_INGREDIENT, payload: location.state.ingredient})
+  //      changeVisibility(true)
+  //     }
+  //   }, [location.state])
 
 
   return (
     <>
       {isLoading ? (
-        <div className={styleMain.loader} id="loader"></div>
+        <Loader />
       ) : (
         <main className={styleMain.main}>
           <DndProvider backend={HTML5Backend}>
@@ -52,11 +49,11 @@ const AppMain = () => {
           </DndProvider>
         </main>
       )}
-      {visibility && ingredientDetails && (
+       {/* {visibility && ingredientDetails && (
         <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
           <IngredientDetailsFunc />
         </Modal>
-      )}
+      )} */}
     </>
   );
 };

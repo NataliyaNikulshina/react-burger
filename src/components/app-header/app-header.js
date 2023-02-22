@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useResolvedPath, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -29,9 +29,9 @@ const AppHeader = () => {
               </NavLink>
             </ul>
             <li className={appHeader.item}>
-              <div className={appHeader.logo}>
+              <NavLink className={appHeader.logo} to='/' >
                 <Logo />
-              </div>
+              </NavLink>
             </li>
             <NavLink className={`${appHeader.item} pl-5 pr-5 `} to='/profile' style={pathname === "/profile" ? activeStyle : undefined}>
               <ProfileIcon type={pathname === "/profile" ? "primary" : "secondary"} />

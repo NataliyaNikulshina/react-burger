@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate, useLocation } from "react-router-dom";
 import {
   EmailInput,
   Button,
@@ -10,22 +10,29 @@ import stylesLoginForm from "./form.module.css";
 import { loginUserThunk } from "../../services/actions/user";
 import { useForm } from "../../hooks/useForm";
 
-const LoginForm = () => {
+
+const LoginForm = (isAuth) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const from = location.state?.from || '/';
   const loginData = useSelector((store) => store.user.userData);
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange } = useForm({
     email: "",
     password: "",
   });
+  // const { isAuth } = useSelector((store) => ({
+  //   isAuth: store.user.isAuth
+  // }));
 
-  const loginSubmit = React.useCallback(
-    (e) => {
+  const loginSubmit = (e) => {
       e.preventDefault();
-      dispatch(loginUserThunk(values, () => navigate("/")));
-    },
-    [loginData, dispatch, values]
-  );
+      dispatch(loginUserThunk(values));
+      navigate(-1);
+      // ...то отправляем его на предыдущую страницу
+    //  return <Navigate to={ from } />;
+    
+  };
 
   return (
     <form className={`${stylesLoginForm.container}`} onSubmit={loginSubmit}>

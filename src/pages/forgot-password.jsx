@@ -5,10 +5,7 @@ import ForgotPasswordForm from '../components/form/forgot-form';
 const ForgotPasswordPage = () => {
 
   return (
-    <>
-    <AppHeader />
     <ForgotPasswordForm />
-    </>
   );
 }
 

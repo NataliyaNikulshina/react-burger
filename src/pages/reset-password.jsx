@@ -5,10 +5,7 @@ import ResetPasswordForm from "../components/form/resetpass-form";
 const ResetPasswordPage = () => {
 
   return (
-    <>
-    <AppHeader />
     <ResetPasswordForm />
-    </>
   );
 }
 
