@@ -49,7 +49,7 @@ const ProfileForm = () => {
 
   const updateProfileInfo = ({email,name, password}, token) => {
     const userInfo = {email,name}
-    console.log(token)
+    //console.log(token)
     // eslint-disable-next-line no-unused-expressions
     password !== "" ? userInfo.password = password : false
     return dispatch(updateUserData(userInfo,token));
@@ -59,7 +59,7 @@ const ProfileForm = () => {
     (e) => {
       e.preventDefault();
       updateProfileInfo(values, token)
-      console.log(values)
+      //console.log(values)
     },
     [dispatch, user, values]
   );

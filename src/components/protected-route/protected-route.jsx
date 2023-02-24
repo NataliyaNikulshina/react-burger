@@ -2,20 +2,12 @@ import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import propTypes from "prop-types";
 
-// export default function ProtectedRouteElement({ children, isAuth, anonymous = false }) {
-//   const location = useLocation();
-//    // Если разрешен неавторизованный доступ, а пользователь авторизован...
-//   if ( isAuth && anonymous) { return <Navigate to={location.state?.from || "/"}/>};
-//   // Если требуется авторизация, а пользователь не авторизован...
-//   if ( !isAuth && !anonymous) { return <Navigate to="/login" />};
-//   return children;
-// }
 export default function ProtectedRouteElement({ children, needAuth }) {
-   
   const isAuth = useSelector((store) => store.user.isAuth);
   const location = useLocation();
 
-  if (needAuth) {
+  if (needAuth ) {
+    console.log('нужна авторизация и она :' + isAuth)
     return isAuth ? children : <Navigate to='/login' />
   }
   else {

@@ -43,7 +43,7 @@ const initialState = {
   refreshTokenRequest: false,
   refreshTokenError: false,
 
-  checkUserRequest: false,
+  checkUserRequest: null,
   checkUserError: false,
 };
 
@@ -213,6 +213,8 @@ export const userReducer = (state = initialState, action) => {
           name: action.payload.name,
         },
         isAuth: true,
+        checkUserRequest: false,
+        checkUserError: false,
       };
     }
     case CHECK_USER_ERROR: {
