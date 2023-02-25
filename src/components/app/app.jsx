@@ -8,6 +8,7 @@ import RegisterPage from '../../pages/register';
 import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
+import FeedPage from '../../pages/feed';
 import IngredientDetailsPage from '../../pages/ingredients-id';
 import { checkUser } from "../../services/actions/user";
 import ProtectedRouteElement from '../protected-route/protected-route';
@@ -63,6 +64,18 @@ export default function App() {
         <Route path="/reset-password" element={<ProtectedRouteElement needAuth={false}><ResetPasswordPage/></ProtectedRouteElement>} />
         <Route path="/profile" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
         <Route path="/profile/orders" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
+        <Route path= "/profile/orders/:id" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
+        <Route  path="/profile">
+          <Route index element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>}/>
+          <Route  path="orders" >
+              <Route index element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>}/>
+              <Route  path=":id" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>}/>
+           </Route>
+        </Route>
+        <Route  path="/feed">
+          <Route index element={<FeedPage/>} />
+          <Route  path=":id" element={<ProfilePage/>} />
+        </Route>
         <Route path= "/ingredients/:id" element={<IngredientDetailsPage />} /> 
         <Route path="*" element={<NotFound404 />}/>
       </Routes>

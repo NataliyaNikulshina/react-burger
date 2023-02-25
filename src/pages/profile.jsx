@@ -1,4 +1,3 @@
-import AppHeader from "../components/app-header/app-header";
 import NavProfile from "../components/nav-profile/nav-profile";
 import ProfileForm from "../components/profile/profile-form";
 import { useLocation } from "react-router-dom";

@@ -1,0 +1,28 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    gap: 10px;
+    border-radius: 40px;
+    background: #1C1C21;
+    max-width: 584px;
+    max-height: 214px;
+    cursor: pointer;
+  }
+  
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .price{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  
+  .status {
+    color: var(--colors-interface-success)
+  }
+  
