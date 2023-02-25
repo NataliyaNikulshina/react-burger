@@ -7,11 +7,11 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 
 const modalRoot = document.getElementById("react-modals");
 
-const Modal = ({ title, setClose, children }) => {
+const Modal = ({ title, onClose, children }) => {
   React.useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") {
-        setClose(e);
+        onClose(e);
       }
     };
     window.addEventListener("keyup", handleEsc);
@@ -29,13 +29,13 @@ const Modal = ({ title, setClose, children }) => {
       >
         <div className={modalStyles.header}>
           <h2 className="text text_type_main-large">{title}</h2>
-          <div className={modalStyles.closebtn} onClick={setClose}>
+          <div className={modalStyles.closebtn} onClick={onClose}>
             <CloseIcon type="primary" />
           </div>
         </div>
         {children}
       </div>
-      <ModalOverlay onClick={setClose} />
+      <ModalOverlay onClick={onClose} />
     </>,
     modalRoot
   );
@@ -44,7 +44,7 @@ const Modal = ({ title, setClose, children }) => {
 Modal.propTypes = {
   children: propTypes.node.isRequired,
   title: propTypes.string,
-  setClose: propTypes.func.isRequired,
+  onClose: propTypes.func.isRequired,
 };
 
 export default Modal;

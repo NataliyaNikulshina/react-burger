@@ -3,6 +3,8 @@ import { postOrderDetails } from "../../utils/api";
 export const POST_ORDER_DETAILS_REQUEST = "POST_ORDER_DETAILS_REQUEST";
 export const POST_ORDER_DETAILS_ERROR = "POST_ORDER_DETAILS_ERROR";
 export const POST_ORDER_DETAILS_SUCCESS = "POST_ORDER_DETAILS_SUCCESS";
+export const POST_ORDER_DETAILS_RESET = "POST_ORDER_DETAILS_RESET";
+
 
 export function postOrder(ingredients) {
   return function (dispatch) {

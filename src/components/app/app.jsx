@@ -1,47 +1,74 @@
-import AppHeader from "../app-header/app-header.js";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients.js";
-import BurgerConstructor from "../burger-constructor/burger-constructor.js";
-import app from "./app.module.css";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Routes, Route} from 'react-router-dom';
+import HomePage from '../../pages/home';
+import NotFound404 from '../../pages/not-found';
+import LoginPage from '../../pages/login';
+import RegisterPage from '../../pages/register';
+import ForgotPasswordPage from '../../pages/forgot-password';
+import ResetPasswordPage from '../../pages/reset-password';
+import ProfilePage from '../../pages/profile';
+import IngredientDetailsPage from '../../pages/ingredients-id';
+import { checkUser } from "../../services/actions/user";
+import ProtectedRouteElement from '../protected-route/protected-route';
+import AppHeader from "../app-header/app-header";
+import { getItems } from "../../services/actions/ingredients";
+import { useNavigate, useLocation } from "react-router-dom";
+import Modal from "../modal/modal";
 import { useEffect, useState } from "react";
-import { IngredientsContext } from "../../context/app-context.js";
-import { getProductData } from '../../utils/api.js';
-import { useSelector, useDispatch } from 'react-redux';
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { getItems } from '../../services/actions/ingredients';
+import IngredientDetailsFunc from '../ingredient-details/ingredient-details';
+import { addIngredientDetails } from '../../services/actions/ingredient-details';
+import Loader from "../loader/loader";
 
-export function App() {
-  //const [data, setData] = useState(null);
- // const [loading, setLoading] = useState(true);
+export default function App() {
+  const isLoading = useSelector((state) => state.ingredients.itemsRequest);
+  const isLoadingUser = useSelector((state) => state.user.checkUserRequest);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const background = location.state && location.state?.background;
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    dispatch(checkUser());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getItems());
+  }, []);
+
+  console.log(isLoading, isLoadingUser)
+  const [visibility, changeVisibility] = useState(false);
+
+  const onClose = () => {
+    changeVisibility(false);
+    navigate('/');
+  };
  
-/*  useEffect(() => {
-    getProductData()
-    .then(setData)
-    .catch(error => console.error(error))
-    .finally(() => setLoading(false));
-}, [])*/
-const ingredients = useSelector(state => state.ingredients);
-const isLoading = ingredients.itemsRequest;
-const dispatch = useDispatch();
-useEffect(() => {
- dispatch(getItems())
-}, [])
+  useEffect(() => {
+      if (location.state?.ingredient) {
+        dispatch(addIngredientDetails(location.state.ingredient));
+        changeVisibility(true)
+      }
+    }, [location.state])
 
-
-  return (
-    <div className="App">
+  return ( 
+    (!isLoading && isLoadingUser===false) ? 
+    <>
       <AppHeader />
-      {isLoading && <div className={app.loader} id="loader"></div>}
-      {!isLoading &&
-        <main className={app.main}>
-           <DndProvider backend={HTML5Backend} > 
-           {ingredients.items.length && <BurgerIngredients /> }
-           {ingredients.items.length && <BurgerConstructor /> } 
-           </DndProvider> 
-        </main> }
-    </div>
+      <Routes location={background || location}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<ProtectedRouteElement needAuth={false}><LoginPage/></ProtectedRouteElement>} /> 
+        <Route path="/register" element={<ProtectedRouteElement needAuth={false}><RegisterPage/></ProtectedRouteElement>} />
+        <Route path="/forgot-password" element={<ProtectedRouteElement needAuth={false}><ForgotPasswordPage/></ProtectedRouteElement>} />
+        <Route path="/reset-password" element={<ProtectedRouteElement needAuth={false}><ResetPasswordPage/></ProtectedRouteElement>} />
+        <Route path="/profile" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
+        <Route path="/profile/orders" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
+        <Route path= "/ingredients/:id" element={<IngredientDetailsPage />} /> 
+        <Route path="*" element={<NotFound404 />}/>
+      </Routes>
+      {background && <Modal onClose={onClose} title={'Детали ингредиента'}><IngredientDetailsFunc /></Modal>}            
+   </> 
+    : 
+    <Loader /> 
   );
 }
-
-export default App;

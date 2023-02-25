@@ -1,0 +1,4 @@
+.container {
+    composes: loader from "../form/form.module.css";
+    margin: 0;
+}

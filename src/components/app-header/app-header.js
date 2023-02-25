@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -8,29 +9,34 @@ import {
 import appHeader from "./app-header.module.css";
 
 const AppHeader = () => {
+  const activeStyle = {
+    color: "#f2f2f3",
+  };
+  const { pathname } = useLocation();
+  
     return (
       <header className={`${appHeader.header}`}>
         <nav className={`${appHeader.container} pt-4 pb-4`}>
           <ul className={appHeader.nav}>
             <ul className={appHeader.items}>
-              <a className={`${appHeader.item} pl-5 pr-4 mr-2`}>
-                <BurgerIcon type="primary" />
-                <p className="ml-2">Конструктор</p>
-              </a>
-              <a className={`${appHeader.item} pl-5 pr-5 `}>
-                <ListIcon type="secondary" />
-                <p className={`${appHeader.text} ml-2`}>Лента заказов</p>
-              </a>
+              <NavLink className={`${appHeader.item} pl-5 pr-4 mr-2`} to='/' style={pathname === "/" ? activeStyle : undefined}>
+                <BurgerIcon type={pathname === "/" ? "primary" : "secondary"} />
+                <p className={`ml-2`}>Конструктор</p>
+              </NavLink>
+              <NavLink className={`${appHeader.item} pl-5 pr-5 `} to='/profile/orders' style={pathname === "/profile/orders" ? activeStyle : undefined}>
+                <ListIcon type={pathname === "/profile/orders" ? "primary" : "secondary"} />
+                <p className={`ml-2`}>Лента заказов</p>
+              </NavLink>
             </ul>
             <li className={appHeader.item}>
-              <div className={appHeader.logo}>
+              <NavLink className={appHeader.logo} to='/' >
                 <Logo />
-              </div>
+              </NavLink>
             </li>
-            <a className={`${appHeader.item} pl-5 pr-5 `}>
-              <ProfileIcon type="secondary" />
-              <p className={`${appHeader.text} ml-2`}>Личный кабинет</p>
-            </a>
+            <NavLink className={`${appHeader.item} pl-5 pr-5 `} to='/profile' style={pathname === "/profile" ? activeStyle : undefined}>
+              <ProfileIcon type={pathname === "/profile" ? "primary" : "secondary"} />
+              <p className={`ml-2`}>Личный кабинет</p>
+            </NavLink>
           </ul>
         </nav>
       </header>

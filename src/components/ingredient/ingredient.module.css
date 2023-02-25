@@ -11,3 +11,8 @@
   .price {
     display: flex;
   }
+
+  .link {
+    text-decoration: none;
+    align-items: center;
+  }
