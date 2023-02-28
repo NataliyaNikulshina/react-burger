@@ -28,6 +28,7 @@ import {
 } from "../../services/actions/ws";
 import { apiWS } from "../../utils/api";
 import OrderDetailsInfo from "../order-details-info/order-details-info";
+import { getToken } from "../../hooks/useTokens";
 
 export default function App() {
   const isLoading = useSelector((state) => state.ingredients.itemsRequest);
@@ -40,27 +41,25 @@ export default function App() {
      location;
   const navigate = useNavigate();
   const {orders} = useSelector((store) => store.wsocket);
-  useEffect(() => {
-    dispatch(wsConnectionStart(apiWS.urlWS));
-    return () => {
-      dispatch(wsConnectionClose());
-    };
-  }, []);
-
-   // useEffect(() => {
-    //     if (!ingredients.length) dispatch(getIngredientsThunk())
-    // }, [dispatch, ingredients])
-    // useEffect(() => {
-    //     if (!orders.length) {
-    //         if (location.pathname.includes("feed")) {
-    //             dispatch(feedOrdersWebSocketStartConnectAction(websocketUrl.allFeedUrl))
-    //             return () => dispatch(feedOrdersWebSocketCloseConnectAction())
-    //         } else {
-    //             dispatch(userOrdersWebSocketStartConnectAction(websocketUrl.userFeed(tokenStorage.getToken().replace("Bearer ", ""))))
-    //             return () => dispatch(userOrdersWebSocketCloseConnectAction())
-    //         }
-    //     }
-    // }, [dispatch, location, orders, tokenStorage])
+  const token = getToken();
+  // useEffect(() => {
+  //   dispatch(wsConnectionStart(apiWS.urlWS));
+  //   return () => {
+  //     dispatch(wsConnectionClose());
+  //   };
+  // }, []);
+   
+    useEffect(() => {
+        if (!orders.length) {
+            if (location.pathname.includes("feed")) {
+                dispatch(wsConnectionStart(apiWS.urlWS));
+                return () => dispatch(wsConnectionClose());
+            } else {
+              dispatch(wsConnectionStart(apiWS.urlProfile(token.replace("Bearer ", ""))))
+                return () => dispatch(wsConnectionClose());
+            }
+        }
+    }, [dispatch, location, orders])
 
 
   useEffect(() => {
@@ -113,13 +112,12 @@ export default function App() {
         <Route path="/register" element={<ProtectedRouteElement needAuth={false}><RegisterPage/></ProtectedRouteElement>} />
         <Route path="/forgot-password" element={<ProtectedRouteElement needAuth={false}><ForgotPasswordPage/></ProtectedRouteElement>} />
         <Route path="/reset-password" element={<ProtectedRouteElement needAuth={false}><ResetPasswordPage/></ProtectedRouteElement>} />
-        <Route  path="/profile">
-          <Route index element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
-          <Route  path="orders">
-            <Route index element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
-            <Route  path=":id" element={<ProtectedRouteElement needAuth={true}><OrderDetailsPage/></ProtectedRouteElement>} />
-          </Route>
+        <Route  path="/profile" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} />
+        <Route  path="/profile/orders" element={<ProtectedRouteElement needAuth={true}><ProfilePage/></ProtectedRouteElement>} >
+              {location.state?.from === "profile" && orders && (
+              <Route path=":id" element={<Modal onClose={onCloseOrder} children={<OrderDetailsInfo order={location.state.order} />} />} />)}
         </Route>
+        <Route path="/profile/orders/:id" element={<ProtectedRouteElement needAuth={true}><OrderDetailsPage/></ProtectedRouteElement>} />
         <Route path="/feed" element={<FeedPage/>} >
               {location.state?.from === "feed" && orders && (
               <Route path=":id" element={<Modal onClose={onCloseOrder} children={<OrderDetailsInfo order={location.state.order} />} />} />)}
@@ -129,12 +127,6 @@ export default function App() {
         <Route path="*" element={<NotFound404 />}/>
       </Routes>
        {background && <Modal onClose={onClose} title={'Детали ингредиента'}><IngredientDetailsFunc /></Modal>}             
-        {/* {location.state?.locationFeed && orders && (
-              <Modal onClose={onCloseOrder} children={<OrderDetailsInfo order={location.state.order} />} />)} */}
-       {location.state?.locationProfile && orders && (
-              <Modal onClose={onCloseOrder}>
-                <OrderDetailsInfo />
-              </Modal>)}  
    </> 
     : 
     <Loader /> 

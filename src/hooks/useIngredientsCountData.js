@@ -3,7 +3,6 @@ import {useSelector} from "react-redux";
 
 export const useIngredientsCountData = (arrayToCalculateCount) => {
     const ingredients = useSelector((state) => state.ingredients);
-    console.log(ingredients)
 
     const ingredientsCountData = useMemo(() => {
         const ingredientsCount = {}

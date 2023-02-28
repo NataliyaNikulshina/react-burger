@@ -76,10 +76,10 @@ const FeedPage = () => {
 
   const [visibility, changeVisibility] = useState(location.state?.from === 'feed')
 
-  const handleCloseModal = useCallback(() => {
-    changeVisibility(false)
-    navigate(-1)
-  },[navigate])
+  // const handleCloseModal = useCallback(() => {
+  //   changeVisibility(false)
+  //   navigate(-1)
+  // },[navigate])
 
  // console.log(visibility);
 
