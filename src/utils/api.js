@@ -1,9 +1,16 @@
+
+
 const api = {
   url: "https://norma.nomoreparties.space/api",
   headers: {
     "Content-Type": "application/json",
   },
 };
+
+export const apiWS = {
+  urlWS: "wss://norma.nomoreparties.space/orders/all",
+  urlProfile: (token) => `wss://norma.nomoreparties.space/orders?token=${token}`
+}
 
 const checkJson = (res) => res.json().then(data => res.ok ? data : Promise.reject(data))
 

@@ -2,6 +2,7 @@ import NavProfile from "../components/nav-profile/nav-profile";
 import ProfileForm from "../components/profile/profile-form";
 import { useLocation } from "react-router-dom";
 import styleProfile from "./profile.module.css";
+import ProfileOrders from "../components/profile-orders/profile-orders";
 
 const ProfilePage = () => {
   const location = useLocation();
@@ -9,13 +10,11 @@ const ProfilePage = () => {
   return (
       <div className={`${styleProfile.container} mt-20`}>
         <NavProfile />
-        {location.pathname === "/profile" ? (
+        {location.pathname === "/profile" ? 
           <ProfileForm />
-        ) : (
-          <p className="text text_type_main-default ">
-            Скоро здесь будет история сделанных заказов
-          </p>
-        )}
+         : 
+          <ProfileOrders/>
+        }
       </div>
   );
 };

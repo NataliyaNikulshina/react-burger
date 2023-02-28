@@ -1,5 +1,5 @@
 .container{
-    width: 1240px;
+    max-width: 1240px;
     margin: 0 auto;
 }
 
@@ -11,10 +11,8 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-height: 870px;
-    min-height: 870px;
-    min-width: 584px;
-    width: fit-content;
+    height: 870px;
+    width: 600px;
     overflow-y: scroll;
 }
 
@@ -33,6 +31,7 @@
     display: flex;
     flex-direction: column;
     gap: 60px; 
+    max-width: 584px;
 }
 
 .ordersInfoList {
@@ -41,8 +40,7 @@
 }
 
 .containerList {
-    max-width: 280px;
-    width: 280px;
+    width: 272px;
     height: 206px;
 }
 
@@ -65,4 +63,6 @@
 .shadow {
     text-shadow: 0 0 16px rgba(51, 51, 255, 0.25), 0 0 8px rgba(51, 51, 255, 0.25), 0 4px 32px rgba(51, 51, 255, 0.5);
 }
+
+ /* width: fit-content; */
 

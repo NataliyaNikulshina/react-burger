@@ -15,7 +15,8 @@
     justify-content: center;
     max-width: 500px;
     align-items: center;
-    margin: 300px auto;
+    margin: 0 auto;
+    padding-top: 300px;
   }
 
 .text {

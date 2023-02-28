@@ -16,6 +16,8 @@ const Modal = ({ title, onClose, children }) => {
     };
     window.addEventListener("keyup", handleEsc);
 
+    console.log('в модалке')
+
     return () => {
       window.removeEventListener("keyup", handleEsc);
     };
