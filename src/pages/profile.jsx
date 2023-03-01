@@ -23,13 +23,13 @@ const ProfilePage = () => {
   const {orders} = useSelector((store) => store.wsocket);
   console.log(orders)
 
-  //  useEffect(() => {
-  //   //dispatch(getItems());
-  //   dispatch(wsConnectionStart(apiWS.urlProfile(token.replace("Bearer ", ""))))
-  //   return () => {
-  //     dispatch(wsConnectionClose());
-  //   };
-  // }, []);
+   useEffect(() => {
+    //dispatch(getItems());
+    dispatch(wsConnectionStart(apiWS.urlProfile(token.replace("Bearer ", ""))))
+    return () => {
+      dispatch(wsConnectionClose());
+    };
+  }, []);
      
   return (
     orders 

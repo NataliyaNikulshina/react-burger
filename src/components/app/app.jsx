@@ -49,17 +49,17 @@ export default function App() {
   //   };
   // }, []);
    
-    useEffect(() => {
-        if (!orders.length) {
-            if (location.pathname.includes("feed")) {
-                dispatch(wsConnectionStart(apiWS.urlWS));
-                return () => dispatch(wsConnectionClose());
-            } else {
-              dispatch(wsConnectionStart(apiWS.urlProfile(token.replace("Bearer ", ""))))
-                return () => dispatch(wsConnectionClose());
-            }
-        }
-    }, [dispatch, location, orders])
+    // useEffect(() => {
+    //     if (!orders.length) {
+    //         if (location.pathname.includes("feed")) {
+    //             dispatch(wsConnectionStart(apiWS.urlWS));
+    //             return () => dispatch(wsConnectionClose());
+    //         } else {
+    //           dispatch(wsConnectionStart(apiWS.urlProfile(token.replace("Bearer ", ""))))
+    //             return () => dispatch(wsConnectionClose());
+    //         }
+    //     }
+    // }, [])
 
 
   useEffect(() => {
