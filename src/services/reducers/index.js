@@ -12,5 +12,5 @@ export const rootReducer = combineReducers({
     details: ingredientDetailsReducer,
     constructor : constructorReduser,
     user: userReducer,
-    wsocket: wsReducer
+    wsocket: wsReducer,
   });

@@ -8,7 +8,6 @@ import OrderDetails from "../order-details/order-details";
 import { useNavigate } from "react-router-dom";
 import Modal from "../modal/modal";
 import { useSelector, useDispatch } from "react-redux";
-import { postOrder } from "../../services/actions/order";
 import { useDrop } from "react-dnd";
 import {
   addIngConstructor,
@@ -20,7 +19,7 @@ import {
   BurgerMiddleItem,
   BurgerLastItem,
 } from "../burger-item/burger-item";
-import {POST_ORDER_DETAILS_RESET} from '../../services/actions/order';
+import {POST_ORDER_DETAILS_RESET, createOrderAction } from '../../services/actions/createOrderAction';
 
 const BurgerConstructor = () => {
   const { bun, ingredients } = useSelector((state) => state.constructor);
@@ -44,23 +43,14 @@ const BurgerConstructor = () => {
 
   const navigate = useNavigate();
 
-  const postOrderNumer = () => {
-    if (bun && ingredients) {
-      dispatch(postOrder(dataPostId()));
-    }
-    else { alert("выберете ингредиенты");}
-  };
-
   const handleOrderModal = (e) => {
-  //  console.log("нажали на нопку");
     if (!isAuth) {
       navigate("/login");
     } else {
-      postOrderNumer();
+      dispatch(createOrderAction(ingredients, bun))
+     // postOrderNumer();
       changeVisibility(true);
     }
-   // console.log(visibility)
-   // console.log(orderNumber)
   };
 
   function closeModal(e) {

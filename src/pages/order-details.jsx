@@ -8,6 +8,9 @@ import FeedPage from "./feed";
 import ProfilePage from "./profile";
 import ProfileOrders from "../components/profile-orders/profile-orders";
 import { useIngredientsCountData } from '../hooks/useIngredientsCountData';
+import { wsConnectionStart, wsConnectionClose } from '../services/actions/ws';
+import { apiWS } from '../utils/api';
+import { getToken } from '../hooks/useTokens';
 
 
 //import { Breadcrumbs } from '../components/breadcrumbs';
@@ -15,15 +18,24 @@ import { useIngredientsCountData } from '../hooks/useIngredientsCountData';
 const OrderDetailsPage = () => {
     const {id} = useParams()
     const location = useLocation()
-    //const dispatch = useDispatch()
-   // const tokenStorage = useTokenStorage()
+    const dispatch = useDispatch()
+    //const tokenStorage = useTokenStorage()
     const {orders} = useSelector((store) => store.wsocket);
     //const {orders} = useSelector((store) => store.wsocket);
     //const ordersSelector = useSelector(location.pathname.includes("feed") && orders)
 
-    const order = location.state?.order || orders.find(order => order._id === id)
+    const order = orders.find(order => order._id === id)
 
-   
+    useEffect(() => { 
+      if (location.pathname.includes('profile')) {
+        dispatch(wsConnectionStart(apiWS.urlProfile(getToken().replace("Bearer ", ""))));
+      } else {
+        dispatch(wsConnectionStart(apiWS.urlWS));
+      }
+      return () => {
+        dispatch(wsConnectionClose());
+      };
+    }, []);
   
 
   return (

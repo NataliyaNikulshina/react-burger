@@ -3,7 +3,7 @@ import {
   POST_ORDER_DETAILS_ERROR,
   POST_ORDER_DETAILS_SUCCESS,
   POST_ORDER_DETAILS_RESET,
-} from "../actions/order";
+} from "../actions/createOrderAction";
 
 export const initialState = {
   orderRequest: false,

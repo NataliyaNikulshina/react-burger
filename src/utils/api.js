@@ -30,9 +30,26 @@ function request(url, method, data = null, token = null) {
   }
   if (data) options.body = JSON.stringify(data);
   if (token) options.headers = {...options.headers, 'Authorization': token};
- // console.log(options, fetch);
+  //console.log(options, fetch);
   return fetch(url, options).then(checkJson).then(checkSuccess) 
 }
+
+// export const createOrder = (ingredientsList, accessToken) => {
+//   return fetch(apiWS.urlProfile, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       authorization: `Bearer ${accessToken}`,
+//     },
+//     body: JSON.stringify({
+//       ingredients: ingredientsList,
+//     }),
+//   }).then(checkJson).then(checkSuccess) 
+// }
+
+export const createOrder = (ingredientsList,token) => {
+  return request(`${api.url}/orders`, "POST", {ingredients: ingredientsList}, token)
+};
 
 export const getProductData = () => {
   return request((`${api.url}/ingredients`), "GET");
