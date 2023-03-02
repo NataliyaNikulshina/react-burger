@@ -10,7 +10,7 @@ import { getToken, getRefreshToken } from "../hooks/useTokens";
 import {
     wsConnectionStart,
     wsConnectionClose,
-  } from "../services/actions/ws";
+  } from "../services/actions/feed-ws";
 import Loader from "../components/loader/loader";
 import { getItems } from "../services/actions/ingredients";
   
@@ -20,7 +20,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const token = getToken();
   console.log(token)
-  const {orders} = useSelector((store) => store.wsocket);
+  const {orders} = useSelector((store) => store.wsocketUser);
   console.log(orders)
 
    useEffect(() => {

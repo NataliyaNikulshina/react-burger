@@ -1,39 +1,3 @@
-// import {
-//     wsConnectionStart, wsConnectionSuccess, wsConnectionError, wsConnectionClose, wsConnectionClosed, wsGetMessage, WS_CONNECTION_START, WS_CONNECTION_CLOSE
-// } from "../actions/ws";
-
-// export const socketMiddleware = () => store => {
-//     let socket = null;
-//     return next => action => {
-//         const {dispatch} = store
-//         const {type, payload} = action
-       
-
-//         if (type === WS_CONNECTION_START) {
-//             socket = new WebSocket(payload)
-//         }
-//         console.log(socket);
-
-//         if (socket) {
-// console.log('1')
-//             socket.onopen = event => dispatch(wsConnectionStart(event))
-//             socket.onclose = event => dispatch(wsConnectionClose(event))
-//             socket.onerror = event => dispatch(wsConnectionError(event))
-//             socket.onmessage = event => dispatch(wsGetMessage(JSON.parse(event.data)))
-
-//             if (type === WS_CONNECTION_CLOSE && socket.readyState === 1) {
-//                 socket.close(1000, "default")
-//                 socket = null
-//             }
-//         }
-
-//         next(action)
-//     }
-// }
-
-
-
-
 export const socketMiddleware = (wsActions) => {
     return (store) => {
       let socket = null;

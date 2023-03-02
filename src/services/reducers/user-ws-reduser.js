@@ -3,18 +3,16 @@ import {
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE,
-  } from "../actions/ws";
+  } from "../actions/feed-ws";
   
   const initialState = {
     wsConnected: false,
     orders: [],
-    total: 0,
-    totalToday: 0,
     errorState: false,
     errorMessage: null,
   };
   
-  export const wsReducer = (state = initialState, action) => {
+  export const userWsReducer = (state = initialState, action) => {
     switch (action.type) {
       case WS_CONNECTION_SUCCESS:
         return {
@@ -41,9 +39,10 @@ import {
       case WS_GET_MESSAGE:
         return {
           ...state,
-          orders: action.payload.orders,
-          total: action.payload.total,
-          totalToday: action.payload.totalToday,        
+          wsConnected: false,
+          errorState: true,
+          errorMessage: null,
+          orders: action.payload.orders.reverse(),       
         };
   
       default:

@@ -9,7 +9,7 @@ import thunk from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "./services/reducers";
 import { BrowserRouter } from 'react-router-dom';
-import { socketMiddleware } from './services/middleware/socketMiddleware';
+import { socketMiddleware } from './services/middleware/socketMiddlewareFeed';
 import {
   WS_CONNECTION_START,  
   WS_CONNECTION_SUCCESS,
@@ -17,7 +17,7 @@ import {
   WS_CONNECTION_CLOSE,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
-} from "./services/actions/ws";
+} from "./services/actions/feed-ws";
 
 /*const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

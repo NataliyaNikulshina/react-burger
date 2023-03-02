@@ -11,7 +11,7 @@ const ProfileOrders = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [visibility, changeVisibility] = useState(location.state?.from === 'profile')
-  const {orders, total, totalToday, } = useSelector((store) => store.wsocket);
+  const {orders, total, totalToday, } = useSelector((store) => store.wsocketUser);
   const handleCloseModal = useCallback(() => {
     changeVisibility(false)
     navigate(-1)

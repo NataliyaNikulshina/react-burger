@@ -19,7 +19,11 @@ import {
   BurgerMiddleItem,
   BurgerLastItem,
 } from "../burger-item/burger-item";
-import {POST_ORDER_DETAILS_RESET, createOrderAction } from '../../services/actions/createOrderAction';
+import {
+  POST_ORDER_DETAILS_RESET,
+  createOrderAction,
+} from "../../services/actions/createOrderAction";
+import Loader from "../loader/loader";
 
 const BurgerConstructor = () => {
   const { bun, ingredients } = useSelector((state) => state.constructor);
@@ -47,16 +51,16 @@ const BurgerConstructor = () => {
     if (!isAuth) {
       navigate("/login");
     } else {
-      dispatch(createOrderAction(ingredients, bun))
-     // postOrderNumer();
       changeVisibility(true);
+      dispatch(createOrderAction(ingredients, bun));
+      // postOrderNumer();
     }
   };
 
   function closeModal(e) {
     e.stopPropagation();
     dispatch(resetIngConstructor());
-    dispatch({type: POST_ORDER_DETAILS_RESET});
+    dispatch({ type: POST_ORDER_DETAILS_RESET });
     changeVisibility(false);
   }
 
@@ -146,12 +150,16 @@ const BurgerConstructor = () => {
         </li>
       </ul>
 
-      {visibility && !(orderNumber.orderNum === "") && (
+      {visibility && (
         <Modal onClose={closeModal}>
-          <OrderDetails
-            orderNumber={orderNumber.orderNum.order.number}
-            isLoading={orderNumber.orderNum.order.orderRequest}
-          />
+          {orderNumber.orderNum === "" ? (
+            <Loader />
+          ) : (
+            <OrderDetails
+              orderNumber={orderNumber.orderNum.order.number}
+              isLoading={orderNumber.orderNum.order.orderRequest}
+            />
+          )}
         </Modal>
       )}
     </section>

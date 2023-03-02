@@ -1,13 +1,11 @@
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import styleFeed from "./feed.module.css";
-import Modal from "../components/modal/modal";
 import OrderCard from "../components/order-card/order-card";
-import OrderDetailsInfo from "../components/order-details-info/order-details-info";
 import {
     wsConnectionStart,
     wsConnectionClose,
-  } from "../services/actions/ws";
+  } from "../services/actions/feed-ws";
 import { apiWS } from "../utils/api";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../components/loader/loader";
@@ -70,18 +68,10 @@ const FeedPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {orders, total, totalToday, } = useSelector((store) => store.wsocket);
+  const {orders, total, totalToday, } = useSelector((store) => store.wsocketFeed);
   const ingredients = useSelector((state) => state.ingredients);
 
-
   const [visibility, changeVisibility] = useState(location.state?.from === 'feed')
-
-  // const handleCloseModal = useCallback(() => {
-  //   changeVisibility(false)
-  //   navigate(-1)
-  // },[navigate])
-
- // console.log(visibility);
 
   useEffect(() => {
     dispatch(wsConnectionStart(apiWS.urlWS));

@@ -4,7 +4,8 @@ import { ingredientDetailsReducer } from './ingredient-details-reduser.js';
 import { constructorReduser } from './constructor-reduser';
 import { userReducer } from './user-reduser';
 import { combineReducers } from 'redux';
-import { wsReducer } from './ws-reduser'
+import { feedWsReducer } from './feed-ws-reduser'
+import { userWsReducer } from './user-ws-reduser';
 
 export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
@@ -12,5 +13,6 @@ export const rootReducer = combineReducers({
     details: ingredientDetailsReducer,
     constructor : constructorReduser,
     user: userReducer,
-    wsocket: wsReducer,
+    wsocketFeed: feedWsReducer,
+    wsocketUser: userWsReducer
   });
