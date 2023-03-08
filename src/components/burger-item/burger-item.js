@@ -6,7 +6,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientType from "../../utils/types.js";
 import { useDispatch } from "react-redux";
-import { postOrder } from "../../services/actions/order";
 import { useDrop, useDrag } from "react-dnd";
 import {
   sortIngConstructor,

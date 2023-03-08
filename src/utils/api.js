@@ -1,9 +1,16 @@
+
+
 const api = {
   url: "https://norma.nomoreparties.space/api",
   headers: {
     "Content-Type": "application/json",
   },
 };
+
+export const apiWS = {
+  urlWS: "wss://norma.nomoreparties.space/orders/all",
+  urlProfile: (token) => `wss://norma.nomoreparties.space/orders?token=${token}`
+}
 
 const checkJson = (res) => res.json().then(data => res.ok ? data : Promise.reject(data))
 
@@ -23,9 +30,13 @@ function request(url, method, data = null, token = null) {
   }
   if (data) options.body = JSON.stringify(data);
   if (token) options.headers = {...options.headers, 'Authorization': token};
- // console.log(options, fetch);
+  //console.log(options, fetch);
   return fetch(url, options).then(checkJson).then(checkSuccess) 
 }
+
+export const createOrder = (ingredientsList,token) => {
+  return request(`${api.url}/orders`, "POST", {ingredients: ingredientsList}, token)
+};
 
 export const getProductData = () => {
   return request((`${api.url}/ingredients`), "GET");

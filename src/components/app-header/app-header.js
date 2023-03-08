@@ -23,8 +23,8 @@ const AppHeader = () => {
                 <BurgerIcon type={pathname === "/" ? "primary" : "secondary"} />
                 <p className={`ml-2`}>Конструктор</p>
               </NavLink>
-              <NavLink className={`${appHeader.item} pl-5 pr-5 `} to='/profile/orders' style={pathname === "/profile/orders" ? activeStyle : undefined}>
-                <ListIcon type={pathname === "/profile/orders" ? "primary" : "secondary"} />
+              <NavLink className={`${appHeader.item} pl-5 pr-5 `} to='/feed' style={pathname === "/feed" || "/feed/:id" ? activeStyle : undefined}>
+                <ListIcon type={pathname === "/feed" || "/feed/:id" ? "primary" : "secondary"} />
                 <p className={`ml-2`}>Лента заказов</p>
               </NavLink>
             </ul>
@@ -33,8 +33,8 @@ const AppHeader = () => {
                 <Logo />
               </NavLink>
             </li>
-            <NavLink className={`${appHeader.item} pl-5 pr-5 `} to='/profile' style={pathname === "/profile" ? activeStyle : undefined}>
-              <ProfileIcon type={pathname === "/profile" ? "primary" : "secondary"} />
+            <NavLink className={`${appHeader.item} pl-5 pr-5 `} to='/profile' style={pathname === "/profile" || "/profile/orders" || "/profile/orders/:id" ? activeStyle : undefined}>
+              <ProfileIcon type={pathname === "/profile" || "/profile/orders" || "/profile/orders/:id" ? "primary" : "secondary"} />
               <p className={`ml-2`}>Личный кабинет</p>
             </NavLink>
           </ul>

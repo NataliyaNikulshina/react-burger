@@ -8,7 +8,6 @@ import OrderDetails from "../order-details/order-details";
 import { useNavigate } from "react-router-dom";
 import Modal from "../modal/modal";
 import { useSelector, useDispatch } from "react-redux";
-import { postOrder } from "../../services/actions/order";
 import { useDrop } from "react-dnd";
 import {
   addIngConstructor,
@@ -20,7 +19,11 @@ import {
   BurgerMiddleItem,
   BurgerLastItem,
 } from "../burger-item/burger-item";
-import {POST_ORDER_DETAILS_RESET} from '../../services/actions/order';
+import {
+  POST_ORDER_DETAILS_RESET,
+  createOrderAction,
+} from "../../services/actions/createOrderAction";
+import Loader from "../loader/loader";
 
 const BurgerConstructor = () => {
   const { bun, ingredients } = useSelector((state) => state.constructor);
@@ -37,36 +40,31 @@ const BurgerConstructor = () => {
       const sum = bun.price * 2;
       const total = sum + ingredients.reduce((prev, el) => prev + el.price, 0);
       return total;
-    } else return "0";
+    } else {
+      if (bun) {
+        const sum = bun.price * 2;
+        return sum; 
+      } else return "0";}
   }, [ingredients, bun]);
 
   const [visibility, changeVisibility] = React.useState(false);
 
   const navigate = useNavigate();
 
-  const postOrderNumer = () => {
-    if (bun && ingredients) {
-      dispatch(postOrder(dataPostId()));
-    }
-    else { alert("выберете ингредиенты");}
-  };
-
   const handleOrderModal = (e) => {
-  //  console.log("нажали на нопку");
     if (!isAuth) {
       navigate("/login");
     } else {
-      postOrderNumer();
       changeVisibility(true);
+      dispatch(createOrderAction(ingredients, bun));
+      // postOrderNumer();
     }
-   // console.log(visibility)
-   // console.log(orderNumber)
   };
 
   function closeModal(e) {
     e.stopPropagation();
     dispatch(resetIngConstructor());
-    dispatch({type: POST_ORDER_DETAILS_RESET});
+    dispatch({ type: POST_ORDER_DETAILS_RESET });
     changeVisibility(false);
   }
 
@@ -150,18 +148,23 @@ const BurgerConstructor = () => {
             type="primary"
             size="large"
             onClick={handleOrderModal}
+            disabled={!(ingredients && bun)}
           >
             Оформить заказ
           </Button>
         </li>
       </ul>
 
-      {visibility && !(orderNumber.orderNum === "") && (
+      {visibility && (
         <Modal onClose={closeModal}>
-          <OrderDetails
-            orderNumber={orderNumber.orderNum.order.number}
-            isLoading={orderNumber.orderNum.order.orderRequest}
-          />
+          {orderNumber.orderNum === "" ? (
+            <Loader />
+          ) : (
+            <OrderDetails
+              orderNumber={orderNumber.orderNum.order.number}
+              isLoading={orderNumber.orderNum.order.orderRequest}
+            />
+          )}
         </Modal>
       )}
     </section>

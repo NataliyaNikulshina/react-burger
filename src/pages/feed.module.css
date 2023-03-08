@@ -1,0 +1,68 @@
+.container{
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.wrapper{
+    display: flex;
+}
+
+.items{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 870px;
+    width: 600px;
+    overflow-y: scroll;
+}
+
+.items::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2F2F37;
+}
+
+.items::-webkit-scrollbar-thumb {
+    height: 250px;
+    background: #8585AD;
+}
+
+
+.ordersInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 60px; 
+    max-width: 584px;
+}
+
+.ordersInfoList {
+    display: flex;
+    gap: 36px; 
+}
+
+.containerList {
+    width: 272px;
+    height: 206px;
+}
+
+
+.listNumer {
+    display: flex;
+    flex-direction: column;
+    max-height: 152px;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+}
+
+.listNumer::-webkit-scrollbar {
+    width: 0px;
+}
+
+.shadow {
+    text-shadow: 0 0 16px rgba(51, 51, 255, 0.25), 0 0 8px rgba(51, 51, 255, 0.25), 0 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+ /* width: fit-content; */
+

@@ -7,7 +7,7 @@ export default function ProtectedRouteElement({ children, needAuth }) {
   const location = useLocation();
 
   if (needAuth ) {
-    console.log('нужна авторизация и она :' + isAuth)
+   // console.log('нужна авторизация и она :' + isAuth)
     return isAuth ? children : <Navigate to='/login' />
   }
   else {
