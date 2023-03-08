@@ -40,7 +40,11 @@ const BurgerConstructor = () => {
       const sum = bun.price * 2;
       const total = sum + ingredients.reduce((prev, el) => prev + el.price, 0);
       return total;
-    } else return "0";
+    } else {
+      if (bun) {
+        const sum = bun.price * 2;
+        return sum; 
+      } else return "0";}
   }, [ingredients, bun]);
 
   const [visibility, changeVisibility] = React.useState(false);
@@ -144,6 +148,7 @@ const BurgerConstructor = () => {
             type="primary"
             size="large"
             onClick={handleOrderModal}
+            disabled={!(ingredients && bun)}
           >
             Оформить заказ
           </Button>
