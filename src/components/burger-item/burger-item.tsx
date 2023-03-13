@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, FC, ReactNode } from "react";
 import burgerItem from "./burger-item.module.css";
 import {
   ConstructorElement,
@@ -11,8 +11,15 @@ import {
   sortIngConstructor,
   deleteIngConstructor,
 } from "../../services/actions/constructor";
+import { IIngredient } from "../../services/types/data.js";
 
-export const BurgerFirstItem = ({ ingredient }) => {
+interface IIngredientProps {
+  type: "top" | "bottom" | undefined;
+  ingredient: IIngredient;
+  index: number;
+}
+
+export const BurgerFirstItem: FC<IIngredientProps> = ({ ingredient }) => {
   return (
     <ConstructorElement
       type="top"
@@ -24,13 +31,14 @@ export const BurgerFirstItem = ({ ingredient }) => {
   );
 };
 
-BurgerFirstItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-};
+// BurgerFirstItem.propTypes = {
+//   ingredient: ingredientType.isRequired,
+// };
 
-export const BurgerMiddleItem = ({ ingredient, index }) => {
+export const BurgerMiddleItem: FC<IIngredientProps> = ({ ingredient, index }) => {
+//  console.log(ingredient, index)
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
   const [{ handlerId }, drop] = useDrop({
     accept: "sort_ingredient",
     collect(monitor) {
@@ -67,6 +75,7 @@ export const BurgerMiddleItem = ({ ingredient, index }) => {
       ingredient.index = hoverIndex;
     },
   });
+
   const [{ isDragging }, drag] = useDrag({
     type: "sort_ingredient",
     item: () => ({ ingredient, index }),
@@ -74,9 +83,10 @@ export const BurgerMiddleItem = ({ ingredient, index }) => {
       isDragging: monitor.isDragging(),
     }),
   });
+
   const opacity = isDragging ? 0 : 1;
   if (ingredient.type !== "bun") drag(drop(ref));
-  const preventDefault = (e) => e.preventDefault();
+  const preventDefault = (e: React.FormEvent<HTMLLIElement> ) => e.preventDefault();
 
   return (
     <li
@@ -89,7 +99,7 @@ export const BurgerMiddleItem = ({ ingredient, index }) => {
       <DragIcon type="primary" />
       <div className={`${burgerItem.element}`}>
         <ConstructorElement
-          type=""
+          type={undefined}
           text={`${ingredient.name}`}
           price={ingredient.price}
           thumbnail={ingredient.image}
@@ -102,11 +112,11 @@ export const BurgerMiddleItem = ({ ingredient, index }) => {
   );
 };
 
-BurgerMiddleItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-};
+// BurgerMiddleItem.propTypes = {
+//   ingredient: ingredientType.isRequired,
+// };
 
-export const BurgerLastItem = ({ ingredient }) => {
+export const BurgerLastItem: FC<IIngredientProps> = ({ ingredient }) => {
   return (
     <ConstructorElement
       type="bottom"
@@ -118,6 +128,6 @@ export const BurgerLastItem = ({ ingredient }) => {
   );
 };
 
-BurgerLastItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-};
+// BurgerLastItem.propTypes = {
+//   ingredient: ingredientType.isRequired,
+// };

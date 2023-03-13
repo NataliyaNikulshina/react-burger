@@ -83,12 +83,13 @@ const BurgerConstructor = () => {
     },
   });
 
-  const onDropHandler = (ingredient) => {
+  const onDropHandler = ({ingredient}) => {
     if (ingredient.type === "bun") {
       dispatch(setBunConstructor(ingredient));
+      console.log('bun' + ingredient)
     } else {
       dispatch(addIngConstructor(ingredient));
-      //console.log(ingredient)
+      console.log(ingredient)
     }
   };
 

@@ -17,25 +17,6 @@ const AppMain = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  // const [visibility, changeVisibility] = useState(false);
-  // const toggleVisibility = (e) => {
-  //   e.stopPropagation();
-  //  // dispatch(addIngredientDetails(e));
-  //   changeVisibility((prevValue) => !prevValue);
-  //   navigate('/');
-  // };
-
-  // const ingredientDetails = useSelector((state) => state.details.ingredientDetails);
-
-  //  useEffect(() => {
-  //    // e.stopPropagation();
-  //     if (location.state?.ingredient) {
-  //       dispatch(addIngredientDetails(location.state.ingredient));
-  //     //dispatch({type: SET_INGREDIENT, payload: location.state.ingredient})
-  //      changeVisibility(true)
-  //     }
-  //   }, [location.state])
-
 
   return (
     <>
@@ -49,11 +30,6 @@ const AppMain = () => {
           </DndProvider>
         </main>
       )}
-       {/* {visibility && ingredientDetails && (
-        <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
-          <IngredientDetailsFunc />
-        </Modal>
-      )} */}
     </>
   );
 };

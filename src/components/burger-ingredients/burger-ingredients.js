@@ -4,15 +4,12 @@ import burgerIngredients from "./burger-ingredients.module.css";
 import Ingredient from "../ingredient/ingredient";
 import { useSelector, useDispatch } from "react-redux";
 import { useInView } from "react-intersection-observer";
-import IngredientDetailsFunc from "../ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
-import { addIngredientDetails } from "../../services/actions/ingredient-details";
+
 
 const BurgerIngredients = () => {
   const ingredients = useSelector((state) => state.ingredients);
   const ingINBasket = useSelector((state) => state.constructor);
   const [current, setCurrent] = useState("bun");
- // const [visibility, changeVisibility] = useState(false);
   const dispatch = useDispatch();
 
   const buns = ingredients.items.filter((item) =>
@@ -69,12 +66,6 @@ const BurgerIngredients = () => {
     return counterBun;
   }, [ingINBasket.bun]);
 
-  // const toggleVisibility = (e) => {
-  //   //e.stopPropagation();
-  //   dispatch(addIngredientDetails(e));
-  //   changeVisibility((prevValue) => !prevValue);
-  // };
-
   return (
     <>
       <section className={`${burgerIngredients.container} mr-10`}>
@@ -105,7 +96,6 @@ const BurgerIngredients = () => {
                       count={ingCountBun[el._id]}
                       ingredient={el}
                       key={el._id}
-                     // onClick={toggleVisibility}
                     />
                   );
                 }
@@ -126,7 +116,6 @@ const BurgerIngredients = () => {
                       count={ingCount[el._id]}
                       ingredient={el}
                       key={el._id}
-                     // onClick={toggleVisibility}
                     />
                   );
                 }
@@ -147,7 +136,6 @@ const BurgerIngredients = () => {
                       count={ingCount[el._id]}
                       ingredient={el}
                       key={el._id}
-                     // onClick={toggleVisibility}
                     />
                   );
                 }
@@ -157,11 +145,6 @@ const BurgerIngredients = () => {
         </ul>
       </section>
 
-      {/* {visibility && (
-        <Modal setClose={toggleVisibility} title={"Детали ингредиента"}>
-          <IngredientDetailsFunc />
-        </Modal>
-      )} */}
     </>
   );
 };

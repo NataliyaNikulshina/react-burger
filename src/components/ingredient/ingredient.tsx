@@ -1,17 +1,23 @@
+import { FunctionComponent } from "react";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
-import ingredientType from "../../utils/types.js";
 import burgerIngredient from "./ingredient.module.css";
 import { useDrag } from "react-dnd";
+import { IIngredient } from "../../services/types/data.js";
 
-const Ingredient = ({ ingredient, count }) => {
+interface IIngredientList {
+  //type: string;
+  ingredient: IIngredient;
+  count: number;
+}
+
+const Ingredient : FunctionComponent<IIngredientList> = ({ ingredient, count }) => {
   const [, dragRef] = useDrag({
     type: "ingredient",
-    item: ingredient,
+    item: {ingredient: ingredient},
   });
 
   return (
@@ -32,10 +38,10 @@ const Ingredient = ({ ingredient, count }) => {
   );
 };
 
-Ingredient.propTypes = {
-  ingredient: ingredientType.isRequired,
-  count: propTypes.number,
-  onClick: propTypes.func,
-};
+// Ingredient.propTypes = {
+//   ingredient: ingredientType.isRequired,
+//   count: propTypes.number,
+//   onClick: propTypes.func,
+// };
 
 export default Ingredient;
