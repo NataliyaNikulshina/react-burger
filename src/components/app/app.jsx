@@ -18,7 +18,7 @@ import { getItems } from "../../services/actions/ingredients";
 import { useNavigate, useLocation } from "react-router-dom";
 import Modal from "../modal/modal";
 import { useEffect, useState } from "react";
-import IngredientDetailsFunc from "../ingredient-details/ingredient-details";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 import { addIngredientDetails } from "../../services/actions/ingredient-details";
 import Loader from "../loader/loader";
 import OrderDetailsInfo from "../order-details-info/order-details-info";
@@ -168,7 +168,7 @@ export default function App() {
       </Routes>
       {background && (
         <Modal onClose={onClose} title={"Детали ингредиента"}>
-          <IngredientDetailsFunc />
+          <IngredientDetails />
         </Modal>
       )}
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styles from "./order-details-info.module.css";
@@ -10,12 +10,15 @@ import { getStatus } from "../../utils/status";
 import { getDate } from "../../utils/date";
 import { useIngredientsData } from "../../hooks/useIngredientsData";
 import Loader from "../loader/loader";
-import propTypes from "prop-types";
-import ingredientType from "../../utils/types.js";
 import { useIngredientsCountData } from "../../hooks/useIngredientsCountData";
+import { IIngredient, IOrderInfo } from "../../services/types/data.js";
 
+interface IOrderDetailsItemProps {
+  ingredient: IIngredient;
+  count: number;
+}
 
-const OrderDetailsItem = ({ingredient,count}) => {
+const OrderDetailsItem: FC<IOrderDetailsItemProps> = ({ingredient,count}) => {
  // console.log(ingredient, count)
   return (
       <div className={styles.containerItem}>
@@ -38,11 +41,15 @@ const OrderDetailsItem = ({ingredient,count}) => {
 //    count: propTypes.number.isRequired
 //  }
 
-const OrderDetailsInfo = ({ order }) => {
+interface IOrderDetailsInfoProps {
+  order: IOrderInfo;
+}
+
+const OrderDetailsInfo: FC<IOrderDetailsInfoProps> = ({ order }) => {
   const location = useLocation();
   console.log(order);
   const ingredients = useIngredientsData();
-  const price = useMemo(
+  const price = useMemo<number>(
     () =>
       order.ingredients.reduce(
         (prev, ingredientId) =>
@@ -51,7 +58,7 @@ const OrderDetailsInfo = ({ order }) => {
       ),
     [ingredients, order]
   );
-  const orderIngredients = useMemo(() => order.ingredients.map(ingredientId => ingredients.getIngredientData(ingredientId)),[order]);
+  const orderIngredients = useMemo<IIngredient[]>(() => order.ingredients.map(ingredientId => ingredients.getIngredientData(ingredientId)),[order]);
   const {getIngredientCount} = useIngredientsCountData(orderIngredients)
   console.log(getIngredientCount)
 

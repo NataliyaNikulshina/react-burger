@@ -3,20 +3,13 @@ import BurgerConstructor from "../burger-constructor/burger-constructor.js";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styleMain from "./app-main.module.css";
-import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Modal from "../modal/modal";
-import IngredientDetailsFunc from '../ingredient-details/ingredient-details';
-import { addIngredientDetails } from '../../services/actions/ingredient-details';
 import { useNavigate, useLocation} from "react-router-dom";
 import Loader from "../loader/loader.js";
 
 const AppMain = () => {
   const ingredients = useSelector((state) => state.ingredients);
   const isLoading = ingredients.itemsRequest;
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const navigate = useNavigate();
 
   return (
     <>

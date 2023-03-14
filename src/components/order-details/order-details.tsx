@@ -1,9 +1,15 @@
+import { FC } from "react";
 import orderDetails from "./order-details.module.css";
 import orderDetailsImage from "../../images/done.png";
 import propTypes from "prop-types";
 import Loader from "../loader/loader";
 
-const OrderDetails = ({ orderNumber, isLoading }) => {
+interface IOrderDetailsProps {
+  orderNumber: number;
+  isLoading: boolean;
+}
+
+const OrderDetails: FC<IOrderDetailsProps> = ({ orderNumber, isLoading }) => {
   return (
     <div className={orderDetails.container}>
       {isLoading ? 

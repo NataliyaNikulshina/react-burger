@@ -1,7 +1,7 @@
 import ingredientDetails from "./ingredient-details.module.css";
 import { useSelector } from "react-redux";
 
-const IngredientDetailsFunc = () => {
+const IngredientDetails = () => {
   // const { ingredient } = props;
   const ingredient = useSelector((state) => state.details.ingredientDetails);
 
@@ -59,4 +59,4 @@ const IngredientDetailsFunc = () => {
   );
 };
 
-export default IngredientDetailsFunc;
+export default IngredientDetails;

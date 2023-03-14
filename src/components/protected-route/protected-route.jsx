@@ -1,6 +1,12 @@
+import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import propTypes from "prop-types";
+
+// interface IProtectedRouteProps {
+//   children: ReactNode;
+//   needAuth?: boolean;
+// }
 
 export default function ProtectedRouteElement({ children, needAuth }) {
   const isAuth = useSelector((store) => store.user.isAuth);
@@ -15,9 +21,9 @@ export default function ProtectedRouteElement({ children, needAuth }) {
   }
 }
 
-ProtectedRouteElement.propTypes = {
-  children: propTypes.element.isRequired,
-  needAuth: propTypes.bool.isRequired,
-}
+// ProtectedRouteElement.propTypes = {
+//   children: propTypes.element.isRequired,
+//   needAuth: propTypes.bool.isRequired,
+// }
 
 

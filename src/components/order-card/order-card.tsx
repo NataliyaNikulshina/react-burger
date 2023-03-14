@@ -1,19 +1,22 @@
+import { useMemo, FC } from 'react';
 import orderCard from "./order-card.module.css";
 import propTypes from "prop-types";
 import {
   CurrencyIcon,
   FormattedDate
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {  Link } from "react-router-dom";
 import { useIngredientsData } from "../../hooks/useIngredientsData";
 import { getDate } from "../../utils/date";
 import { getStatus } from "../../utils/status";
+import { IOrderInfo } from "../../services/types/data"
 
+interface IOrderCardsProps {
+  elementPosition: string;
+  order: IOrderInfo;
+}
 
-
-const OrderCard = ({elementPosition, order}) => {
-  const location = useLocation();
+const OrderCard: FC<IOrderCardsProps> = ({elementPosition, order}) => {
   const ingredients = useIngredientsData();
   const price = useMemo(() => order.ingredients.reduce((a,ingredientId) => ingredientId ? a + ingredients.getIngredientPrice(ingredientId) : a,0),[ingredients, order])
 
@@ -46,9 +49,9 @@ const OrderCard = ({elementPosition, order}) => {
   );
 };
 
- OrderCard.propTypes = {
-   order: propTypes.object.isRequired,
-   elementPosition: propTypes.string.isRequired,
- };
+//  OrderCard.propTypes = {
+//    order: propTypes.object.isRequired,
+//    elementPosition: propTypes.string.isRequired,
+//  };
 
 export default OrderCard;

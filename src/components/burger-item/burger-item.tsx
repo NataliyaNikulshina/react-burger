@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientType from "../../utils/types.js";
 import { useDispatch } from "react-redux";
-import { useDrop, useDrag } from "react-dnd";
+import { useDrop, useDrag, XYCoord } from "react-dnd";
 import {
   sortIngConstructor,
   deleteIngConstructor,
@@ -39,6 +39,16 @@ export const BurgerMiddleItem: FC<IIngredientProps> = ({ ingredient, index }) =>
 //  console.log(ingredient, index)
   const dispatch = useDispatch();
   const ref = useRef<HTMLLIElement>(null);
+
+  
+  const [{ isDragging }, drag] = useDrag({
+    type: "sort_ingredient",
+    item: () => ({ ingredient, index}),
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  
   const [{ handlerId }, drop] = useDrop({
     accept: "sort_ingredient",
     collect(monitor) {
@@ -47,7 +57,7 @@ export const BurgerMiddleItem: FC<IIngredientProps> = ({ ingredient, index }) =>
       };
     },
 
-    hover(ingredient, monitor) {
+    hover(ingredient: any, monitor) {
       if (!ref.current) {
         return;
       }
@@ -61,8 +71,8 @@ export const BurgerMiddleItem: FC<IIngredientProps> = ({ ingredient, index }) =>
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const clientOffset: XYCoord | null = monitor.getClientOffset();
+      const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
@@ -74,14 +84,6 @@ export const BurgerMiddleItem: FC<IIngredientProps> = ({ ingredient, index }) =>
 
       ingredient.index = hoverIndex;
     },
-  });
-
-  const [{ isDragging }, drag] = useDrag({
-    type: "sort_ingredient",
-    item: () => ({ ingredient, index }),
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
   });
 
   const opacity = isDragging ? 0 : 1;

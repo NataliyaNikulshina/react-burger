@@ -14,3 +14,12 @@ export interface IIngredient {
     _idInBasket?: string;
     index?: number;
   }
+
+export interface IOrderInfo {
+    createdAt: string;
+    ingredients: string[];
+    name: string;
+    number: number;
+    status: "done" | "created";
+    _id: string;
+}
