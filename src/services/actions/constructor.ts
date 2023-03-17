@@ -26,6 +26,9 @@ export interface ISetBinConstructorAction {
   readonly payload: IIngredient;
 }
 
+export type TConstructorAction =  IAddIngredientConstructorAction | ISortIngredientConstructorAction | IDeleteIngredientConstructorAction |
+  IResetIngredientConstructorAction | ISetBinConstructorAction;
+
 export const addIngConstructor = (ingredient: IIngredient): IAddIngredientConstructorAction => ({type: ADD_ING_CONSTRUCTOR, payload: ingredient})
 export const deleteIngConstructor = (ingId: string | undefined): IDeleteIngredientConstructorAction => ({type: DELETE_ING_CONSTRUCTOR, payload: ingId})
 export const setBunConstructor = (bun: IIngredient): ISetBinConstructorAction => ({type: SET_BIN_CONSTRUCTOR, payload: bun})
