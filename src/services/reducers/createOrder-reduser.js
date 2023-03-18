@@ -1,11 +1,11 @@
 import {
-    GET_ORDER_REQUEST,
-    GET_ORDER_SUCCESS,
-    GET_ORDER_FAILED,
-    RESET_ORDER,
+    POST_ORDER_DETAILS_REQUEST,
+    POST_ORDER_DETAILS_ERROR,
+    POST_ORDER_DETAILS_SUCCESS,
+    POST_ORDER_DETAILS_RESET,
     SET_CURRENT_ORDER,
     RESET_CURRENT_ORDER,
-  } from "../actions/createOrderAction";
+  } from "../actions/order";
   
   const initialState = {
     order: undefined,
@@ -19,10 +19,10 @@ import {
     state = initialState, action
   ) {
     switch (action.type) {
-      case GET_ORDER_REQUEST:
+      case POST_ORDER_DETAILS_REQUEST:
         return { ...state, orderRequest: true };
   
-      case GET_ORDER_SUCCESS:
+      case POST_ORDER_DETAILS_SUCCESS:
         return {
           ...state,
           orderRequest: false,
@@ -30,7 +30,7 @@ import {
           order: action.payload,
         };
   
-      case GET_ORDER_FAILED:
+      case POST_ORDER_DETAILS_ERROR:
         return {
           ...state,
           orderRequest: false,
@@ -38,7 +38,7 @@ import {
           orderErrorText: action.errorText,
         };
   
-      case RESET_ORDER:
+      case POST_ORDER_DETAILS_RESET:
         return { ...state, order: undefined };
   
       case SET_CURRENT_ORDER:

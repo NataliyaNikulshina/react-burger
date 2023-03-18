@@ -22,7 +22,7 @@ import {
 import {
   POST_ORDER_DETAILS_RESET,
   createOrderAction,
-} from "../../services/actions/createOrderAction";
+} from "../../services/actions/order";
 import Loader from "../loader/loader";
 
 const BurgerConstructor = () => {

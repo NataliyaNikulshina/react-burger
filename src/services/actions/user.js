@@ -6,8 +6,7 @@ import {
   postNewPassword,
   getUserInfo,
   updateUserInfo,
-  updateAccessToken,
-  updaterefreshToken
+  updateAccessToken
 } from "../../utils/api";
 import {
   setToken,

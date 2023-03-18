@@ -32,8 +32,8 @@ const OrderDetails: FC<IOrderDetailsProps> = ({ orderNumber, isLoading }) => {
   );
 };
 
-OrderDetails.propTypes = {
-  orderNumber: propTypes.number.isRequired,
-};
+// OrderDetails.propTypes = {
+//   orderNumber: propTypes.number.isRequired,
+// };
 
 export default OrderDetails;
