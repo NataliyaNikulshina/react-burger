@@ -5,13 +5,24 @@ export const RESET_INGREDIENT_DETAILS: 'RESET_INGREDIENT_DETAILS' = "RESET_INGRE
 
 export interface ISetIngredientDetailsAction {
   readonly type: typeof SET_INGREDIENT_DETAILS;
-  readonly payload: IIngredient;
+  readonly payload: {
+    name: string,
+    image_large: string,
+    calories: number,
+    proteins: number,
+    fat: number,
+    carbohydrates: number
+  };
 }
 export interface IResetIngredientDetailsAction {
   readonly type: typeof RESET_INGREDIENT_DETAILS;
 }
 
-export const addIngredientDetails = (ingredient: IIngredient) => {
+export const resetIngredientDetails = (): IResetIngredientDetailsAction => ({
+  type: RESET_INGREDIENT_DETAILS
+});
+
+export const setIngredientDetails = (ingredient: IIngredient): ISetIngredientDetailsAction => {
   return {
     type: SET_INGREDIENT_DETAILS,
     payload: {

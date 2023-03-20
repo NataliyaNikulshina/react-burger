@@ -10,6 +10,7 @@ interface IOrderDetailsProps {
 }
 
 const OrderDetails: FC<IOrderDetailsProps> = ({ orderNumber, isLoading }) => {
+ // console.log(orderNumber, isLoading);
   return (
     <div className={orderDetails.container}>
       {isLoading ? 

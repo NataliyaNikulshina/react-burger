@@ -34,18 +34,38 @@ export interface IResetCurrentOrderAction {
   readonly type: typeof RESET_CURRENT_ORDER;
 }
 
+export const postOrderRequest = (): IPostOrderDetailsRequestAction => ({
+  type: POST_ORDER_DETAILS_REQUEST
+});
+export const postOrderError = (): IPostOrderDetailsErrorAction => ({
+  type: POST_ORDER_DETAILS_ERROR
+});
+export const postOrdersSuccess = (orderNumber: number): IPostOrderDetailsSuccessAction => ({
+  type: POST_ORDER_DETAILS_SUCCESS,
+  payload: orderNumber
+});
+export const postOrderReset = (): IPostOrderDetailsResetAction => ({
+  type: POST_ORDER_DETAILS_RESET
+});
+export const setCurrentOrder = (): ISetCurrentOrderAction => ({
+  type: SET_CURRENT_ORDER
+});
+export const resetCurrentOrder = (): IResetCurrentOrderAction => ({
+  type: RESET_CURRENT_ORDER
+});
+
 export type TOrderAction =  IPostOrderDetailsRequestAction | IPostOrderDetailsErrorAction | IPostOrderDetailsSuccessAction |
 IPostOrderDetailsResetAction | ISetCurrentOrderAction | IResetCurrentOrderAction;
 
-export function createOrderAction (ingredients: IIngredient[], bun: IIngredient) {
+export function createOrderActionThunk (ingredients: IIngredient[], bun: IIngredient) {
   return function (dispatch: AppDispatch) {
     const arrayId = bun
       ? [bun._id, ...ingredients.map((item) => item._id), bun._id]
       : [];
-    dispatch({ type: POST_ORDER_DETAILS_REQUEST });
+    dispatch(postOrderRequest());
     createOrder(arrayId, getToken())
       .then((res) => {
-        dispatch({ type: POST_ORDER_DETAILS_SUCCESS, payload: res });
+        dispatch(postOrdersSuccess(res));
       })
       .catch((err) => {
         if (err.message === "jwt expired" || "jwt malformed") {
@@ -53,16 +73,10 @@ export function createOrderAction (ingredients: IIngredient[], bun: IIngredient)
           .then((res: any) => {
             return createOrder(arrayId, res.accessToken)
               .then((res) => {
-                dispatch({
-                  type: POST_ORDER_DETAILS_SUCCESS,
-                  payload: res,
-                });
+                dispatch(postOrdersSuccess(res));
               })
               .catch(() => {
-                dispatch({
-                  type: POST_ORDER_DETAILS_ERROR,
-                  errorText: "Ошибка при формировании заказа",
-                });
+                dispatch(postOrderError());
               });
           });
         }

@@ -12,7 +12,7 @@ export interface IAddIngredientConstructorAction {
 }
 export interface ISortIngredientConstructorAction {
   readonly type: typeof SORT_ING_CONSTRUCTOR;
-  payload: {prevIndex: number, nextIndex: number}
+  readonly payload: {from: number, to: number}
 }
 export interface IDeleteIngredientConstructorAction {
   readonly type: typeof DELETE_ING_CONSTRUCTOR;
@@ -32,9 +32,9 @@ export type TConstructorAction =  IAddIngredientConstructorAction | ISortIngredi
 export const addIngConstructor = (ingredient: IIngredient): IAddIngredientConstructorAction => ({type: ADD_ING_CONSTRUCTOR, payload: ingredient})
 export const deleteIngConstructor = (ingId: string | undefined): IDeleteIngredientConstructorAction => ({type: DELETE_ING_CONSTRUCTOR, payload: ingId})
 export const setBunConstructor = (bun: IIngredient): ISetBinConstructorAction => ({type: SET_BIN_CONSTRUCTOR, payload: bun})
-export const sortIngConstructor = (dragIndex: number, hoverIndex: number) => ({type: SORT_ING_CONSTRUCTOR, payload: {
+export const sortIngConstructor = (dragIndex: number, hoverIndex: number): ISortIngredientConstructorAction => ({type: SORT_ING_CONSTRUCTOR, payload: {
     from: dragIndex,
     to: hoverIndex,
   }})
-export const resetIngConstructor = () => ({type: RESET_ING_CONSTRUCTOR})
+export const resetIngConstructor = ():IResetIngredientConstructorAction => ({type: RESET_ING_CONSTRUCTOR})
 

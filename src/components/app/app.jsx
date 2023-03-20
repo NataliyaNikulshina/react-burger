@@ -19,7 +19,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Modal from "../modal/modal";
 import { useEffect, useState } from "react";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { addIngredientDetails } from "../../services/actions/ingredient-details";
+import { setIngredientDetails } from "../../services/actions/ingredient-details";
 import Loader from "../loader/loader";
 import OrderDetailsInfo from "../order-details-info/order-details-info";
 import { getToken } from "../../hooks/useTokens";
@@ -54,7 +54,7 @@ export default function App() {
 
   useEffect(() => {
     if (location.state?.ingredient) {
-      dispatch(addIngredientDetails(location.state.ingredient));
+      dispatch(setIngredientDetails(location.state.ingredient));
       changeVisibility(true);
     }
   }, [location.state]);
@@ -68,7 +68,7 @@ export default function App() {
 
   useEffect(() => {
     if (location.state?.locationFeed || location.state?.locationProfile) {
-      //dispatch(addIngredientDetails(location.state.ingredient));
+      //dispatch(setIngredientDetails(location.state.ingredient));
       changeVisibilityOrder(true);
     }
   }, [location.state]);

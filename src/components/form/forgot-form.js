@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { useForm } from "../../hooks/useForm";
 
 const ForgotPasswordForm = () => {
-  const { values, handleChange } = useForm({ email: "", });
+  const { values, handleChange } = useForm({ email: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

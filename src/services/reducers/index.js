@@ -1,5 +1,5 @@
 import { ingredientsReducer } from './ingredients-reduser';
-import { orderReducer } from './order-reducer';
+import { orderReducer } from './order-reduser';
 import { ingredientDetailsReducer } from './ingredient-details-reduser.js';
 import { constructorReduser } from './constructor-reduser';
 import { userReducer } from './user-reduser';

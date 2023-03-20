@@ -15,9 +15,7 @@ import {
     currentOrder: undefined,
   };
   
-  export default function createOrderReducer(
-    state = initialState, action
-  ) {
+  export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
       case POST_ORDER_DETAILS_REQUEST:
         return { ...state, orderRequest: true };
