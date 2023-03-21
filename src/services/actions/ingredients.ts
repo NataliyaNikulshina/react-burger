@@ -1,5 +1,6 @@
 import { getProductData } from "../../utils/api";
 import { AppDispatch } from "../types/index";
+import { IIngredient } from "../types/data";
 
 export const GET_ITEMS_REQUEST: 'GET_ITEMS_REQUEST' = "GET_ITEMS_REQUEST";
 export const GET_ITEMS_ERROR: 'GET_ITEMS_ERROR' = "GET_ITEMS_ERROR";
@@ -13,6 +14,7 @@ export interface IGetItemsErrorAction {
 }
 export interface IGetItemsSuccessAction {
   readonly type: typeof GET_ITEMS_SUCCESS;
+  readonly payload: IIngredient;
 }
 
 export type TGetItemsActions = IGetItemsRequestAction | IGetItemsErrorAction | IGetItemsSuccessAction;
@@ -29,46 +31,22 @@ const getItemsError = (): IGetItemsErrorAction => {
   };
 };
 
-const getItemsSuccess = (): IGetItemsSuccessAction => {
+const getItemsSuccess = (data: IIngredient): IGetItemsSuccessAction => {
   return {
     type: GET_ITEMS_SUCCESS,
+    payload: data
   };
 };
 
-
-// const getItemsSuccess = (
-//   ingredients: Array<IIngredient>
-// ): IGetIngredientsSuccess => {
-//   return {
-//     type: GET_INGREDIENTS_SUCCESS,
-//     payload: ingredients,
-//   };
-// };
-
-// const getItemsFailed = (text: string): TGetItemsActions => {
-//   return {
-//     type: GET_INGREDIENTS_FAILED,
-//     errorText: text,
-//   };
-// };
-
-
 export function getItems() {
   return function (dispatch: AppDispatch) {
-    dispatch({
-      type: GET_ITEMS_REQUEST,
-    });
+    dispatch(getItemsRequest());
     getProductData()
       .then((res) => {
-        dispatch({
-          type: GET_ITEMS_SUCCESS,
-          payload: res.data,
-        });
+        dispatch(getItemsSuccess(res.data));
       })
       .catch((err) => {
-        dispatch({
-          type: GET_ITEMS_ERROR,
-        });
+        dispatch(getItemsError());
       });
   };
 }

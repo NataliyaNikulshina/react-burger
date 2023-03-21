@@ -128,7 +128,6 @@ export interface ICheckUserSuccessAction {
 }
 export interface ICheckUserErrorAction {
   readonly type: typeof CHECK_USER_ERROR;
-  
 }
 
 
@@ -138,9 +137,9 @@ IForgotUserSuccessAction | IForgotUserErrorAction | IRefreshUserRequestAction | 
 IResetPasswordRequestAction | IResetPasswordSuccessAction | IResetPasswordErrorAction | IUpdateUserRequestAction | IUpdateUserSuccessAction |
 IUpdateUserErrorAction | ICheckUserRequestAction | ICheckUserSuccessAction | ICheckUserErrorAction;
 
-// export const logoutUser = (): ILogoutUsertAction => ({
-//   type: LOGOUT_USER 
-// });
+export const logoutUserSuccess = (): ILogoutUsertAction => ({
+  type: LOGOUT_USER,
+});
 
 export const loginUserRequest = (): ILoginUserRequestAction => ({
    type: LOGIN_USER_REQUEST 
@@ -173,6 +172,50 @@ export const updateUserSuccess = (user: IUser): IUpdateUserSuccessAction => ({
 });
 export const updateUserError = (): IUpdateUserErrorAction => ({
   type: UPDATE_USER_ERROR 
+});
+
+export const forgotUserRequest = (): IForgotUserRequestAction => ({
+  type: FORGOT_PASSWORD_REQUEST 
+});
+export const forgotUserSuccess = (user: IUserLogin): IForgotUserSuccessAction => ({
+  type: FORGOT_PASSWORD_SUCCESS,
+  payload: user
+});
+export const forgotUserError = (): IForgotUserErrorAction => ({
+  type: FORGOT_PASSWORD_ERROR 
+});
+
+export const resetPassUserRequest = (): IResetPasswordRequestAction => ({
+  type: RESET_PASSWORD_REQUEST 
+});
+export const resetPassUserSuccess = (user: IUserLogin): IResetPasswordSuccessAction => ({
+  type: RESET_PASSWORD_SUCCESS,
+  payload: user
+});
+export const resetPassUserError = (): IResetPasswordErrorAction => ({
+  type: RESET_PASSWORD_ERROR
+});
+
+export const updateTokenRequest = (): IRefreshUserRequestAction => ({
+  type: REFRESH_TOKEN_REQUEST 
+});
+export const updateTokenSuccess = (refreshToken: string): IRefreshUserSuccessAction => ({
+  type: REFRESH_TOKEN_SUCCESS,
+  payload: refreshToken
+});
+export const updateTokenError = (): IRefreshUserErrorAction => ({
+  type: REFRESH_TOKEN_ERROR
+});
+
+export const checkUserRequest = (): ICheckUserRequestAction => ({
+  type: CHECK_USER_REQUEST 
+});
+export const checkUserSuccess = (user: IUserLogin): ICheckUserSuccessAction => ({
+  type: CHECK_USER_SUCCESS,
+  payload: user
+});
+export const checkUserError = (): ICheckUserErrorAction => ({
+  type: CHECK_USER_ERROR
 });
 
 
@@ -208,14 +251,14 @@ export function registerUserThunk(data: IUserRegister , callback: () => void) {
   };
 }
 
-export function logoutThunk( refreshToken: string, callback: () => void ) {
+export const logoutThunk = ( refreshToken: string, callback: () => void ) => {
   return function (dispatch: AppDispatch) {
-    logoutUser(refreshToken)
+     logoutUser(refreshToken)
       .then(() => {
         localStorage.clear();
         resetRefreshToken();
         resetToken();
-        dispatch({ type: LOGOUT_USER });
+        dispatch(logoutUserSuccess());
         callback();
       })
       .catch(() => {
@@ -226,54 +269,38 @@ export function logoutThunk( refreshToken: string, callback: () => void ) {
 
 export function forgotPassThunk(email: string, callback: () => void) {
   return function (dispatch: AppDispatch) {
-    dispatch({
-      type: FORGOT_PASSWORD_REQUEST,
-    });
+    dispatch(forgotUserRequest());
     postEmailForReset(email)
       .then((res) => {
         getRefreshToken();
         console.log(res);
-        dispatch({
-          type: FORGOT_PASSWORD_SUCCESS,
-          payload: res.user,
-        });
+        dispatch(forgotUserSuccess(res.user));
         callback();
       })
       .catch(() => {
-        dispatch({
-          type: FORGOT_PASSWORD_ERROR,
-        });
+        dispatch(forgotUserError());
       });
   };
 }
 
 export function resetPassThunk(password: string, code: number, callback: () => void) {
   return function (dispatch: AppDispatch) {
-    dispatch({
-      type: RESET_PASSWORD_REQUEST,
-    });
+    dispatch(resetPassUserRequest());
     postNewPassword(password, code)
       .then((res) => {
         console.log(res);
-        dispatch({
-          type: RESET_PASSWORD_SUCCESS,
-          payload: res.user,
-        });
+        dispatch(resetPassUserSuccess(res.user));
         callback();
       })
       .catch(() => {
-        dispatch({
-          type: RESET_PASSWORD_ERROR,
-        });
+        dispatch(resetPassUserError());
       });
   };
 }
 
-export const updateToken = (refreshToken: string | null) => {
+export const updateTokenThunk = (refreshToken: string | null) => {
   return function (dispatch: AppDispatch) {
-    dispatch({
-      type: REFRESH_TOKEN_REQUEST,
-    });
+    dispatch(updateTokenRequest());
    // console.log('в  updateToken ' + refreshToken);
    return updateAccessToken(refreshToken)
       .then((res) => {
@@ -281,21 +308,16 @@ export const updateToken = (refreshToken: string | null) => {
        // console.log(res)
         setRefreshToken(res.refreshToken);
         setToken(res.accessToken);
-        dispatch({
-          type: REFRESH_TOKEN_SUCCESS,
-          payload: res,
-        }); 
+        dispatch(updateTokenSuccess(res)); 
       })
-      .catch((err) => {
+      .catch(() => {
       //  console.log('обнова токена не вышла')
-        dispatch({
-          type: REFRESH_TOKEN_ERROR,
-        });
+        dispatch(updateTokenError());
       });
   };
 };
 
-export const updateUserData = (data: IUser, refreshToken: string) => {
+export const updateUserDataThunk = (data: IUser, refreshToken: string) => {
   return function (dispatch: AppDispatch) {
     dispatch(updateUserRequest());
     updateUserInfo(data, refreshToken)
@@ -307,7 +329,7 @@ export const updateUserData = (data: IUser, refreshToken: string) => {
         if (err.message === "jwt expired" || err.message === "jwt malformed") {
          // console.log('я тут')
           const tok = getRefreshToken();
-          dispatch(updateToken(getRefreshToken()))
+          dispatch(updateTokenThunk(getRefreshToken()))
           .then(() => {
             updateUserInfo(data, refreshToken)
               .then((res) => {
@@ -322,35 +344,25 @@ export const updateUserData = (data: IUser, refreshToken: string) => {
   };
 };
 
-export function checkUser() {
+export function checkUserThunk() {
   return function (dispatch: AppDispatch) {
-  dispatch({
-    type: CHECK_USER_REQUEST,
-  });
+  dispatch(checkUserRequest());
     getUserInfo(getToken())
     .then((res) => {
       //console.log(res)
-      dispatch({ type: CHECK_USER_SUCCESS, payload: res.user });
+      dispatch(checkUserSuccess(res.user));
     })
     .catch((err) => {
-      dispatch({
-        type: CHECK_USER_ERROR,
-      });
+      dispatch(checkUserError());
       if (err.message === "jwt expired" || "jwt malformed") {
-        dispatch(updateToken(getRefreshToken()))
+        dispatch(updateTokenThunk(getRefreshToken()))
         .then(() => {
           getUserInfo(getToken())
             .then((res_1) => {
-              dispatch({
-                type: CHECK_USER_SUCCESS,
-                payload: res_1.user,
-              });
-
+              dispatch(checkUserSuccess(res_1.user));
             })
             .catch((err_1) => {
-              dispatch({
-                type: CHECK_USER_ERROR,
-              });
+              dispatch(checkUserError());
             //  console.log("не сработало checkUser in action", err_1);
             });
         });

@@ -27,6 +27,8 @@ export interface IWsGetMessageAction {
   readonly payload: string;
 }
 
+export type TWsUserAction = IWsStartAction | IWsConnectionAction | IWsErrorAction | IWsCloseAction | IWsClosedAction | IWsGetMessageAction;
+
 export const wsConnectionStart = (url: string): IWsStartAction => {
   return {
     type: WS_CONNECTION_START,

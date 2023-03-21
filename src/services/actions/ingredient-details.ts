@@ -18,6 +18,8 @@ export interface IResetIngredientDetailsAction {
   readonly type: typeof RESET_INGREDIENT_DETAILS;
 }
 
+export type TIngredientDetailsAction = ISetIngredientDetailsAction | IResetIngredientDetailsAction;
+
 export const resetIngredientDetails = (): IResetIngredientDetailsAction => ({
   type: RESET_INGREDIENT_DETAILS
 });
@@ -35,3 +37,4 @@ export const setIngredientDetails = (ingredient: IIngredient): ISetIngredientDet
     },
   };
 };
+

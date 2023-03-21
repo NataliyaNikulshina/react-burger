@@ -1,5 +1,5 @@
 import { createOrder } from "../../utils/api";
-import { updateToken } from "./user";
+import { updateTokenThunk } from "./user";
 import {
   getToken,
   getRefreshToken,
@@ -69,7 +69,7 @@ export function createOrderActionThunk (ingredients: IIngredient[], bun: IIngred
       })
       .catch((err) => {
         if (err.message === "jwt expired" || "jwt malformed") {
-          dispatch(updateToken(getRefreshToken()))
+          dispatch(updateTokenThunk(getRefreshToken()))
           .then((res: any) => {
             return createOrder(arrayId, res.accessToken)
               .then((res) => {
