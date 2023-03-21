@@ -1,18 +1,13 @@
-import { IIngredient } from "../types/data";
+import { IIngredient, IIngDetailsInitial } from "../types/data";
 
 export const SET_INGREDIENT_DETAILS: 'SET_INGREDIENT_DETAILS' = "SET_INGREDIENT_DETAILS";
 export const RESET_INGREDIENT_DETAILS: 'RESET_INGREDIENT_DETAILS' = "RESET_INGREDIENT_DETAILS";
 
+
+
 export interface ISetIngredientDetailsAction {
   readonly type: typeof SET_INGREDIENT_DETAILS;
-  readonly payload: {
-    name: string,
-    image_large: string,
-    calories: number,
-    proteins: number,
-    fat: number,
-    carbohydrates: number
-  };
+  readonly payload: IIngDetailsInitial;
 }
 export interface IResetIngredientDetailsAction {
   readonly type: typeof RESET_INGREDIENT_DETAILS;

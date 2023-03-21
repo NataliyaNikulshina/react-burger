@@ -14,7 +14,7 @@ export interface IGetItemsErrorAction {
 }
 export interface IGetItemsSuccessAction {
   readonly type: typeof GET_ITEMS_SUCCESS;
-  readonly payload: IIngredient;
+  readonly payload: IIngredient[];
 }
 
 export type TGetItemsActions = IGetItemsRequestAction | IGetItemsErrorAction | IGetItemsSuccessAction;
@@ -31,10 +31,10 @@ const getItemsError = (): IGetItemsErrorAction => {
   };
 };
 
-const getItemsSuccess = (data: IIngredient): IGetItemsSuccessAction => {
+const getItemsSuccess = (items: IIngredient[]): IGetItemsSuccessAction => {
   return {
     type: GET_ITEMS_SUCCESS,
-    payload: data
+    payload: items
   };
 };
 

@@ -5,13 +5,20 @@ import {
   SET_BIN_CONSTRUCTOR,
   RESET_ING_CONSTRUCTOR,
 } from "../actions/constructor";
+import { TConstructorAction } from '../actions/constructor';
+import { IIngredient } from '../types/data';
 
-export const initialState = {
+export interface IConstructorInitialState {
+  bun: IIngredient | null,
+  ingredients: IIngredient[]
+}
+
+export const initialState: IConstructorInitialState = {
   bun: null,
   ingredients: [],
 };
 
-export const constructorReduser = (state = initialState, action) => {
+export const constructorReduser = (state = initialState, action: TConstructorAction): IConstructorInitialState => {
   switch (action.type) {
     case ADD_ING_CONSTRUCTOR:
       if (!state.ingredients) {

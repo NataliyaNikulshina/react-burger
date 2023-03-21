@@ -13,7 +13,16 @@ export interface IIngredient {
   __v: number;
   _idInBasket?: string;
   index?: number;
-  }
+}
+
+export interface IIngDetailsInitial {
+  name: string,
+  image_large: string,
+  calories: number,
+  proteins: number,
+  fat: number,
+  carbohydrates: number
+} 
 
 export interface IOrderInfo {
   createdAt: string;
@@ -38,4 +47,10 @@ export interface IUserRegister {
 export interface IUserLogin {
   email: string;
   password: string;
+}
+
+export interface IWsMessage {
+  readonly orders: Array<IOrderInfo>;
+  readonly total: number;
+  readonly totalToday: number;
 }

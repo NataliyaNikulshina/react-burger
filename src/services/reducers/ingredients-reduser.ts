@@ -3,14 +3,22 @@ import {
     GET_ITEMS_ERROR,
     GET_ITEMS_SUCCESS
   } from '../actions/ingredients';
+import { TGetItemsActions } from '../actions/ingredients'
+import { IIngredient } from '../types/data';
   
-  export const initialState = {
+export interface IIngredientsInitialState {
+    items: IIngredient[],
+    itemsRequest: boolean,
+    itemsFailed: boolean
+  }
+
+export const initialState: IIngredientsInitialState = {
     items: [],
     itemsRequest: false,
     itemsFailed: false
   }
 
-  export const ingredientsReducer = (state = initialState, action) => {
+  export const ingredientsReducer = (state = initialState, action: TGetItemsActions): IIngredientsInitialState => {
     switch (action.type) {
       case GET_ITEMS_REQUEST: {
         return {

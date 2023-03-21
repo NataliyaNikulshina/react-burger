@@ -4,8 +4,19 @@ import {
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE,
   } from "../actions/feed-ws";
+  import { TWsFeedAction } from '../actions/feed-ws';
+  import { IOrderInfo } from '../types/data';
   
-  const initialState = {
+  export interface IWsFeedInitialState {
+    wsConnected: boolean,
+    orders: IOrderInfo[],
+    total: number,
+    totalToday: number,
+    errorState: boolean,
+    errorMessage: null | string,
+  }
+
+  const initialState: IWsFeedInitialState = {
     wsConnected: false,
     orders: [],
     total: 0,
@@ -14,7 +25,7 @@ import {
     errorMessage: null,
   };
   
-  export const feedWsReducer = (state = initialState, action) => {
+  export const feedWsReducer = (state = initialState, action: TWsFeedAction): IWsFeedInitialState => {
     switch (action.type) {
       case WS_CONNECTION_SUCCESS:
         return {
@@ -41,7 +52,7 @@ import {
       case WS_GET_MESSAGE:
         return {
           ...state,
-          orders: action.payload.orders,
+          orders: action.payload.orders.reverse(),
           total: action.payload.total,
           totalToday: action.payload.totalToday,        
         };

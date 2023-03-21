@@ -6,7 +6,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { updateUserData, checkUser } from "../../services/actions/user";
+import { updateUserDataThunk, checkUserThunk } from "../../services/actions/user";
 import { getRefreshToken, getToken } from "../../hooks/useTokens";
 import stylesForm from "./profile-form.module.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -52,7 +52,7 @@ const ProfileForm = () => {
     //console.log(token)
     // eslint-disable-next-line no-unused-expressions
     password !== "" ? userInfo.password = password : false
-    return dispatch(updateUserData(userInfo,token));
+    return dispatch(updateUserDataThunk(userInfo,token));
 }
 
   const updateSubmit = useCallback(

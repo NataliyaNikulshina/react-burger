@@ -1,3 +1,5 @@
+import { IWsMessage } from '../types/data';
+
 export const WS_CONNECTION_START: 'WS_CONNECTION_START' = "WS_CONNECTION_START";
 export const WS_CONNECTION_SUCCESS: 'WS_CONNECTION_SUCCESS' = "WS_CONNECTION_SUCCESS";
 export const WS_CONNECTION_ERROR: 'WS_CONNECTION_ERROR' = "WS_CONNECTION_ERROR";
@@ -24,7 +26,7 @@ export interface IWsClosedAction {
 }
 export interface IWsGetMessageAction {
   readonly type: typeof WS_GET_MESSAGE;
-  readonly payload: string;
+  readonly payload: IWsMessage;
 }
 
 export type TWsFeedAction = IWsStartAction | IWsConnectionAction | IWsErrorAction | IWsCloseAction | IWsClosedAction | IWsGetMessageAction;
@@ -61,7 +63,7 @@ export const wsConnectionClosed = (): IWsClosedAction => {
   };
 };
 
-export const wsGetMessage = (message: string): IWsGetMessageAction => {
+export const wsGetMessage = (message: IWsMessage): IWsGetMessageAction => {
   return {
     type: WS_GET_MESSAGE,
     payload: message,

@@ -11,7 +11,7 @@ import ProfilePage from "../../pages/profile";
 import FeedPage from "../../pages/feed";
 import OrderDetailsPage from "../../pages/order-details";
 import IngredientDetailsPage from "../../pages/ingredients-id";
-import { checkUser } from "../../services/actions/user";
+import { checkUserThunk } from "../../services/actions/user";
 import ProtectedRouteElement from "../protected-route/protected-route";
 import AppHeader from "../app-header/app-header";
 import { getItems } from "../../services/actions/ingredients";
@@ -37,7 +37,7 @@ export default function App() {
   const token = getToken();
 
   useEffect(() => {
-    dispatch(checkUser());
+    dispatch(checkUserThunk());
   }, []);
 
   useEffect(() => {

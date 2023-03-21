@@ -22,8 +22,37 @@ import {
   CHECK_USER_SUCCESS,
   CHECK_USER_ERROR,
 } from "../actions/user";
+import { TUserAction } from '../actions/user';
+import { IUserRegister, IUserLogin, IUser } from '../types/data';
 
-const initialState = {
+export interface IUserInitialState {
+  userData: IUserRegister | IUserLogin | IUser | null,
+
+  isAuth: boolean,
+
+  registerUserRequest: boolean,
+  registerUserError: boolean,
+
+  loginUserRequest: boolean,
+  loginUserError: boolean,
+
+  forgotPasswordRequest: boolean,
+  forgotPasswordError: boolean,
+
+  resetPasswordRequest: boolean,
+  reserPasswordError: boolean,
+
+  refreshTokenRequest: boolean,
+  refreshTokenError: boolean,
+
+  updateUserRequest: boolean,
+  updateUserError: boolean,
+
+  checkUserRequest: boolean,
+  checkUserError: boolean
+}
+
+const initialState: IUserInitialState = {
   userData: null,
 
   isAuth: false,
@@ -43,25 +72,26 @@ const initialState = {
   refreshTokenRequest: false,
   refreshTokenError: false,
 
-  checkUserRequest: null,
+  updateUserRequest: false,
+  updateUserError: false,
+
+  checkUserRequest: false,
   checkUserError: false,
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action:TUserAction): IUserInitialState => {
   switch (action.type) {
     case REGISTER_USER_REQUEST: {
       return {
         ...state,
         registerUserRequest: true,
-        registerUserError: null,
+        registerUserError: false,
       };
     }
     case REGISTER_USER_SUCCESS: {
       return {
         ...state,
-        userData: {
-          ...state.userData,
-        },
+        userData: action.payload,
         registerUserRequest: false,
         registerUserError: false,
       };
@@ -133,7 +163,7 @@ export const userReducer = (state = initialState, action) => {
     case REFRESH_TOKEN_SUCCESS: {
       return {
         ...state,
-        userData: action.payload,
+       // userData: action.payload,
         refreshTokenRequest: false,
         refreshTokenError: false,
       };
@@ -149,8 +179,8 @@ export const userReducer = (state = initialState, action) => {
     case RESET_PASSWORD_REQUEST: {
       return {
         ...state,
-        resetUserRequest: true,
-        resetUserError: false,
+        resetPasswordRequest: true,
+        reserPasswordError: false,
       };
     }
 
@@ -158,30 +188,30 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         userData: action.payload,
-        resetUserRequest: false,
-        resetUserError: false,
+        resetPasswordRequest: false,
+        reserPasswordError: false,
       };
     }
     case RESET_PASSWORD_ERROR: {
       return {
         ...state,
-        resetUserRequest: false,
-        resetUserError: true,
+        resetPasswordRequest: false,
+        reserPasswordError: true,
       };
     }
 
     case UPDATE_USER_REQUEST: {
       return {
         ...state,
-        updateDataRequest: true,
-        updateDataError: false,
+        updateUserRequest: true,
+        updateUserError: false,
       };
     }
     case UPDATE_USER_SUCCESS: {
       return {
         ...state,
-        updateDataRequest: false,
-        updateDataError: false,
+        updateUserRequest: false,
+        updateUserError: false,
         userData: {
           ...state.userData,
           email: action.payload.email,
@@ -192,8 +222,8 @@ export const userReducer = (state = initialState, action) => {
     case UPDATE_USER_ERROR: {
       return {
         ...state,
-        updateDataRequest: false,
-        updateDataError: true,
+        updateUserRequest: false,
+        updateUserError: true,
       };
     }
 
@@ -207,11 +237,7 @@ export const userReducer = (state = initialState, action) => {
     case CHECK_USER_SUCCESS: {
       return {
         ...state,
-        userData: {
-          ...state.userData,
-          email: action.payload.email,
-          name: action.payload.name,
-        },
+        userData: action.payload,
         isAuth: true,
         checkUserRequest: false,
         checkUserError: false,

@@ -11,14 +11,15 @@ export const POST_ORDER_DETAILS_REQUEST: 'POST_ORDER_DETAILS_REQUEST' = "POST_OR
 export const POST_ORDER_DETAILS_ERROR: 'POST_ORDER_DETAILS_ERROR' = "POST_ORDER_DETAILS_ERROR";
 export const POST_ORDER_DETAILS_SUCCESS: 'POST_ORDER_DETAILS_SUCCESS' = "POST_ORDER_DETAILS_SUCCESS";
 export const POST_ORDER_DETAILS_RESET: 'POST_ORDER_DETAILS_RESET' = "POST_ORDER_DETAILS_RESET";
-export const SET_CURRENT_ORDER: 'SET_CURRENT_ORDER' = "SET_CURRENT_ORDER";
-export const RESET_CURRENT_ORDER: 'RESET_CURRENT_ORDER' = "RESET_CURRENT_ORDER";
+// export const SET_CURRENT_ORDER: 'SET_CURRENT_ORDER' = "SET_CURRENT_ORDER";
+// export const RESET_CURRENT_ORDER: 'RESET_CURRENT_ORDER' = "RESET_CURRENT_ORDER";
 
 export interface IPostOrderDetailsRequestAction {
   readonly type: typeof POST_ORDER_DETAILS_REQUEST;
 }
 export interface IPostOrderDetailsErrorAction {
   readonly type: typeof POST_ORDER_DETAILS_ERROR;
+  readonly errorText: string;
 }
 export interface IPostOrderDetailsSuccessAction {
   readonly type: typeof POST_ORDER_DETAILS_SUCCESS;
@@ -27,18 +28,19 @@ export interface IPostOrderDetailsSuccessAction {
 export interface IPostOrderDetailsResetAction {
   readonly type: typeof POST_ORDER_DETAILS_RESET;
 }
-export interface ISetCurrentOrderAction {
-  readonly type: typeof SET_CURRENT_ORDER;
-}
-export interface IResetCurrentOrderAction {
-  readonly type: typeof RESET_CURRENT_ORDER;
-}
+// export interface ISetCurrentOrderAction {
+//   readonly type: typeof SET_CURRENT_ORDER;
+// }
+// export interface IResetCurrentOrderAction {
+//   readonly type: typeof RESET_CURRENT_ORDER;
+//}
 
 export const postOrderRequest = (): IPostOrderDetailsRequestAction => ({
   type: POST_ORDER_DETAILS_REQUEST
 });
-export const postOrderError = (): IPostOrderDetailsErrorAction => ({
-  type: POST_ORDER_DETAILS_ERROR
+export const postOrderError = (text: string): IPostOrderDetailsErrorAction => ({
+  type: POST_ORDER_DETAILS_ERROR,
+  errorText: text
 });
 export const postOrdersSuccess = (orderNumber: number): IPostOrderDetailsSuccessAction => ({
   type: POST_ORDER_DETAILS_SUCCESS,
@@ -47,15 +49,16 @@ export const postOrdersSuccess = (orderNumber: number): IPostOrderDetailsSuccess
 export const postOrderReset = (): IPostOrderDetailsResetAction => ({
   type: POST_ORDER_DETAILS_RESET
 });
-export const setCurrentOrder = (): ISetCurrentOrderAction => ({
-  type: SET_CURRENT_ORDER
-});
-export const resetCurrentOrder = (): IResetCurrentOrderAction => ({
-  type: RESET_CURRENT_ORDER
-});
+// export const setCurrentOrder = (): ISetCurrentOrderAction => ({
+//   type: SET_CURRENT_ORDER
+// });
+// export const resetCurrentOrder = (): IResetCurrentOrderAction => ({
+//   type: RESET_CURRENT_ORDER
+// });
 
 export type TOrderAction =  IPostOrderDetailsRequestAction | IPostOrderDetailsErrorAction | IPostOrderDetailsSuccessAction |
-IPostOrderDetailsResetAction | ISetCurrentOrderAction | IResetCurrentOrderAction;
+IPostOrderDetailsResetAction;
+//ISetCurrentOrderAction | IResetCurrentOrderAction;
 
 export function createOrderActionThunk (ingredients: IIngredient[], bun: IIngredient) {
   return function (dispatch: AppDispatch) {
@@ -76,7 +79,7 @@ export function createOrderActionThunk (ingredients: IIngredient[], bun: IIngred
                 dispatch(postOrdersSuccess(res));
               })
               .catch(() => {
-                dispatch(postOrderError());
+                dispatch(postOrderError("Ошибка при формировании заказа"));
               });
           });
         }

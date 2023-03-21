@@ -4,7 +4,16 @@ import {
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE,
   } from "../actions/feed-ws";
+  import { TWsUserAction } from '../actions/user-ws';
+  import { IOrderInfo } from '../types/data';
   
+  export interface IWsUserInitialState {
+    wsConnected: boolean,
+    orders: IOrderInfo[],
+    errorState: boolean,
+    errorMessage: null | string
+  }
+
   const initialState = {
     wsConnected: false,
     orders: [],
@@ -12,7 +21,7 @@ import {
     errorMessage: null,
   };
   
-  export const userWsReducer = (state = initialState, action) => {
+  export const userWsReducer = (state = initialState, action: TWsUserAction): IWsUserInitialState => {
     switch (action.type) {
       case WS_CONNECTION_SUCCESS:
         return {
