@@ -1,12 +1,12 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, FC } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredients from "./burger-ingredients.module.css";
 import Ingredient from "../ingredient/ingredient";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/hooks";
 import { useInView } from "react-intersection-observer";
 
 
-const BurgerIngredients = () => {
+const BurgerIngredients: FC = () => {
   const ingredients = useSelector((state) => state.ingredients);
   const ingINBasket = useSelector((state) => state.constructor);
   const [current, setCurrent] = useState("bun");
@@ -42,7 +42,7 @@ const BurgerIngredients = () => {
     }
   }, [inViewBun, inViewMain, inViewSause]);
 
-  const onClickTab = (tab) => {
+  const onClickTab = (tab: string) => {
     setCurrent(tab);
     const item = document.getElementById(tab);
     if (item) {
@@ -50,8 +50,12 @@ const BurgerIngredients = () => {
     }
   };
 
+  interface ICounter {
+    [counter: string]: number;
+  }
+
   const ingCount = useMemo(() => {
-    let counter = {};
+    let counter: ICounter = {};
     ingINBasket.ingredients &&
       ingINBasket.ingredients.forEach((element) => {
         if (!counter[element._id]) counter[element._id] = 0;
@@ -59,9 +63,8 @@ const BurgerIngredients = () => {
       });
     return counter;
   }, [ingINBasket.ingredients]);
-
   const ingCountBun = useMemo(() => {
-    let counterBun = {};
+    let counterBun: ICounter = {};
     if (ingINBasket.bun) counterBun[ingINBasket.bun._id] = 2;
     return counterBun;
   }, [ingINBasket.bun]);

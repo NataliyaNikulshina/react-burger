@@ -1,4 +1,4 @@
-export const getStatus = (status) => {
+export const getStatus = (status: string) => {
     switch (status) {
       case "created":
         return 'Создан'

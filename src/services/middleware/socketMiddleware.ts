@@ -1,8 +1,45 @@
-export const socketMiddleware = (wsActions) => {
+import {Middleware} from "redux";
+// import {
+//   WS_CONNECTION_START,  
+//   WS_CONNECTION_SUCCESS,
+//   WS_CONNECTION_ERROR,
+//   WS_CONNECTION_CLOSE,
+//   WS_CONNECTION_CLOSED,
+//   WS_GET_MESSAGE,
+//   TWsFeedAction,
+
+// } from "../actions/feed-ws";
+// import {
+//   WS_CONNECTION_START as WS_USER_CONNECTION_START,  
+//   WS_CONNECTION_SUCCESS as WS_USER_CONNECTION_SUCCESS,
+//   WS_CONNECTION_ERROR as WS_USER_CONNECTION_ERROR,
+//   WS_CONNECTION_CLOSE as WS_USER_CONNECTION_CLOSE, 
+//   WS_CONNECTION_CLOSED as WS_USER_CONNECTION_CLOSED,
+//   WS_GET_MESSAGE as WS_USER_GET_MESSAGE,
+//   TWsUserAction
+// } from "../actions/user-ws";
+
+// export interface IWsActions {
+//   startType: WS_CONNECTION_START | WS_USER_CONNECTION_START,
+//   closetType: WS_CONNECTION_CLOSED | WS_USER_CONNECTION_CLOSE,
+//   onError: WS_CONNECTION_ERROR | WS_USER_CONNECTION_CLOSED,
+//   onMessage: WS_GET_MESSAGE | WS_USER_GET_MESSAGE
+// }
+
+export interface IWebSocket {
+  wsInit: string;
+  onOpen: string;
+  onClose: string;
+  onClosed: string;
+  onError: string;
+  onMessage: string;
+}
+
+export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
     return (store) => {
-      let socket = null;
+      let socket: WebSocket | null = null;
       let reconnectTimer = 0;
-      let url = undefined;
+      let url: string | URL = '';
   
       return (next) => (action) => {
         const { dispatch } = store;
@@ -14,7 +51,7 @@ export const socketMiddleware = (wsActions) => {
           url = payload;
           socket = new WebSocket(url);
         } else if (type === onClose) {
-          socket.close(1000, "CLOSE_NORMAL");
+          socket!.close(1000, "CLOSE_NORMAL");
           clearTimeout(reconnectTimer);
           reconnectTimer = 0;
         }

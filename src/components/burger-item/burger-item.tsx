@@ -4,7 +4,6 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import ingredientType from "../../utils/types.js";
 import { useDispatch } from "react-redux";
 import { useDrop, useDrag, XYCoord } from "react-dnd";
 import {

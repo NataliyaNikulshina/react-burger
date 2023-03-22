@@ -1,4 +1,4 @@
-export const getDate = (date) => {
+export const getDate = (date: string) => {
     let day;
     const orderDate = new Date(Date.parse(date))
     const timeZone = -orderDate.getTimezoneOffset() / 60

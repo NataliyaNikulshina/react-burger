@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Logo,
@@ -8,7 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import appHeader from "./app-header.module.css";
 
-const AppHeader = () => {
+const AppHeader: FC = () => {
   const activeStyle = {
     color: "#f2f2f3",
   };
