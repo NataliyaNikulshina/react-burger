@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   CurrencyIcon,
   Button,
@@ -7,7 +7,7 @@ import burgerConstructor from "./burger-constructor.module.css";
 import OrderDetails from "../order-details/order-details";
 import { useNavigate } from "react-router-dom";
 import Modal from "../modal/modal";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/hooks";
 import { useDrop } from "react-dnd";
 import {
   addIngConstructor,
@@ -21,18 +21,17 @@ import {
 } from "../burger-item/burger-item";
 import {
   postOrderReset,
-  createOrderAction,
   createOrderActionThunk
 } from "../../services/actions/order";
 import Loader from "../loader/loader";
+import { IIngredient } from "../../services/types/data";
 
-const BurgerConstructor = () => {
+const BurgerConstructor: FC = () => {
   const { bun, ingredients } = useSelector((state) => state.constructor);
   // console.log(ingredients);
   const dispatch = useDispatch();
   const order = useSelector((state) => state.order);
-  //console.log(orderNumber);
-  console.log(order)
+  console.log(order);
   const { isAuth } = useSelector((store) => ({
     isAuth: store.user.isAuth,
   }));
@@ -53,7 +52,7 @@ const BurgerConstructor = () => {
 
   const navigate = useNavigate();
 
-  const handleOrderModal = (e) => {
+  const handleOrderModal = () => {
     if (!isAuth) {
       navigate("/login");
     } else {
@@ -63,8 +62,7 @@ const BurgerConstructor = () => {
     }
   };
 
-  function closeModal(e) {
-    e.stopPropagation();
+  function closeModal() {
     dispatch(resetIngConstructor());
     dispatch(postOrderReset());
     changeVisibility(false);
@@ -72,26 +70,30 @@ const BurgerConstructor = () => {
 
   function dataPostId() {
     const arrOrder = [bun, ...ingredients.map((item) => item), bun].map(
-      (ing) => ing._id
+      (ing) => ing!._id
     );
     //console.log(arrOrder);
     return arrOrder;
   }
 
+  interface IIngDrop{
+    ingredient: IIngredient
+  }
+
   const [, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(itemId) {
-      onDropHandler(itemId);
+    drop(ingredient: IIngDrop) {
+      onDropHandler(ingredient);
     },
   });
 
-  const onDropHandler = ({ingredient}) => {
-    if (ingredient.type === "bun") {
-      dispatch(setBunConstructor(ingredient));
-      console.log('bun' + ingredient)
+  const onDropHandler = (ing: IIngDrop) => {
+    if (ing.ingredient.type === "bun") {
+      dispatch(setBunConstructor(ing.ingredient));
+     // console.log('bun' + ing.ingredient)
     } else {
-      dispatch(addIngConstructor(ingredient));
-      console.log(ingredient)
+      dispatch(addIngConstructor(ing.ingredient));
+     // console.log(ingredient)
     }
   };
 
@@ -102,7 +104,7 @@ const BurgerConstructor = () => {
     >
       <div className={`${burgerConstructor.element} mr-4 mb-4`}>
         {bun ? (
-          <BurgerFirstItem ingredient={bun} />
+          <BurgerFirstItem ingredient={bun} type={"top"}/>
         ) : (
           <p className="text text_type_main-medium">Перетащи сюда булку</p>
         )}
@@ -137,7 +139,7 @@ const BurgerConstructor = () => {
           ))}
       </ul>
       <div className={`${burgerConstructor.element} mr-4 mb-4`}>
-        {bun && <BurgerLastItem ingredient={bun} />}
+        {bun && <BurgerLastItem ingredient={bun} type={"bottom"}/>}
       </div>
 
       <ul className={`${burgerConstructor.result} mt-10`}>
@@ -164,7 +166,7 @@ const BurgerConstructor = () => {
             <Loader /> 
           ) : ( 
             <OrderDetails
-              orderNumber={order.order.order.number}
+              orderNumber={order.order!.order.number}
               isLoading={order.orderRequest}
             />
           )}

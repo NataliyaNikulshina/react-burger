@@ -7,7 +7,7 @@ import styleMain from "./app-main.module.css";
 //import { useSelector, useDispatch } from "react-redux";
 import { useSelector } from '../../services/hooks'
 import { useNavigate, useLocation} from "react-router-dom";
-import Loader from "../loader/loader.js";
+import Loader from "../loader/loader";
 
 const AppMain: FC = () => {
   const ingredients = useSelector((state) => state.ingredients);

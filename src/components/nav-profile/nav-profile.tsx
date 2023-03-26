@@ -1,21 +1,23 @@
 import { Link, useNavigate, NavLink, useLocation} from "react-router-dom";
+import{ FC, MouseEventHandler } from 'react';
 import styleProfile from "./nav-profile.module.css";
 import {
   logoutThunk
 } from "../../services/actions/user";
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch} from "../../services/hooks";
 import {getRefreshToken} from "../../hooks/useTokens";
 
-const NavProfile = () => {
+const NavProfile: FC = () => {
     const location = useLocation()
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const refreshToken = getRefreshToken();
    // console.log(refreshToken);
 
-    const onLogout = (e) => {
-      e.preventDefault();
+    const onLogout = () => {
+      if (refreshToken) {
       dispatch(logoutThunk(refreshToken, () => navigate("/login")));
+      }
   }
 
   return (

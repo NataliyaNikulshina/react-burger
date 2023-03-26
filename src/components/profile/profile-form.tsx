@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from "react";
+import { useState, useEffect, useCallback, FC, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   EmailInput,
@@ -9,20 +9,21 @@ import {
 import { updateUserDataThunk, checkUserThunk } from "../../services/actions/user";
 import { getRefreshToken, getToken } from "../../hooks/useTokens";
 import stylesForm from "./profile-form.module.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/hooks";
 import { logoutThunk } from "../../services/actions/user";
+import { IUserLogin, IUserRegister, TUseForm, IUser } from "../../services/types/data";
 
 
 
-const ProfileForm = () => {
+const ProfileForm: FC = () => {
   
-  const [isEdit, setEdit] = useState(null);
+  const [isEdit, setEdit] = useState({email: '', password: '', name: ''});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = getToken();
 
-  const user = useSelector((state) => state.user.userData);
-  const [values, setValues] = useState({
+  const user = useSelector((state) => state.user.userDataRegister);
+  const [values, setValues] = useState<IUserRegister>({
     email: `${user ? user.email : ""}`,
     password: "",
     name: `${user ? user.name : ""}`,
@@ -30,7 +31,7 @@ const ProfileForm = () => {
 
   const isEditValue = isEdit === null ? false : isEdit?.name !== values.name || isEdit?.email !== values.email || values.password !== ""
 
-  const onChange = (event) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setValues((prevValues) => {
       return { ...prevValues, [name]: value };
@@ -38,27 +39,32 @@ const ProfileForm = () => {
   };
 
   useEffect(() => {
-    setEdit(user)
+    if (user){
+    setEdit(user)}
    // console.log(isEditValue)
 },[])
 
   
   function onReset() {
+    if (user){
     setValues({ name: user.name, password: "", email: user.email });
+    }
   }
 
-  const updateProfileInfo = ({email,name, password}, token) => {
-    const userInfo = {email,name}
-    //console.log(token)
-    // eslint-disable-next-line no-unused-expressions
-    password !== "" ? userInfo.password = password : false
-    return dispatch(updateUserDataThunk(userInfo,token));
+  const updateProfileInfo = ( valuesForm: TUseForm, token: string ) => {
+    //const userInfo = {email,name,password};
+    console.log(valuesForm);
+    console.log(values);
+    if (valuesForm.password !== "") {return valuesForm.password === values.password} 
+    dispatch(updateUserDataThunk(valuesForm,token));
 }
 
   const updateSubmit = useCallback(
-    (e) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      if (token) {
       updateProfileInfo(values, token)
+      }
       //console.log(values)
     },
     [dispatch, user, values]

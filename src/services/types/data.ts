@@ -26,11 +26,19 @@ export interface IIngDetailsInitial {
 
 export interface IOrderInfo {
   createdAt: string;
+  updatedAt: string;
   ingredients: string[];
   name: string;
   number: number;
   status: "done" | "created";
   _id: string;
+  price: number;
+}
+
+export interface IOrder {
+  order: IOrderInfo,
+  name: string,
+  success: boolean
 }
 
 export interface IUser {
@@ -53,4 +61,10 @@ export interface IWsMessage {
   readonly orders: Array<IOrderInfo>;
   readonly total: number;
   readonly totalToday: number;
+}
+
+export type TUseForm = {
+  email: string;
+  name: string;
+  password: string;
 }

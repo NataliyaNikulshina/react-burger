@@ -54,7 +54,7 @@ const BurgerIngredients: FC = () => {
     [counter: string]: number;
   }
 
-  const ingCount = useMemo(() => {
+  const ingCount = useMemo<ICounter>(() => {
     let counter: ICounter = {};
     ingINBasket.ingredients &&
       ingINBasket.ingredients.forEach((element) => {
@@ -63,7 +63,7 @@ const BurgerIngredients: FC = () => {
       });
     return counter;
   }, [ingINBasket.ingredients]);
-  const ingCountBun = useMemo(() => {
+  const ingCountBun = useMemo<ICounter>(() => {
     let counterBun: ICounter = {};
     if (ingINBasket.bun) counterBun[ingINBasket.bun._id] = 2;
     return counterBun;

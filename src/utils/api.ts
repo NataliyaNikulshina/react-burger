@@ -56,7 +56,7 @@ export const postEmailForReset = (email: string) => {
   return request((`${api.url}/password-reset`), "POST", {email})
 };
 
-export const postNewPassword = (password: string, code: number) => {
+export const postNewPassword = (password: string, code: string) => {
   return request((`${api.url}/password-reset/reset`), "POST", {password, token: code})
 };
 

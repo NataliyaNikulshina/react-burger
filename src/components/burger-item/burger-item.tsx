@@ -13,12 +13,16 @@ import {
 import { IIngredient } from "../../services/types/data.js";
 
 interface IIngredientProps {
-  type: "top" | "bottom" | undefined;
   ingredient: IIngredient;
   index: number;
 }
 
-export const BurgerFirstItem: FC<IIngredientProps> = ({ ingredient }) => {
+interface IBunProps {
+  type: "top" | "bottom" ;
+  ingredient: IIngredient;
+}
+
+export const BurgerFirstItem: FC<IBunProps> = ({ ingredient }) => {
   return (
     <ConstructorElement
       type="top"
@@ -117,7 +121,7 @@ export const BurgerMiddleItem: FC<IIngredientProps> = ({ ingredient, index }) =>
 //   ingredient: ingredientType.isRequired,
 // };
 
-export const BurgerLastItem: FC<IIngredientProps> = ({ ingredient }) => {
+export const BurgerLastItem: FC<IBunProps> = ({ ingredient }) => {
   return (
     <ConstructorElement
       type="bottom"

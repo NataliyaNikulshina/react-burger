@@ -3,15 +3,14 @@ import {
     RESET_INGREDIENT_DETAILS
 } from '../actions/ingredient-details';
 import { TIngredientDetailsAction } from '../actions/ingredient-details';
-import { IIngDetailsInitial } from '../types/data'
+import { IIngredient, IIngDetailsInitial } from '../types/data'
 
-type TIngDetailsInitialUnderfined = IIngDetailsInitial | undefined;
 
 export interface IIngDetailsInitialState {
-    ingredientDetails: TIngDetailsInitialUnderfined;
+    ingredientDetailsInfo: IIngDetailsInitial | undefined;
   }
 export const initialState: IIngDetailsInitialState = {
-    ingredientDetails: undefined
+    ingredientDetailsInfo: undefined
 }
 
 export const ingredientDetailsReducer = (state = initialState, action: TIngredientDetailsAction): IIngDetailsInitialState => {
@@ -20,7 +19,7 @@ export const ingredientDetailsReducer = (state = initialState, action: TIngredie
         case SET_INGREDIENT_DETAILS: {
             return {
                 ...state,
-                ingredientDetails: action.payload
+                ingredientDetailsInfo: action.payload
             };
         }
         case RESET_INGREDIENT_DETAILS: {

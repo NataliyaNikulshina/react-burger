@@ -1,31 +1,28 @@
-import React from "react";
+import React, { FC } from "react";
 import { Link, useNavigate, Navigate, useLocation } from "react-router-dom";
 import {
   EmailInput,
   Button,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/hooks";
 import stylesLoginForm from "./form.module.css";
 import { loginUserThunk } from "../../services/actions/user";
 import { useForm } from "../../hooks/useForm";
 
 
-const LoginForm = (isAuth) => {
+const LoginForm: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const from = location.state?.from || '/';
   const loginData = useSelector((store) => store.user.userData);
-  const { values, handleChange } = useForm({
-    email: "",
-    password: "",
-  });
+  const { values, handleChange } = useForm({email: '', password: '', name: ''});
   // const { isAuth } = useSelector((store) => ({
   //   isAuth: store.user.isAuth
   // }));
 
-  const loginSubmit = (e) => {
+  const loginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       dispatch(loginUserThunk(values));
       navigate(-1);
@@ -41,7 +38,7 @@ const LoginForm = (isAuth) => {
       </h1>
       <EmailInput
         onChange={handleChange}
-        value={values.email}
+        value={values.email!}
         name={"email"}
         placeholder="E-mail"
         isIcon={false}
@@ -49,7 +46,7 @@ const LoginForm = (isAuth) => {
       />
       <PasswordInput
         onChange={handleChange}
-        value={values.password}
+        value={values.password!}
         name={"password"}
         extraClass="mb-6"
       />

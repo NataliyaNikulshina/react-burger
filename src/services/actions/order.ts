@@ -6,6 +6,7 @@ import {
 } from "../../hooks/useTokens";
 import { IIngredient } from "../types/data";
 import { AppDispatch } from "../types/index";
+import { IOrderInfo, IOrder } from '../types/data'
 
 export const POST_ORDER_DETAILS_REQUEST: 'POST_ORDER_DETAILS_REQUEST' = "POST_ORDER_DETAILS_REQUEST";
 export const POST_ORDER_DETAILS_ERROR: 'POST_ORDER_DETAILS_ERROR' = "POST_ORDER_DETAILS_ERROR";
@@ -23,7 +24,7 @@ export interface IPostOrderDetailsErrorAction {
 }
 export interface IPostOrderDetailsSuccessAction {
   readonly type: typeof POST_ORDER_DETAILS_SUCCESS;
-  readonly payload: number;
+  readonly payload: IOrder;
 }
 export interface IPostOrderDetailsResetAction {
   readonly type: typeof POST_ORDER_DETAILS_RESET;
@@ -42,9 +43,9 @@ export const postOrderError = (text: string): IPostOrderDetailsErrorAction => ({
   type: POST_ORDER_DETAILS_ERROR,
   errorText: text
 });
-export const postOrdersSuccess = (orderNumber: number): IPostOrderDetailsSuccessAction => ({
+export const postOrdersSuccess = (order: IOrder): IPostOrderDetailsSuccessAction => ({
   type: POST_ORDER_DETAILS_SUCCESS,
-  payload: orderNumber
+  payload: order
 });
 export const postOrderReset = (): IPostOrderDetailsResetAction => ({
   type: POST_ORDER_DETAILS_RESET
@@ -60,7 +61,7 @@ export type TOrderAction =  IPostOrderDetailsRequestAction | IPostOrderDetailsEr
 IPostOrderDetailsResetAction;
 //ISetCurrentOrderAction | IResetCurrentOrderAction;
 
-export function createOrderActionThunk (ingredients: IIngredient[], bun: IIngredient) {
+export function createOrderActionThunk (ingredients: IIngredient[], bun: IIngredient | null) {
   return function (dispatch: AppDispatch) {
     const arrayId = bun
       ? [bun._id, ...ingredients.map((item) => item._id), bun._id]

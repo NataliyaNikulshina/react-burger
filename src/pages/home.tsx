@@ -1,8 +1,8 @@
-
+import { FC } from "react";
 import AppMain from '../components/app-main/app-main';
 
 
-const HomePage = () => {
+const HomePage: FC = () => {
   
   return (
       <div className="App">

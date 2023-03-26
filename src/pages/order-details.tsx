@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import LoginForm from "../components/form/login-form";
 import Loader from "../components/loader/loader";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../services/hooks";
 import OrderDetailsInfo from "../components/order-details-info/order-details-info";
 import { useLocation, useParams } from "react-router-dom";
 import {
@@ -16,7 +16,7 @@ import { apiWS } from "../utils/api";
 import { getToken } from "../hooks/useTokens";
 
 
-const OrderDetailsPage = () => {
+const OrderDetailsPage: FC = () => {
   const { id } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const OrderDetailsPage = () => {
     if (location.pathname.includes("profile")) {
       dispatch(
         wsConnectionStartUser(
-          apiWS.urlProfile(getToken().replace("Bearer ", ""))
+          apiWS.urlProfile(getToken()!.replace("Bearer ", ""))
         )
       );
       return () => {
@@ -46,8 +46,8 @@ const OrderDetailsPage = () => {
   return orderUser || orderFeed ? (
     <div style={{ paddingTop: 122 }}>
       { location.pathname.includes("profile") ?
-        <OrderDetailsInfo order={orderUser} /> :
-        <OrderDetailsInfo order={orderFeed} />
+        <OrderDetailsInfo order={orderUser!} /> :
+        <OrderDetailsInfo order={orderFeed!} />
       }
     </div>
   ) : (

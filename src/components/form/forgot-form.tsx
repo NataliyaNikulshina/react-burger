@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   EmailInput,
@@ -6,17 +6,19 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { forgotPassThunk } from "../../services/actions/user";
 import stylesForm from "./form.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/hooks";
 import { useForm } from "../../hooks/useForm";
 
-const ForgotPasswordForm = () => {
-  const { values, handleChange } = useForm( "" );
+const ForgotPasswordForm: FC = () => {
+  const { values, handleChange } = useForm( { email: '', password: '', name: ''} );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onSubmitEmail = (e) => {
+  const onSubmitEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (values.email) {
     dispatch(forgotPassThunk(values.email, () => navigate("/reset-password")));
+    };
   };
 
   return (
@@ -26,7 +28,7 @@ const ForgotPasswordForm = () => {
       </h1>
       <EmailInput
         onChange={handleChange}
-        value={values}
+        value={values.email}
         name={"email"}
         placeholder="Укажите e-mail"
         isIcon={false}

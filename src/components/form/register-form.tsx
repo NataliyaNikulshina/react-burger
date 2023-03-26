@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Input,
@@ -6,14 +6,14 @@ import {
   Button,
   PasswordInput
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch} from "../../services/hooks";
 import stylesForm from "./form.module.css";
 import {
   registerUserThunk
 } from "../../services/actions/user";
 import { useForm } from "../../hooks/useForm";
 
-const RegisterForm = () => {
+const RegisterForm: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(store => store.user.userData);
@@ -24,11 +24,11 @@ const RegisterForm = () => {
   });
 
   const registerSubmit = React.useCallback(
-    (e) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (user) return;
-        dispatch(registerUserThunk(values));
-        navigate(-1);
+        dispatch(registerUserThunk(values, () => navigate(-1)));
+        //navigate(-1);
     }, [dispatch, user, values]);
 
   return (
@@ -37,7 +37,7 @@ const RegisterForm = () => {
         Регистрация
       </h1>
       <Input
-        value={values.name}
+        value={values.name!}
         onChange={handleChange}
         placeholder={"Name"}
         name={"name"}
@@ -45,7 +45,7 @@ const RegisterForm = () => {
       />
       <EmailInput
         onChange={handleChange}
-        value={values.email}
+        value={values.email!}
         name={"email"}
         placeholder="E-mail"
         isIcon={false}
@@ -53,7 +53,7 @@ const RegisterForm = () => {
       />
       <PasswordInput
         onChange={handleChange}
-        value={values.password}
+        value={values.password!}
         name={'password'}
         extraClass="mb-6"
       />

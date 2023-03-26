@@ -1,8 +1,8 @@
-import AppHeader from "../components/app-header/app-header";
+import { FC } from "react";
 import ForgotPasswordForm from '../components/form/forgot-form';
 
 
-const ForgotPasswordPage = () => {
+const ForgotPasswordPage: FC = () => {
 
   return (
     <ForgotPasswordForm />

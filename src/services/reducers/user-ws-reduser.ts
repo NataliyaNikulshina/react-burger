@@ -14,7 +14,7 @@ import {
     errorMessage: null | string
   }
 
-  const initialState = {
+  const initialState: IWsUserInitialState = {
     wsConnected: false,
     orders: [],
     errorState: false,

@@ -60,7 +60,7 @@ const OrderDetailsInfo: FC<IOrderDetailsInfoProps> = ({ order }) => {
   );
   const orderIngredients = useMemo<IIngredient[]>(() => order.ingredients.map(ingredientId => ingredients.getIngredientData(ingredientId)),[order]);
   const {getIngredientCount} = useIngredientsCountData(orderIngredients)
-  console.log(getIngredientCount)
+  //console.log(getIngredientCount)
 
   return order ? (
     <div className={`${styles.container}`}>

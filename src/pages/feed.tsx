@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState, FC } from 'react';
 import styleFeed from "./feed.module.css";
 import OrderCard from "../components/order-card/order-card";
 import {
@@ -7,10 +7,15 @@ import {
     wsConnectionClose,
   } from "../services/actions/feed-ws";
 import { apiWS } from "../utils/api";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../services/hooks";
 import Loader from "../components/loader/loader";
 
-const OrdersInfo = ({ doneList, workList }) => {
+interface IOrderNumberListProps{
+doneList: number[], 
+workList: number[]
+}
+
+const OrdersInfo: FC<IOrderNumberListProps> = ({ doneList, workList }) => {
   return (
     <div className={`${styleFeed.wrapper}`}>
       <div className={`${styleFeed.containerList} mr-9`}>
@@ -51,7 +56,12 @@ const OrdersInfo = ({ doneList, workList }) => {
   );
 };
 
-const OrdersStatistics = ({title, number}) => {
+interface IOrdersStatisticsProps{
+  title: string, 
+  number: number
+  }
+
+const OrdersStatistics: FC<IOrdersStatisticsProps> = ({title, number}) => {
   return (
     <div>
       <p className={`text text_type_main-medium text_color_primary`}>
@@ -84,14 +94,14 @@ const FeedPage = () => {
     if (!orders.length) {
       return { doneList: [], workList: [] };
     }
-    return orders.reduce(
+    return orders.reduce<IOrderNumberListProps>(
       (count, item) => {
         // eslint-disable-next-line default-case
         switch (item.status) {
           case "done":
             count.doneList.push(item.number);
             break;
-          case "pending":
+          case "created":
             count.workList.push(item.number);
             break;
         }

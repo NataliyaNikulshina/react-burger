@@ -26,7 +26,11 @@ import { TUserAction } from '../actions/user';
 import { IUserRegister, IUserLogin, IUser } from '../types/data';
 
 export interface IUserInitialState {
-  userData: IUserRegister | IUserLogin | IUser | null,
+  userDataRegister: IUserRegister | null ,
+
+  userDataLogin: IUserLogin | null,
+
+  userData: IUser | null,
 
   isAuth: boolean,
 
@@ -53,6 +57,10 @@ export interface IUserInitialState {
 }
 
 const initialState: IUserInitialState = {
+  userDataRegister: null ,
+
+  userDataLogin: null,
+  
   userData: null,
 
   isAuth: false,
@@ -91,7 +99,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
     case REGISTER_USER_SUCCESS: {
       return {
         ...state,
-        userData: action.payload,
+        userDataRegister: action.payload,
         registerUserRequest: false,
         registerUserError: false,
       };
@@ -116,7 +124,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
     case LOGIN_USER_SUCCESS: {
       return {
         ...state,
-        userData: action.payload,
+        userDataLogin: action.payload,
         loginUserRequest: false,
         loginUserError: false,
         isAuth: true,
@@ -140,7 +148,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
     case FORGOT_PASSWORD_SUCCESS: {
       return {
         ...state,
-        userData: action.payload,
+        userDataLogin: action.payload,
         forgotPasswordRequest: false,
         forgotPasswordError: false,
       };
@@ -187,7 +195,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
     case RESET_PASSWORD_SUCCESS: {
       return {
         ...state,
-        userData: action.payload,
+        userDataLogin: action.payload,
         resetPasswordRequest: false,
         reserPasswordError: false,
       };
@@ -237,7 +245,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
     case CHECK_USER_SUCCESS: {
       return {
         ...state,
-        userData: action.payload,
+        userDataRegister: action.payload,
         isAuth: true,
         checkUserRequest: false,
         checkUserError: false,

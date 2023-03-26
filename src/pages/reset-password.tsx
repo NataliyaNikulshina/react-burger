@@ -1,8 +1,8 @@
-import AppHeader from "../components/app-header/app-header";
+import { FC } from "react";
 import ResetPasswordForm from "../components/form/resetpass-form";
 
 
-const ResetPasswordPage = () => {
+const ResetPasswordPage: FC = () => {
 
   return (
     <ResetPasswordForm />

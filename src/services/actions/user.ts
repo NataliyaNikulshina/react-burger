@@ -124,7 +124,7 @@ export interface ICheckUserRequestAction {
 }
 export interface ICheckUserSuccessAction {
   readonly type: typeof CHECK_USER_SUCCESS;
-  readonly payload: IUserLogin;
+  readonly payload: IUserRegister;
 }
 export interface ICheckUserErrorAction {
   readonly type: typeof CHECK_USER_ERROR;
@@ -210,7 +210,7 @@ export const updateTokenError = (): IRefreshUserErrorAction => ({
 export const checkUserRequest = (): ICheckUserRequestAction => ({
   type: CHECK_USER_REQUEST 
 });
-export const checkUserSuccess = (user: IUserLogin): ICheckUserSuccessAction => ({
+export const checkUserSuccess = (user: IUserRegister): ICheckUserSuccessAction => ({
   type: CHECK_USER_SUCCESS,
   payload: user
 });
@@ -267,7 +267,7 @@ export const logoutThunk = ( refreshToken: string, callback: () => void ) => {
   };
 }
 
-export function forgotPassThunk(email: string, callback: () => void) {
+export function forgotPassThunk( email: string, callback: () => void) {
   return function (dispatch: AppDispatch) {
     dispatch(forgotUserRequest());
     postEmailForReset(email)
@@ -283,7 +283,7 @@ export function forgotPassThunk(email: string, callback: () => void) {
   };
 }
 
-export function resetPassThunk(password: string, code: number, callback: () => void) {
+export function resetPassThunk(password: string, code: string, callback: () => void) {
   return function (dispatch: AppDispatch) {
     dispatch(resetPassUserRequest());
     postNewPassword(password, code)

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   PasswordInput,
@@ -7,20 +7,21 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { resetPassThunk } from "../../services/actions/user";
 import stylesForm from "./form.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/hooks";
 import { useForm } from "../../hooks/useForm";
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  const {values, handleChange} = useForm({ password: '' })
-  const [valueNumber, setValueNumber] = React.useState("");
-  const onChangeNumber = (e) => {
+  const {values, handleChange} = useForm({ email: '', password: '', name: ''})
+  const [valueNumber, setValueNumber] = React.useState('');
+  const onChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value)
     setValueNumber(e.target.value);
   };
   
-  const onSubmitNewPassword = (e) => {
+  const onSubmitNewPassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (values.password && valueNumber) {
       dispatch(resetPassThunk(values.password, valueNumber, () => navigate("/")));
@@ -34,13 +35,13 @@ const ResetPasswordForm = () => {
       </h1>
       <PasswordInput
         onChange={handleChange}
-        value={values}
+        value={values.password!}
         name={"password"}
         placeholder={"Введите новый пароль"}
         extraClass="mt-6 mb-6"
       />
       <Input
-        value={valueNumber}
+        value={valueNumber!}
         onChange={onChangeNumber}
         placeholder={"Ввведите код из письма"}
         name={"number"}

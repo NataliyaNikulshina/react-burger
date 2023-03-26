@@ -7,13 +7,14 @@ import {
     // RESET_CURRENT_ORDER,
   } from "../actions/order";
   import { TOrderAction } from '../actions/order';
+  import { IOrderInfo, IOrder } from '../types/data';
+
   
   export interface IOrderInitialState {
-    order: number | undefined,
+    order: IOrder | undefined,
     orderRequest: boolean,
     orderError: boolean,
-    orderErrorText: string | undefined,
-    currentOrder: number | undefined
+    orderErrorText: string | undefined
   }
 
   const initialState: IOrderInitialState = {
@@ -21,7 +22,6 @@ import {
     orderRequest: false,
     orderError: false,
     orderErrorText: undefined,
-    currentOrder: undefined,
   };
   
   export const orderReducer = (state = initialState, action: TOrderAction): IOrderInitialState => {

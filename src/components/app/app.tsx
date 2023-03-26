@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { FC } from "react";
+import { useSelector, useDispatch } from "../../services/hooks";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../../pages/home";
 import NotFound404 from "../../pages/not-found";
@@ -24,7 +24,7 @@ import Loader from "../loader/loader";
 import OrderDetailsInfo from "../order-details-info/order-details-info";
 import { getToken } from "../../hooks/useTokens";
 
-export default function App() {
+const App: FC = () => {
   const isLoading = useSelector((state) => state.ingredients.itemsRequest);
   const isLoadingUser = useSelector((state) => state.user.checkUserRequest);
   const dispatch = useDispatch();
@@ -176,3 +176,5 @@ export default function App() {
     <Loader />
   );
 }
+
+export default App;

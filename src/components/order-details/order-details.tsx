@@ -1,8 +1,8 @@
 import { FC } from "react";
 import orderDetails from "./order-details.module.css";
 import orderDetailsImage from "../../images/done.png";
-import propTypes from "prop-types";
 import Loader from "../loader/loader";
+import { useSelector} from "../../services/hooks";
 
 interface IOrderDetailsProps {
   orderNumber: number;

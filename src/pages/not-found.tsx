@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./not-found.module.css";
-import AppHeader from "../components/app-header/app-header";
+import { FC } from "react";
 
-const NotFound404 = () => {
+const NotFound404: FC = () => {
   return (
     <div className={styles.background}>
       <div className={styles.container}>
