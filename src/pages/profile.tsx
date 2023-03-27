@@ -32,7 +32,7 @@ const ProfilePage: FC = () => {
   }, []);
      
   return (
-    orders 
+    orders.length 
     ?
     <>
       <div className={`${styleProfile.container} mt-20`}>

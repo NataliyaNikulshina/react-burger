@@ -18,12 +18,14 @@ import { getToken } from "../hooks/useTokens";
 
 const OrderDetailsPage: FC = () => {
   const { id } = useParams();
+  console.log(id);
   const location = useLocation();
   const dispatch = useDispatch();
   const ordersUser = useSelector((store) => store.wsocketUser.orders);
   const ordersFeed = useSelector((store) => store.wsocketFeed.orders);
   const orderUser = ordersUser.find((order) => order._id === id);
   const orderFeed = ordersFeed.find((order) => order._id === id);
+  console.log(ordersFeed, orderFeed)
 
   useEffect(() => {
     if (location.pathname.includes("profile")) {
@@ -46,8 +48,8 @@ const OrderDetailsPage: FC = () => {
   return orderUser || orderFeed ? (
     <div style={{ paddingTop: 122 }}>
       { location.pathname.includes("profile") ?
-        <OrderDetailsInfo order={orderUser!} /> :
-        <OrderDetailsInfo order={orderFeed!} />
+         <OrderDetailsInfo order={orderUser!} /> :
+         <OrderDetailsInfo order={orderFeed!} />
       }
     </div>
   ) : (

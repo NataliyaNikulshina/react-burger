@@ -14,6 +14,7 @@ const IngredientDetailsPage: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { id } = useParams();
+  console.log(id);
   const ingredients = useSelector((state) => state.ingredients);
   const ingredientDetails = useSelector((state) => state.details);
   //console.log(ingredients);

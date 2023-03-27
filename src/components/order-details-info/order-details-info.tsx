@@ -47,19 +47,16 @@ interface IOrderDetailsInfoProps {
 
 const OrderDetailsInfo: FC<IOrderDetailsInfoProps> = ({ order }) => {
   const location = useLocation();
-  console.log(order);
-  const ingredients = useIngredientsData();
-  const price = useMemo<number>(
-    () =>
-      order.ingredients.reduce(
-        (prev, ingredientId) =>
-          prev + ingredients.getIngredientPrice(ingredientId),
-        0
-      ),
-    [ingredients, order]
-  );
-  const orderIngredients = useMemo<IIngredient[]>(() => order.ingredients.map(ingredientId => ingredients.getIngredientData(ingredientId)),[order]);
+  //console.log(order);
+  const {getIngredientPrice, getIngredientData} = useIngredientsData();
+  // const ingredients = useIngredientsData();
+  // console.log(ingredients)
+  const orderIngredients: IIngredient[] = useMemo(() => order.ingredients.map(ingredientId => getIngredientData(ingredientId)),[order]);
+  //console.log(orderIngredients)
   const {getIngredientCount} = useIngredientsCountData(orderIngredients)
+ // console.log(order);
+  const price = useMemo(() => order.ingredients.reduce((prev, ingredientId) => prev + getIngredientPrice(ingredientId),0),[getIngredientPrice, order]);
+ // console.log(price);
   //console.log(getIngredientCount)
 
   return order ? (

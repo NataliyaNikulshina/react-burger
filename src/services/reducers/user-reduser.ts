@@ -53,6 +53,7 @@ export interface IUserInitialState {
   updateUserError: boolean,
 
   checkUserRequest: boolean,
+  checkUserSucces: boolean,
   checkUserError: boolean
 }
 
@@ -84,6 +85,7 @@ const initialState: IUserInitialState = {
   updateUserError: false,
 
   checkUserRequest: false,
+  checkUserSucces: false,
   checkUserError: false,
 };
 
@@ -249,6 +251,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
         isAuth: true,
         checkUserRequest: false,
         checkUserError: false,
+        checkUserSucces: true,
       };
     }
     case CHECK_USER_ERROR: {

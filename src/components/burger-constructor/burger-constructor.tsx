@@ -31,7 +31,7 @@ const BurgerConstructor: FC = () => {
   // console.log(ingredients);
   const dispatch = useDispatch();
   const order = useSelector((state) => state.order);
-  console.log(order);
+ // console.log(order);
   const { isAuth } = useSelector((store) => ({
     isAuth: store.user.isAuth,
   }));

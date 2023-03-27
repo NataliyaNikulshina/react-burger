@@ -7,7 +7,7 @@ interface IIngredientsDataDict {
 }
 
 export const useIngredientsData = () => {
-    const ingredients = useSelector((state) => state.ingredients);
+  const ingredients = useSelector((state) => state.ingredients);
 //console.log(ingredients)
   const ingredientsDataDict = useMemo<IIngredientsDataDict>(() => {
     const ingredientsData: IIngredientsDataDict = {}

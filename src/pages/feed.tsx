@@ -112,7 +112,7 @@ const FeedPage = () => {
   }, [orders]);
 
   return (
-    ingredients && orders
+    ingredients && orders.length
     ?
     <div className={`${styleFeed.container}`}>
        <h2 className={"text text_type_main-large text_color_primary mt-10 mb-5"}>Лента заказов</h2>
