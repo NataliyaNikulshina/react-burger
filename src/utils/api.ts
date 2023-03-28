@@ -1,6 +1,6 @@
 import { IIngredient, IUser, IUserRegister, IUserLogin } from "../services/types/data";
 
-const api: any = {
+const api = {
   url: "https://norma.nomoreparties.space/api",
   headers: {
     "Content-Type": "application/json",

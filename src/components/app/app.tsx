@@ -27,7 +27,7 @@ import { getToken } from "../../hooks/useTokens";
 const App: FC = () => {
   const isLoading = useSelector((state) => state.ingredients.itemsRequest);
   const isLoadingUser = useSelector((state) => state.user.checkUserRequest);
-  const isDoneUser = useSelector((state) => state.user.checkUserSucces);
+  const isAuth = useSelector((state) => state.user.isAuth);
   const dispatch = useDispatch();
   const location = useLocation();
   const background = location.state && location.state?.background;
@@ -77,7 +77,8 @@ const App: FC = () => {
   // console.log(location.state?.locationFeed )
   // console.log(location.state )
 
-  return !isLoading && isLoadingUser === false && isDoneUser === true && orders ? (
+  return !isLoading && isLoadingUser === false && orders && 
+    ((isAuth && token) || (!isAuth && token==="")) ? (
     <>
       <AppHeader />
       <Routes location={background || location || backgroundFeed}>

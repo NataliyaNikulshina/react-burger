@@ -4,7 +4,7 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/hooks";
 import { useDrop, useDrag, XYCoord } from "react-dnd";
 import {
   sortIngConstructor,
