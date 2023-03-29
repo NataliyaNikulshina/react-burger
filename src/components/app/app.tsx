@@ -78,7 +78,7 @@ const App: FC = () => {
   // console.log(location.state )
 
   return !isLoading && isLoadingUser === false && orders && 
-    ((isAuth && token) || (!isAuth && token==="")) ? (
+    ((isAuth && token!=="") || (!isAuth && token==="")) ? (
     <>
       <AppHeader />
       <Routes location={background || location || backgroundFeed}>
