@@ -2,6 +2,7 @@ import { FC, ReactElement, ReactNode } from "react";
 import { useSelector } from "../../services/hooks";
 import { Navigate, useLocation } from "react-router-dom";
 import propTypes from "prop-types";
+import Loader from "../loader/loader";
 
  interface IProtectedRouteProps {
    children: ReactElement<any, any> | null;
@@ -9,10 +10,14 @@ import propTypes from "prop-types";
  }
 
  const ProtectedRouteElement: FC<IProtectedRouteProps> = ( {children, needAuth} ) => {
-  const isAuth = useSelector((store) => store.user.isAuth);
+  const {isAuth, checkUserSuccess, checkUserError}  = useSelector((store) => store.user);
   const location = useLocation();
 
-  if (needAuth ) {
+  if (!checkUserError && !checkUserSuccess) { 
+    return <Loader />;
+  }
+
+  if (needAuth) {
    // console.log('нужна авторизация и она :' + isAuth)
     return isAuth ? children : <Navigate to='/login' />
   }
@@ -22,3 +27,4 @@ import propTypes from "prop-types";
 }
 
 export default ProtectedRouteElement;
+

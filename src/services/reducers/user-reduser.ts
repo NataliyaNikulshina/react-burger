@@ -53,6 +53,7 @@ export interface IUserInitialState {
   updateUserError: boolean,
 
   checkUserRequest: boolean,
+  checkUserSuccess: boolean,
   checkUserError: boolean
 }
 
@@ -84,6 +85,7 @@ const initialState: IUserInitialState = {
   updateUserError: false,
 
   checkUserRequest: false,
+  checkUserSuccess: false,
   checkUserError: false,
 };
 
@@ -239,6 +241,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
       return {
         ...state,
         checkUserRequest: true,
+        checkUserSuccess: false,
         checkUserError: false,
       };
     }
@@ -248,6 +251,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
         userDataRegister: action.payload,
         isAuth: true,
         checkUserRequest: false,
+        checkUserSuccess: true,
         checkUserError: false,
       };
     }
@@ -255,6 +259,7 @@ export const userReducer = (state = initialState, action:TUserAction): IUserInit
       return {
         ...state,
         checkUserRequest: false,
+        checkUserSuccess: false,
         checkUserError: true,
       };
     }
